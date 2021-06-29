@@ -14,6 +14,14 @@ namespace StirlingLabs.Utilities.Yaml
 
         public static string? ToJson(this YamlNode node, ISerializer serializer)
             => Serialize(OnDemand.Deserializer.Deserialize(node), serializer);
+        public static string? ToYaml(this YamlStream stream)
+            => Serialize(OnDemand.Deserializer.Deserialize(stream), OnDemand.YamlSerializer);
+
+        public static string? ToYaml(this YamlDocument doc)
+            => Serialize(OnDemand.Deserializer.Deserialize(doc), OnDemand.YamlSerializer);
+
+        public static string? ToYaml(this YamlNode node)
+            => Serialize(OnDemand.Deserializer.Deserialize(node), OnDemand.YamlSerializer);
 
         public static string? ToJson(this YamlStream stream)
         {
