@@ -1,9 +1,11 @@
 using System.Text;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using YamlDotNet.RepresentationModel;
 
 namespace StirlingLabs.Utilities.Yaml
 {
+    [PublicAPI]
     public class YamlToJsonVisitor : IYamlVisitor
     {
         private const string ValidNumberPattern = @"^\s*[\+-]?((\d,*)+\.\d*|(\d,*)*\.\d+|(\d,*)+)([eE][\+-]?\d+)?\s*$";
@@ -15,11 +17,12 @@ namespace StirlingLabs.Utilities.Yaml
         public void Visit(YamlStream stream)
         {
             _buf.Clear();
-            if (stream.Documents.Count == 0) return;
-            if (stream.Documents.Count == 1)
+            switch (stream.Documents.Count)
             {
-                stream.Documents[0].Accept(this);
-                return;
+                case 0: return;
+                case 1:
+                    stream.Documents[0].Accept(this);
+                    return;
             }
             _buf.Append('[');
             foreach (var document in stream.Documents)
@@ -27,7 +30,7 @@ namespace StirlingLabs.Utilities.Yaml
                 document.Accept(this);
                 _buf.Append(',');
             }
-            _buf[_buf.Length - 1] = ']';
+            _buf[^1] = ']';
         }
 
         public void Visit(YamlDocument document)
@@ -60,7 +63,7 @@ namespace StirlingLabs.Utilities.Yaml
                 node.Accept(this);
                 _buf.Append(',');
             }
-            _buf[_buf.Length - 1] = ']';
+            _buf[^1] = ']';
         }
 
         public void Visit(YamlMappingNode mapping)
@@ -78,7 +81,7 @@ namespace StirlingLabs.Utilities.Yaml
                 value.Accept(this);
                 _buf.Append(',');
             }
-            _buf[_buf.Length - 1] = '}';
+            _buf[^1] = '}';
         }
     }
 }

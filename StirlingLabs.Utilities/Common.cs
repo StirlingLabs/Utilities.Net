@@ -13,7 +13,7 @@ namespace StirlingLabs.Utilities
         {
             T? d;
             if (cache is null)
-                cache = new WeakReference<T>(d = factory());
+                cache = new(d = factory());
             else if (!cache.TryGetTarget(out d))
                 cache.SetTarget(d = factory());
             return d;
