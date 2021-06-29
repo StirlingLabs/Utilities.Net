@@ -17,12 +17,12 @@ namespace StirlingLabs.Utilities.Yaml
             => stream is null ? default : deserializer.Deserialize<T>(new YamlEventsAdapter(stream));
 
         public static T? Deserialize<T>(this YamlStream stream)
-            => Deserializer.Deserialize<T>(stream);
+            => OnDemand.Deserializer.Deserialize<T>(stream);
 
         public static T? Deserialize<T>(this YamlDocument doc)
-            => Deserializer.Deserialize<T>(doc);
+            => OnDemand.Deserializer.Deserialize<T>(doc);
 
         public static T? Deserialize<T>(this YamlNode node)
-            => Deserializer.Deserialize<T>(node);
+            => OnDemand.Deserializer.Deserialize<T>(node);
     }
 }

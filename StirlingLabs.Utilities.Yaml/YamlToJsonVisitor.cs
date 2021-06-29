@@ -8,8 +8,9 @@ namespace StirlingLabs.Utilities.Yaml
     [PublicAPI]
     public class YamlToJsonVisitor : IYamlVisitor
     {
-        private const string ValidNumberPattern = @"^\s*[\+-]?((\d,*)+\.\d*|(\d,*)*\.\d+|(\d,*)+)([eE][\+-]?\d+)?\s*$";
-        private readonly Regex _validNumberRx = new(ValidNumberPattern, RegexOptions.Compiled);
+
+        private const string JsonSpecNumberPattern = @"^(?=[1-9]|0(?!\d))\d+(?:\.\d+)?(?:[eE] [+-]? \d+)?$";
+        private readonly Regex _validNumberRx = new(JsonSpecNumberPattern, RegexOptions.Compiled);
         private readonly StringBuilder _buf = new();
 
         public override string ToString() => _buf.ToString();
@@ -34,11 +35,7 @@ namespace StirlingLabs.Utilities.Yaml
         }
 
         public void Visit(YamlDocument document)
-        {
-            _buf.Append('{');
-            document.RootNode?.Accept(this);
-            _buf.Append('}');
-        }
+            => document.RootNode?.Accept(this);
 
         public void Visit(YamlScalarNode scalar)
         {
