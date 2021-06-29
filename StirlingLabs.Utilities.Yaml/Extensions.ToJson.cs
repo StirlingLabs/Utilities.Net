@@ -7,9 +7,7 @@ namespace StirlingLabs.Utilities.Yaml
     public static partial class Extensions
     {
         public static string? ToJson(this YamlStream stream, ISerializer serializer)
-        {
-            return Serialize(Deserializer.Deserialize(stream), serializer);
-        }
+            => Serialize(Deserializer.Deserialize(stream), serializer);
 
         public static string? ToJson(this YamlDocument doc, ISerializer serializer)
             => Serialize(Deserializer.Deserialize(doc), serializer);
@@ -18,12 +16,24 @@ namespace StirlingLabs.Utilities.Yaml
             => Serialize(Deserializer.Deserialize(node), serializer);
 
         public static string? ToJson(this YamlStream stream)
-            => SerializeJson(Deserializer.Deserialize(stream));
+        {
+            var visitor = new YamlToJsonVisitor();
+            stream.Accept(visitor);
+            return visitor.ToString();
+        }
 
         public static string? ToJson(this YamlDocument doc)
-            => SerializeJson(Deserializer.Deserialize(doc));
+        {
+            var visitor = new YamlToJsonVisitor();
+            doc.Accept(visitor);
+            return visitor.ToString();
+        }
 
         public static string? ToJson(this YamlNode node)
-            => SerializeJson(Deserializer.Deserialize(node));
+        {
+            var visitor = new YamlToJsonVisitor();
+            node.Accept(visitor);
+            return visitor.ToString();
+        }
     }
 }
