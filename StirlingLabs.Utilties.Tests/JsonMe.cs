@@ -10,6 +10,8 @@ namespace StirlingLabs.Utilties.Tests
 
         public double number;
 
+        public string[] texts;
+
         public double[] numbers;
 
         public Dictionary<string, string> stringDict;

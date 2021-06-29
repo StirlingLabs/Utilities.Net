@@ -38,6 +38,8 @@ namespace StirlingLabs.Utilties.Tests
                 return false;
             if (!number.Equals(other.number))
                 return false;
+            if (!texts.SequenceEqual(other.texts))
+                return false;
             if (!numbers.SequenceEqual(other.numbers))
                 return false;
             if (stringDict.Count != other.stringDict.Count)
