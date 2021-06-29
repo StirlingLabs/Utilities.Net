@@ -8,40 +8,22 @@ namespace StirlingLabs.Utilities.Yaml
     {
         public static string? ToJson(this YamlStream stream, ISerializer serializer)
         {
-            var deserializer = new Deserializer();
-            var yamlObject = deserializer.Deserialize(stream);
-            return Serialize(yamlObject, serializer);
-        }
-        public static string? ToJson(this YamlDocument doc, ISerializer serializer)
-        {
-            var deserializer = new Deserializer();
-            var yamlObject = deserializer.Deserialize(doc);
-            return Serialize(yamlObject, serializer);
-        }
-        public static string? ToJson(this YamlNode node, ISerializer serializer)
-        {
-            var deserializer = new Deserializer();
-            var yamlObject = deserializer.Deserialize(node);
-            return Serialize(yamlObject, serializer);
+            return Serialize(Deserializer.Deserialize(stream), serializer);
         }
 
+        public static string? ToJson(this YamlDocument doc, ISerializer serializer)
+            => Serialize(Deserializer.Deserialize(doc), serializer);
+
+        public static string? ToJson(this YamlNode node, ISerializer serializer)
+            => Serialize(Deserializer.Deserialize(node), serializer);
+
         public static string? ToJson(this YamlStream stream)
-        {
-            var deserializer = new Deserializer();
-            var yamlObject = deserializer.Deserialize(stream);
-            return SerializeJson(yamlObject);
-        }
+            => SerializeJson(Deserializer.Deserialize(stream));
+
         public static string? ToJson(this YamlDocument doc)
-        {
-            var deserializer = new Deserializer();
-            var yamlObject = deserializer.Deserialize(doc);
-            return SerializeJson(yamlObject);
-        }
+            => SerializeJson(Deserializer.Deserialize(doc));
+
         public static string? ToJson(this YamlNode node)
-        {
-            var deserializer = new Deserializer();
-            var yamlObject = deserializer.Deserialize(node);
-            return SerializeJson(yamlObject);
-        }
+            => SerializeJson(Deserializer.Deserialize(node));
     }
 }
