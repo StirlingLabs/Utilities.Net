@@ -46,7 +46,7 @@ namespace StirlingLabs.Utilities.Yaml
         }
 
         public void Visit(YamlDocument document)
-            => document.RootNode?.Accept(this);
+            => document.RootNode.Accept(this);
 
         public void Visit(YamlScalarNode scalar)
         {
