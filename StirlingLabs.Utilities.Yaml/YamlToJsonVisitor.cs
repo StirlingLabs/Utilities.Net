@@ -9,7 +9,7 @@ namespace StirlingLabs.Utilities.Yaml
     public class YamlToJsonVisitor : IYamlVisitor
     {
 
-        private const string JsonSpecNumberPattern = @"^(?=[1-9]|0(?!\d))\d+(?:\.\d+)?(?:[eE] [+-]? \d+)?$";
+        private const string JsonSpecNumberPattern = @"^(?=[1-9]|0(?!\d))\d+(?:\.\d+)?(?:[eE][+-]?\d+)?$";
         private readonly Regex _validNumberRx = new(JsonSpecNumberPattern, RegexOptions.Compiled);
         private readonly StringBuilder _buf = new();
 
