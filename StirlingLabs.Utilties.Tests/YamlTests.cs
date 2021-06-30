@@ -44,7 +44,7 @@ namespace StirlingLabs.Utilties.Tests
             ys.Load(new StringReader(yml));
 
             var sw = Stopwatch.StartNew();
-            var expectedJson = ys.ToJson(OnDemand.JsonSerializer);
+            var expectedJson = ys.Serialize(OnDemand.JsonSerializer);
             var json1 = sw.ElapsedTicks;
 
             Assert.IsNotNull(expectedJson);
