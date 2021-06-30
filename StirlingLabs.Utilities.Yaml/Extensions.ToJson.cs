@@ -1,3 +1,4 @@
+using System.Linq;
 using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
 

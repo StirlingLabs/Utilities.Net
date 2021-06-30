@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
@@ -8,16 +10,25 @@ namespace StirlingLabs.Utilities.Yaml
     [PublicAPI]
     public class YamlToJsonVisitor : IYamlVisitor
     {
+        private const string JsonSpecNumberPattern = @"^(?=[1-9]|0(?![0-9]))[0-9]+(\.[0-9]+)?([eE][+-]?[0-9]+)?$";
+        private static readonly Regex ValidNumberRx = new(JsonSpecNumberPattern,
+            RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.ExplicitCapture | RegexOptions.CultureInvariant);
+        private readonly StringBuilder _buf;
 
-        private const string JsonSpecNumberPattern = @"^(?=[1-9]|0(?!\d))\d+(?:\.\d+)?(?:[eE][+-]?\d+)?$";
-        private readonly Regex _validNumberRx = new(JsonSpecNumberPattern, RegexOptions.Compiled);
-        private readonly StringBuilder _buf = new();
+        public YamlToJsonVisitor()
+            => _buf = new();
 
-        public override string ToString() => _buf.ToString();
+        public YamlToJsonVisitor(int bufferSize) : this()
+            => _buf.EnsureCapacity(bufferSize);
+
+        public YamlToJsonVisitor(StringBuilder buffer)
+            => _buf = buffer;
+
+        public override string ToString()
+            => _buf.ToString();
 
         public void Visit(YamlStream stream)
         {
-            _buf.Clear();
             switch (stream.Documents.Count)
             {
                 case 0: return;
@@ -41,7 +52,7 @@ namespace StirlingLabs.Utilities.Yaml
         {
             if (scalar.Value == null || scalar.Value == "~" || scalar.Value == "null")
                 _buf.Append("null");
-            else if (_validNumberRx.IsMatch(scalar.Value!)) // if valid number
+            else if (ValidNumberRx.IsMatch(scalar.Value!)) // if valid number
                 _buf.Append(scalar.Value);
             else
                 _buf.Append('"').Append(scalar.Value).Append('"');

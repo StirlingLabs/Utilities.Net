@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -14,7 +16,6 @@ namespace StirlingLabs.Utilties.Tests
 {
     public class YamlTests
     {
-        private static readonly YamlToJsonVisitor YamlToJsonVisitor = new YamlToJsonVisitor();
         private static readonly JsonSerializer JsonNetSerializer = JsonSerializer.CreateDefault();
         private static readonly Faker<JsonMe> JsonMeFaker = new AutoFaker<JsonMe>()
             .RuleFor(f => f.number, GetActuallyRandomNumber)
@@ -42,13 +43,15 @@ namespace StirlingLabs.Utilties.Tests
             var ys = new YamlStream();
             ys.Load(new StringReader(yml));
 
+            var sw = Stopwatch.StartNew();
             var expectedJson = ys.ToJson(OnDemand.JsonSerializer);
+            var json1 = sw.ElapsedTicks;
 
             Assert.IsNotNull(expectedJson);
 
-            YamlToJsonVisitor.Visit(ys);
-
-            var actualJson = YamlToJsonVisitor.ToString();
+            sw.Restart();
+            var actualJson = ys.ToJson();
+            var json2 = sw.ElapsedTicks;
 
             Assert.IsNotNull(actualJson);
 
@@ -57,6 +60,8 @@ namespace StirlingLabs.Utilties.Tests
             dynamic actual = JsonNetSerializer.Deserialize(new StringReader(actualJson), k.GetType());
 
             Assert.AreEqual((IList<JsonMe>)expected.a, (IList<JsonMe>)actual.a);
+            
+            Console.WriteLine($"ToJson w/ Serializer: {json1}, ToJson w/ YamlToJsonVisitor: {json2}");
         }
     }
 }
