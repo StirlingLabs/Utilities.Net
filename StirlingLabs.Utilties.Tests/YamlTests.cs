@@ -1,20 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using System.Text.Json;
 using AutoBogus;
 using Bogus;
-using Newtonsoft.Json.Linq;
 using NUnit.Framework;
-using StirlingLabs.Utilities;
 using StirlingLabs.Utilities.Yaml;
-using YamlDotNet.Core;
 using YamlDotNet.RepresentationModel;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.ValueDeserializers;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace StirlingLabs.Utilties.Tests
@@ -25,8 +18,8 @@ namespace StirlingLabs.Utilties.Tests
         private static readonly JsonSerializer JsonNetSerializer = JsonSerializer.CreateDefault();
         private static readonly Faker<JsonMe> JsonMeFaker = new AutoFaker<JsonMe>()
             .RuleFor(f => f.number, GetActuallyRandomNumber)
-            .RuleFor(f => f.texts, f => f.Make(2000, _ => f.Hacker.Phrase()).ToArray())
-            .RuleFor(f => f.numbers, f => f.Make(2000, _ => GetActuallyRandomNumber()).ToArray());
+            .RuleFor(f => f.texts, f => f.Make(100, _ => f.Hacker.Phrase()).ToArray())
+            .RuleFor(f => f.numbers, f => f.Make(500, _ => GetActuallyRandomNumber()).ToArray());
 
         public static double GetActuallyRandomNumber()
         {
@@ -63,7 +56,7 @@ namespace StirlingLabs.Utilties.Tests
 
             dynamic actual = JsonNetSerializer.Deserialize(new StringReader(actualJson), k.GetType());
 
-            Assert.AreEqual(expected.a, actual.a);
+            Assert.AreEqual((IList<JsonMe>)expected.a, (IList<JsonMe>)actual.a);
         }
     }
 }
