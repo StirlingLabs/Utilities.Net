@@ -26,7 +26,7 @@ namespace StirlingLabs.Utilities
         internal readonly unsafe ByReference<T> _pointer;
 
         /// <summary>The number of elements this Span contains.</summary>
-        private readonly nuint _length;
+        internal readonly nuint _length;
 
         /// <summary>
         /// Creates a new span over the entirety of the target array.
@@ -471,6 +471,25 @@ namespace StirlingLabs.Utilities
             }
             CopyTo(destination);
             return destination;
+        }
+
+        public unsafe BigSpan<byte> AsBytes()
+            => new(ref Unsafe.As<T,byte>(ref _pointer.Value), _length * (nuint)sizeof(T));
+
+        public unsafe int CompareMemory(BigSpan<T> other)
+        {
+            var lengthComparison = _length.CompareTo(other._length);
+            return lengthComparison == 0
+                ? Common.memcmp(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)sizeof(T))
+                : lengthComparison;
+        }
+
+        public unsafe int CompareMemory(ReadOnlyBigSpan<T> other)
+        {
+            var lengthComparison = _length.CompareTo(other._length);
+            return lengthComparison == 0
+                ? Common.memcmp(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)sizeof(T))
+                : lengthComparison;
         }
     }
 }

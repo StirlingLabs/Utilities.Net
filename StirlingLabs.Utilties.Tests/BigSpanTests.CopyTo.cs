@@ -1,13 +1,13 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using NUnit.Framework;
 using StirlingLabs.Utilities;
 using static StirlingLabs.Utilities.Common;
 
 namespace StirlingLabs.Utilties.Tests
 {
-
     public static partial class BigSpanTests
     {
         [Test]
@@ -195,7 +195,8 @@ namespace StirlingLabs.Utilties.Tests
 
         [Theory]
         [Explicit]
-        public static void CopyToLargeSizeTest([Values(256, 256+(long)int.MaxValue)]long bufferSize)
+        public static void CopyToLargeSizeTest([Values(256uL, 256uL + int.MaxValue)]
+            ulong longBufferSize)
         {
             // If this test is run in a 32-bit process, the large allocation will fail.
             if (Unsafe.SizeOf<IntPtr>() != sizeof(long))
@@ -203,50 +204,53 @@ namespace StirlingLabs.Utilties.Tests
                 return;
             }
 
-            var GuidCount = (nuint)(bufferSize / Unsafe.SizeOf<Guid>());
+            var bufferSize = (nuint)longBufferSize;
+
             var allocatedFirst = false;
             var allocatedSecond = false;
-            var memBlockFirst = IntPtr.Zero;
-            var memBlockSecond = IntPtr.Zero;
+            IntPtr memBlockFirst = default;
+            IntPtr memBlockSecond = default;
 
             unsafe
             {
                 try
                 {
-                    
-                    allocatedFirst = AllocateNativeMemory((nint)bufferSize, out memBlockFirst);
-                    allocatedSecond = AllocateNativeMemory((nint)bufferSize, out memBlockSecond);
+
+                    allocatedFirst = AllocateUnmanagedMemory(bufferSize, out memBlockFirst);
+                    allocatedSecond = AllocateUnmanagedMemory(bufferSize, out memBlockSecond);
 
                     if (allocatedFirst && allocatedSecond)
                     {
-                        ref var memoryFirst = ref Unsafe.AsRef<Guid>(memBlockFirst.ToPointer());
-                        var spanFirst = new BigSpan<Guid>(memBlockFirst.ToPointer(), GuidCount);
+                        var memoryFirst = (byte*)memBlockFirst.ToPointer();
+                        var spanFirst = new BigSpan<byte>(memoryFirst, default);
 
-                        ref var memorySecond = ref Unsafe.AsRef<Guid>(memBlockSecond.ToPointer());
-                        var spanSecond = new BigSpan<Guid>(memBlockSecond.ToPointer(), GuidCount);
+                        var memorySecond = (byte*)memBlockSecond.ToPointer();
+                        var spanSecond = new BigSpan<byte>(memorySecond, default);
 
-                        var theGuid = Guid.Parse("900DBAD9-00DB-AD90-00DB-AD900DBADBAD");
-                        for (nuint count = 0; count < GuidCount; ++count)
                         {
-                            Unsafe.Add(ref memoryFirst, (nint)count) = theGuid;
+                            long index = 0;
+                            var bufferRemaining = bufferSize;
+                            while (bufferRemaining > int.MaxValue)
+                            {
+                                RandomNumberGenerator.Fill(new(memoryFirst + index, int.MaxValue));
+                                index += int.MaxValue;
+                                bufferRemaining -= int.MaxValue;
+                            }
+                            if (bufferRemaining > 0)
+                                RandomNumberGenerator.Fill(new(memoryFirst + index, (int)bufferRemaining));
                         }
 
                         spanFirst.CopyTo(spanSecond);
 
-                        for (nuint count = 0; count < GuidCount; ++count)
-                        {
-                            var guidfirst = Unsafe.Add(ref memoryFirst, (nint)count);
-                            var guidSecond = Unsafe.Add(ref memorySecond, (nint)count);
-                            Assert.AreEqual(guidfirst, guidSecond);
-                        }
+                        Assert.Zero(spanFirst.CompareMemory(spanSecond));
                     }
                 }
                 finally
                 {
                     if (allocatedFirst)
-                        FreeNativeMemory(ref memBlockFirst);
+                        FreeUnmanagedMemory(ref memBlockFirst);
                     if (allocatedSecond)
-                        FreeNativeMemory(ref memBlockSecond);
+                        FreeUnmanagedMemory(ref memBlockSecond);
                 }
             }
         }

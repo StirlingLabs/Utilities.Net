@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.CompilerServices;
 
 namespace StirlingLabs.Utilities
@@ -8,14 +9,16 @@ namespace StirlingLabs.Utilities
         {
             if (Is64Bit)
             {
+                ref var pb = ref b;
                 var l = (ulong)byteLength;
                 while (l >= uint.MaxValue)
                 {
-                    Unsafe.InitBlockUnaligned(ref b, 0, uint.MaxValue);
+                    Unsafe.InitBlockUnaligned(ref pb, 0, uint.MaxValue);
+                    pb = ref Unsafe.AddByteOffset(ref pb, (nint)uint.MaxValue);
                     l -= uint.MaxValue;
                 }
                 if (l > 0)
-                    Unsafe.InitBlockUnaligned(ref b, 0, (uint)l);
+                    Unsafe.InitBlockUnaligned(ref pb, 0, (uint)l);
             }
             else
             {

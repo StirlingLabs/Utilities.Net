@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
@@ -10,6 +11,7 @@ namespace StirlingLabs.Utilities
     [PublicAPI]
     public static class Common
     {
+        private static readonly Assembly ThisAssembly = typeof(Common).Assembly;
         public static T OnDemand<T>(ref WeakReference<T>? cache, Func<T> factory)
             where T : class
         {
@@ -27,7 +29,7 @@ namespace StirlingLabs.Utilities
             => new DelegatingEqualityComparer<T>(equals);
         public static EqualityComparer<T> CreateEqualityComparer<T>(Func<T, int> hasher)
             => new DelegatingEqualityComparer<T>(hasher);
-        
+
         /// <summary>
         /// Prevents generation of boxing instructions in certain situations.
         /// </summary>
@@ -49,8 +51,8 @@ namespace StirlingLabs.Utilities
         {
             // This space intentionally left blank.
         }
-        
-        
+
+
         /// <summary>
         /// Returns a reference to the 0th element of the BigSpan. If the BigSpan is empty, returns a reference to the location where the 0th element
         /// would have been stored. Such a reference may or may not be null. It can be used for pinning but must never be dereferenced.
@@ -67,28 +69,27 @@ namespace StirlingLabs.Utilities
 
         public static nuint GetLength<T>(this T[] array)
             => BigSpanHelpers.Is64Bit ? (nuint)array.LongLength : (nuint)array.Length;
-        
-        
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void FreeNativeMemory(ref nint nativePointer)
+        public static unsafe void FreeUnmanagedMemory(ref nint nativePointer)
         {
-            Marshal.FreeHGlobal(nativePointer);
+            free((void*)nativePointer);
             nativePointer = default;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe void FreeNativeMemory(ref void* nativePointer)
+        public static unsafe void FreeUnmanagedMemory(ref void* nativePointer)
         {
-            Marshal.FreeHGlobal((nint)nativePointer);
+            free(nativePointer);
             nativePointer = default;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool AllocateNativeMemory(nint size, out nint pointer)
+        public static unsafe bool AllocateUnmanagedMemory(nuint size, out nint pointer)
         {
             try
             {
-                pointer = Marshal.AllocHGlobal(size);
+                pointer = (nint)malloc(size);
             }
             catch (OutOfMemoryException)
             {
@@ -99,12 +100,70 @@ namespace StirlingLabs.Utilities
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe bool AllocateNativeMemory<T>(nint count, out T* pointer)
-            where T: unmanaged
+        public static unsafe bool AllocateUnmanagedMemory(nuint size, out void* pointer)
         {
-            var success = AllocateNativeMemory(count * sizeof(T), out var pointerValue);
+            try
+            {
+                pointer = malloc(size);
+            }
+            catch (OutOfMemoryException)
+            {
+                pointer = default;
+                return false;
+            }
+            return true;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe bool AllocateUnmanagedMemory<T>(nuint count, out T* pointer)
+            where T : unmanaged
+        {
+            var success = AllocateUnmanagedMemory(count * (nuint)sizeof(T), out void* pointerValue);
             pointer = (T*)pointerValue;
             return success;
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe BigSpan<T> AllocateNativeMemoryBigSpan<T>(nuint count)
+            where T : unmanaged
+        {
+            if (AllocateUnmanagedMemory(count * (nuint)sizeof(T), out void* pointerValue))
+            {
+                return new(pointerValue, count);
+            }
+            throw new OutOfMemoryException();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static unsafe void FreeNativeMemoryBigSpan<T>(ref BigSpan<T> span)
+            where T : unmanaged
+        {
+            free(span.GetUnsafePointer());
+            span = default;
+        }
+
+        static Common()
+        {
+            NativeLibrary.SetDllImportResolver(ThisAssembly, (name, assembly, path) => {
+                if (name == "c" && assembly == ThisAssembly)
+                {
+                    return NativeLibrary.Load(
+                        RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                            ? "msvcrt"
+                            : "libc"
+                    );
+                }
+                return default;
+            });
+        }
+
+        [DllImport("c")]
+        internal static extern unsafe void* malloc(nuint size);
+
+        [DllImport("c")]
+        internal static extern unsafe void free(void* size);
+
+        [DllImport("c")]
+        internal static extern unsafe int memcmp(void* ptr1, void* ptr2, nuint num);
     }
 }
