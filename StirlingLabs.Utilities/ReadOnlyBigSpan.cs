@@ -19,7 +19,7 @@ namespace StirlingLabs.Utilities
     public readonly ref struct ReadOnlyBigSpan<T> where T : unmanaged
     {
         /// <summary>A byref or a native ptr.</summary>
-        internal readonly unsafe ByReference<T> _pointer;
+        internal readonly ByReference<T> _pointer;
         /// <summary>The number of elements this ReadOnlySpan contains.</summary>
         internal readonly nuint _length;
 
@@ -29,7 +29,7 @@ namespace StirlingLabs.Utilities
         /// <param name="array">The target array.</param>
         /// <remarks>Returns default when <paramref name="array"/> is null.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe ReadOnlyBigSpan(T[]? array)
+        public ReadOnlyBigSpan(T[]? array)
         {
             if (array == null)
             {
@@ -53,7 +53,7 @@ namespace StirlingLabs.Utilities
         /// Thrown when the specified <paramref name="start"/> or end index is not in the range (&lt;0 or &gt;Length).
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe ReadOnlyBigSpan(T[]? array, nuint start, nuint length)
+        public ReadOnlyBigSpan(T[]? array, nuint start, nuint length)
         {
             if (array == null)
             {
@@ -65,7 +65,7 @@ namespace StirlingLabs.Utilities
                 return; // returns default
             }
             // See comment in Span<T>.Slice for how this works.
-            if ((nuint)start + (nuint)length > (nuint)array.Length)
+            if (start + length > (nuint)array.Length)
                 throw new ArgumentOutOfRangeException(nameof(length));
 
             _pointer = new(ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(array),
@@ -101,11 +101,21 @@ namespace StirlingLabs.Utilities
 
         // Constructor for internal use only.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal unsafe ReadOnlyBigSpan(ref T ptr, nuint length)
+        internal ReadOnlyBigSpan(ref T ptr, nuint length)
         {
             Debug.Assert(length >= 0);
 
             _pointer = new(ref ptr);
+            _length = length;
+        }
+
+        // Constructor for internal use only.
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal ReadOnlyBigSpan(in T ptr, nuint length, bool _ = false)
+        {
+            Debug.Assert(length >= 0);
+
+            _pointer = new(ref Unsafe.AsRef(ptr));
             _length = length;
         }
 
@@ -117,7 +127,7 @@ namespace StirlingLabs.Utilities
         /// <exception cref="System.IndexOutOfRangeException">
         /// Thrown when index less than 0 or index greater than or equal to Length
         /// </exception>
-        public unsafe ref readonly T this[nuint index]
+        public ref readonly T this[nuint index]
         {
             [Intrinsic]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -125,7 +135,37 @@ namespace StirlingLabs.Utilities
             get {
                 if ((uint)index >= (uint)_length)
                     throw new IndexOutOfRangeException();
-                return ref Unsafe.Add(ref _pointer.Value, (nint)(uint)index /* force zero-extension */);
+                return ref Unsafe.Add(ref _pointer.Value, (nint)index);
+            }
+        }
+
+
+        /// <summary>
+        /// Returns the specified element of the read-only span.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        /// <exception cref="System.IndexOutOfRangeException">
+        /// Thrown when index less than 0 or index greater than or equal to Length
+        /// </exception>
+        public ref readonly T this[Index index]
+        {
+            get {
+                var actualIndex = (nuint)index.Value;
+                if (index.IsFromEnd) actualIndex = _length - actualIndex;
+                return ref this[actualIndex];
+            }
+        }
+
+        public ReadOnlyBigSpan<T> this[Range range]
+        {
+            get {
+                var start = (nuint)range.Start.Value;
+                if (range.Start.IsFromEnd) start = _length - start;
+                var end = (nuint)range.End.Value;
+                if (range.Start.IsFromEnd) end = _length - end;
+                var length = end - start;
+                return new(ref Unsafe.AsRef(this[start]), length);
             }
         }
 
@@ -162,7 +202,7 @@ namespace StirlingLabs.Utilities
         /// Always thrown by this method.
         /// </exception>
         /// </summary>
-        [Obsolete("Equals() on ReadOnlySpan will always throw an exception. Use == instead.")]
+        [Obsolete("Equals() on ReadOnlySpan will always throw an exception. Use == instead.", true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override bool Equals(object? obj) =>
             throw new NotSupportedException();
@@ -173,7 +213,7 @@ namespace StirlingLabs.Utilities
         /// Always thrown by this method.
         /// </exception>
         /// </summary>
-        [Obsolete("GetHashCode() on ReadOnlySpan will always throw an exception.")]
+        [Obsolete("GetHashCode() on ReadOnlySpan will always throw an exception.", true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override int GetHashCode() =>
             throw new NotSupportedException();
@@ -193,10 +233,11 @@ namespace StirlingLabs.Utilities
         /// <summary>
         /// Defines an implicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlySpan{T}"/>
         /// </summary>
-        public static unsafe explicit operator ReadOnlySpan<T>(ReadOnlyBigSpan<T> bigSpan) =>
+        public static explicit operator ReadOnlySpan<T>(ReadOnlyBigSpan<T> bigSpan) =>
             bigSpan._length <= int.MaxValue
                 ? MemoryMarshal.CreateReadOnlySpan(ref bigSpan._pointer.Value, (int)bigSpan._length)
-                : throw new NotSupportedException($"Not possible to create ReadOnlySpans longer than {int.MaxValue} (maximum 32-bit integer value)");
+                : throw new NotSupportedException(
+                    $"Not possible to create ReadOnlySpans longer than {int.MaxValue} (maximum 32-bit integer value)");
 
         /// <summary>
         /// Returns a 0-length read-only span whose base is the null pointer.
@@ -251,7 +292,7 @@ namespace StirlingLabs.Utilities
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public unsafe ref readonly T GetPinnableReference()
+        public ref readonly T GetPinnableReference()
         {
             // Ensure that the native code has just one forward branch that is predicted-not-taken.
             ref T ret = ref Unsafe.NullRef<T>();
@@ -284,10 +325,7 @@ namespace StirlingLabs.Utilities
             {
                 throw new ArgumentException("Too short.", nameof(destination));
             }
-            else
-            {
-                BigSpanHelpers.Copy(destination.GetUnsafePointer(), GetUnsafePointer(), _length * (nuint)sizeof(T));
-            }
+            BigSpanHelpers.Copy(destination.GetUnsafePointer(), GetUnsafePointer(), _length * (nuint)sizeof(T));
         }
 
         /// <summary>
@@ -322,7 +360,7 @@ namespace StirlingLabs.Utilities
         /// For <see cref="ReadOnlyBigSpan{T}"/>, returns a new instance of string that represents the characters pointed to by the span.
         /// Otherwise, returns a <see cref="string"/> with the name of the type and the number of elements.
         /// </summary>
-        public override unsafe string ToString()
+        public override string ToString()
         {
             if (typeof(T) == typeof(char) && _length <= int.MaxValue)
             {
@@ -339,12 +377,48 @@ namespace StirlingLabs.Utilities
         /// Thrown when the specified <paramref name="start"/> index is not in range (&lt;0 or &gt;Length).
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe ReadOnlyBigSpan<T> Slice(nuint start)
+        public ReadOnlyBigSpan<T> Slice(nuint start)
         {
             if ((uint)start > (uint)_length)
                 throw new ArgumentOutOfRangeException(nameof(start));
 
             return new(ref Unsafe.Add(ref _pointer.Value, (nint)(uint)start /* force zero-extension */), _length - start);
+        }
+
+        /// <summary>
+        /// Forms a slice out of the given span, beginning at 'start', of given length
+        /// </summary>
+        /// <param name="start">The index at which to begin this slice.</param>
+        /// <param name="length">The desired length for the slice (exclusive).</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified <paramref name="start"/> or end index is not in range (&lt;0 or &gt;Length).
+        /// </exception>
+        public ReadOnlySpan<T> Slice(nuint start, int length)
+        {
+            if (length < 0)
+                throw new ArgumentOutOfRangeException(nameof(length));
+            if (start + (nuint)length > _length)
+                throw new ArgumentOutOfRangeException(nameof(length));
+            return MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(this[start]), length);
+        }
+
+        /// <summary>
+        /// Forms a slice out of the given span, beginning at 'start', of given length
+        /// </summary>
+        /// <param name="start">The index at which to begin this slice.</param>
+        /// <param name="length">The desired length for the slice (exclusive).</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified <paramref name="start"/> or end index is not in range (&lt;0 or &gt;Length).
+        /// </exception>
+        public ReadOnlySpan<T> Slice(int start, int length)
+        {
+            if (start < 0)
+                throw new ArgumentOutOfRangeException(nameof(start));
+            if (length < 0)
+                throw new ArgumentOutOfRangeException(nameof(length));
+            if ((nuint)start + (nuint)length > _length)
+                throw new ArgumentOutOfRangeException(nameof(length));
+            return MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(this[(nuint)start]), length);
         }
 
         /// <summary>
@@ -356,7 +430,7 @@ namespace StirlingLabs.Utilities
         /// Thrown when the specified <paramref name="start"/> or end index is not in range (&lt;0 or &gt;Length).
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe ReadOnlyBigSpan<T> Slice(nuint start, nuint length)
+        public ReadOnlyBigSpan<T> Slice(nuint start, nuint length)
         {
             // See comment in Span<T>.Slice for how this works.
             if (start + length > _length)
@@ -370,7 +444,7 @@ namespace StirlingLabs.Utilities
         /// allocates, so should generally be avoided, however it is sometimes
         /// necessary to bridge the gap with APIs written in terms of arrays.
         /// </summary>
-        public unsafe T[] ToArray()
+        public T[] ToArray()
         {
             if (_length == 0)
                 return Array.Empty<T>();
@@ -402,13 +476,13 @@ namespace StirlingLabs.Utilities
         }
 
         public unsafe ReadOnlyBigSpan<byte> AsBytes()
-            => new(ref Unsafe.As<T,byte>(ref _pointer.Value), _length * (nuint)sizeof(T));
+            => new(ref Unsafe.As<T, byte>(ref _pointer.Value), _length * (nuint)sizeof(T));
 
         public unsafe int CompareMemory(BigSpan<T> other)
         {
             var lengthComparison = _length.CompareTo(other._length);
             return lengthComparison == 0
-                ? Common.memcmp(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)sizeof(T))
+                ? UnmanagedMemory.C_CompareMemory(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)sizeof(T))
                 : lengthComparison;
         }
 
@@ -416,7 +490,7 @@ namespace StirlingLabs.Utilities
         {
             var lengthComparison = _length.CompareTo(other._length);
             return lengthComparison == 0
-                ? Common.memcmp(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)sizeof(T))
+                ? UnmanagedMemory.C_CompareMemory(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)sizeof(T))
                 : lengthComparison;
         }
     }

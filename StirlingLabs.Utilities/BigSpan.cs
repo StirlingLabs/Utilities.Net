@@ -3,12 +3,11 @@
 
 #nullable enable
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using EditorBrowsableAttribute = System.ComponentModel.EditorBrowsableAttribute;
-using EditorBrowsableState = System.ComponentModel.EditorBrowsableState;
 
 #pragma warning disable 0809 //warning CS0809: Obsolete member 'Span<T>.Equals(object)' overrides non-obsolete member 'object.Equals(object)'
 
@@ -23,7 +22,7 @@ namespace StirlingLabs.Utilities
     public readonly ref struct BigSpan<T> where T : unmanaged
     {
         /// <summary>A byref or a native ptr.</summary>
-        internal readonly unsafe ByReference<T> _pointer;
+        internal readonly ByReference<T> _pointer;
 
         /// <summary>The number of elements this Span contains.</summary>
         internal readonly nuint _length;
@@ -35,7 +34,7 @@ namespace StirlingLabs.Utilities
         /// <remarks>Returns default when <paramref name="array"/> is null.</remarks>
         /// <exception cref="System.ArrayTypeMismatchException">Thrown when <paramref name="array"/> is covariant and array's type is not exactly T[].</exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe BigSpan(T[]? array)
+        public BigSpan(T[]? array)
         {
             if (array == null)
             {
@@ -62,7 +61,7 @@ namespace StirlingLabs.Utilities
         /// Thrown when the specified <paramref name="start"/> or end index is not in the range (&lt;0 or &gt;Length).
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe BigSpan(T[]? array, nuint start, nuint length)
+        public BigSpan(T[]? array, nuint start, nuint length)
         {
             if (array == null)
             {
@@ -113,7 +112,7 @@ namespace StirlingLabs.Utilities
 
         // Constructor for internal use only.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal unsafe BigSpan(ref T ptr, nuint length)
+        internal BigSpan(ref T ptr, nuint length)
         {
             Debug.Assert(length >= 0);
 
@@ -129,7 +128,7 @@ namespace StirlingLabs.Utilities
         /// <exception cref="System.IndexOutOfRangeException">
         /// Thrown when index less than 0 or index greater than or equal to Length
         /// </exception>
-        public unsafe ref T this[nuint index]
+        public ref T this[nuint index]
         {
             [Intrinsic]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -138,7 +137,36 @@ namespace StirlingLabs.Utilities
                 if (index >= _length)
                     throw new IndexOutOfRangeException();
 
-                return ref Unsafe.Add(ref _pointer.Value, (nint)(uint)index /* force zero-extension */);
+                return ref Unsafe.Add(ref _pointer.Value, (nint)index);
+            }
+        }
+
+        /// <summary>
+        /// Returns a reference to specified element of the Span.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        /// <exception cref="System.IndexOutOfRangeException">
+        /// Thrown when index less than 0 or index greater than or equal to Length
+        /// </exception>
+        public ref T this[Index index]
+        {
+            get {
+                var actualIndex = (nuint)index.Value;
+                if (index.IsFromEnd) actualIndex = _length - actualIndex;
+                return ref this[actualIndex];
+            }
+        }
+
+        public BigSpan<T> this[Range range]
+        {
+            get {
+                var start = (nuint)range.Start.Value;
+                if (range.Start.IsFromEnd) start = _length - start;
+                var end = (nuint)range.End.Value;
+                if (range.Start.IsFromEnd) end = _length - end;
+                var length = end - start;
+                return new(ref this[start], length);
             }
         }
 
@@ -175,7 +203,7 @@ namespace StirlingLabs.Utilities
         /// Always thrown by this method.
         /// </exception>
         /// </summary>
-        [Obsolete("Equals() on Span will always throw an exception. Use == instead.")]
+        [Obsolete("Equals() on Span will always throw an exception. Use == instead.", true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override bool Equals(object? obj) =>
             throw new NotSupportedException();
@@ -186,7 +214,7 @@ namespace StirlingLabs.Utilities
         /// Always thrown by this method.
         /// </exception>
         /// </summary>
-        [Obsolete("GetHashCode() on Span will always throw an exception.")]
+        [Obsolete("GetHashCode() on Span will always throw an exception.", true)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override int GetHashCode() =>
             throw new NotSupportedException();
@@ -257,7 +285,7 @@ namespace StirlingLabs.Utilities
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public unsafe ref T GetPinnableReference()
+        public ref T GetPinnableReference()
         {
             // Ensure that the native code has just one forward branch that is predicted-not-taken.
             ref var ret = ref Unsafe.NullRef<T>();
@@ -291,7 +319,7 @@ namespace StirlingLabs.Utilities
         /// Fills the contents of this span with the given value.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe void Fill(T value)
+        public void Fill(T value)
         {
             if (Unsafe.SizeOf<T>() == 1)
             {
@@ -360,37 +388,39 @@ namespace StirlingLabs.Utilities
         /// this does *not* check to see if the *contents* are equal.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe bool operator ==(BigSpan<T> left, BigSpan<T> right) =>
+        public static bool operator ==(BigSpan<T> left, BigSpan<T> right) =>
             left._length == right._length &&
             Unsafe.AreSame(ref left._pointer.Value, ref right._pointer.Value);
 
         /// <summary>
         /// Defines an implicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlyBigSpan{T}"/>
         /// </summary>
-        public static unsafe implicit operator ReadOnlyBigSpan<T>(BigSpan<T> bigSpan) =>
+        public static implicit operator ReadOnlyBigSpan<T>(BigSpan<T> bigSpan) =>
             new(ref bigSpan._pointer.Value, bigSpan._length);
 
         /// <summary>
         /// Defines an implicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlySpan{T}"/>
         /// </summary>
-        public static unsafe explicit operator ReadOnlySpan<T>(BigSpan<T> bigSpan) =>
+        public static explicit operator ReadOnlySpan<T>(BigSpan<T> bigSpan) =>
             bigSpan._length <= int.MaxValue
                 ? MemoryMarshal.CreateReadOnlySpan(ref bigSpan._pointer.Value, (int)bigSpan._length)
-                : throw new NotSupportedException($"Not possible to create ReadOnlySpans longer than {int.MaxValue} (maximum 32-bit integer value)");
+                : throw new NotSupportedException(
+                    $"Not possible to create ReadOnlySpans longer than {int.MaxValue} (maximum 32-bit integer value)");
 
         /// <summary>
         /// Defines an implicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="Span{T}"/>
         /// </summary>
-        public static unsafe explicit operator Span<T>(BigSpan<T> bigSpan) =>
+        public static explicit operator Span<T>(BigSpan<T> bigSpan) =>
             bigSpan._length <= int.MaxValue
                 ? MemoryMarshal.CreateSpan(ref bigSpan._pointer.Value, (int)bigSpan._length)
-                : throw new NotSupportedException($"Not possible to create ReadOnlySpans longer than {int.MaxValue} (maximum 32-bit integer value)");
+                : throw new NotSupportedException(
+                    $"Not possible to create ReadOnlySpans longer than {int.MaxValue} (maximum 32-bit integer value)");
 
         /// <summary>
         /// For <see cref="BigSpan{T}"/>, returns a new instance of string that represents the characters pointed to by the span.
         /// Otherwise, returns a <see cref="string"/> with the name of the type and the number of elements.
         /// </summary>
-        public override unsafe string ToString()
+        public override string ToString()
         {
             if (typeof(T) == typeof(char) && _length <= int.MaxValue)
             {
@@ -407,7 +437,7 @@ namespace StirlingLabs.Utilities
         /// Thrown when the specified <paramref name="start"/> index is not in range (&lt;0 or &gt;Length).
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe BigSpan<T> Slice(nuint start)
+        public BigSpan<T> Slice(nuint start)
         {
             if ((uint)start > (uint)_length)
                 throw new ArgumentOutOfRangeException(nameof(start));
@@ -424,7 +454,7 @@ namespace StirlingLabs.Utilities
         /// Thrown when the specified <paramref name="start"/> or end index is not in range (&lt;0 or &gt;Length).
         /// </exception>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public unsafe BigSpan<T> Slice(nuint start, nuint length)
+        public BigSpan<T> Slice(nuint start, nuint length)
         {
             // Since start and length are both 32-bit, their sum can be computed across a 64-bit domain
             // without loss of fidelity. The cast to uint before the cast to ulong ensures that the
@@ -436,6 +466,42 @@ namespace StirlingLabs.Utilities
                 throw new ArgumentOutOfRangeException(nameof(length));
 
             return new(ref Unsafe.Add(ref _pointer.Value, (nint)(uint)start /* force zero-extension */), length);
+        }
+
+        /// <summary>
+        /// Forms a slice out of the given span, beginning at 'start', of given length
+        /// </summary>
+        /// <param name="start">The index at which to begin this slice.</param>
+        /// <param name="length">The desired length for the slice (exclusive).</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified <paramref name="start"/> or end index is not in range (&lt;0 or &gt;Length).
+        /// </exception>
+        public Span<T> Slice(nuint start, int length)
+        {
+            if (length < 0)
+                throw new ArgumentOutOfRangeException(nameof(length));
+            if (start + (nuint)length > _length)
+                throw new ArgumentOutOfRangeException(nameof(length));
+            return MemoryMarshal.CreateSpan(ref this[start], length);
+        }
+
+        /// <summary>
+        /// Forms a slice out of the given span, beginning at 'start', of given length
+        /// </summary>
+        /// <param name="start">The index at which to begin this slice.</param>
+        /// <param name="length">The desired length for the slice (exclusive).</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the specified <paramref name="start"/> or end index is not in range (&lt;0 or &gt;Length).
+        /// </exception>
+        public Span<T> Slice(int start, int length)
+        {
+            if (start < 0)
+                throw new ArgumentOutOfRangeException(nameof(start));
+            if (length < 0)
+                throw new ArgumentOutOfRangeException(nameof(length));
+            if ((nuint)start + (nuint)length > _length)
+                throw new ArgumentOutOfRangeException(nameof(length));
+            return MemoryMarshal.CreateSpan(ref this[(nuint)start], length);
         }
 
         /// <summary>
@@ -455,8 +521,10 @@ namespace StirlingLabs.Utilities
                 if (_length <= long.MaxValue)
                     destination = new T[(long)_length];
                 else
-                    throw new NotSupportedException($"Arrays larger than {long.MaxValue} (maximum signed 64-bit integer) are not possible at this time.");
-            } else
+                    throw new NotSupportedException(
+                        $"Arrays larger than {long.MaxValue} (maximum signed 64-bit integer) are not possible at this time.");
+            }
+            else
             {
                 if (_length <= int.MaxValue)
                     destination = new T[(int)_length];
@@ -474,13 +542,13 @@ namespace StirlingLabs.Utilities
         }
 
         public unsafe BigSpan<byte> AsBytes()
-            => new(ref Unsafe.As<T,byte>(ref _pointer.Value), _length * (nuint)sizeof(T));
+            => new(ref Unsafe.As<T, byte>(ref _pointer.Value), _length * (nuint)sizeof(T));
 
         public unsafe int CompareMemory(BigSpan<T> other)
         {
             var lengthComparison = _length.CompareTo(other._length);
             return lengthComparison == 0
-                ? Common.memcmp(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)sizeof(T))
+                ? UnmanagedMemory.C_CompareMemory(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)sizeof(T))
                 : lengthComparison;
         }
 
@@ -488,7 +556,7 @@ namespace StirlingLabs.Utilities
         {
             var lengthComparison = _length.CompareTo(other._length);
             return lengthComparison == 0
-                ? Common.memcmp(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)sizeof(T))
+                ? UnmanagedMemory.C_CompareMemory(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)sizeof(T))
                 : lengthComparison;
         }
     }

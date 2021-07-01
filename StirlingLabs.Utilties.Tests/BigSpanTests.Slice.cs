@@ -30,7 +30,7 @@ namespace StirlingLabs.Utilties.Tests
         public static void SliceIntInt()
         {
             int[] a = { 90, 91, 92, 93, 94, 95, 96, 97, 98, 99 };
-            var span = new BigSpan<int>(a).Slice(3, 5);
+            var span = new BigSpan<int>(a).Slice(3, (nuint)5);
             Assert.AreEqual((nuint)5, span.Length);
             Assert.True(Unsafe.AreSame(ref a[3], ref span.GetReference()));
         }
@@ -39,7 +39,7 @@ namespace StirlingLabs.Utilties.Tests
         public static void SliceIntIntUpToEnd()
         {
             int[] a = { 90, 91, 92, 93, 94, 95, 96, 97, 98, 99 };
-            var span = new BigSpan<int>(a).Slice(4, 6);
+            var span = new BigSpan<int>(a).Slice(4, (nuint)6);
             Assert.AreEqual((nuint)6, span.Length);
             Assert.True(Unsafe.AreSame(ref a[4], ref span.GetReference()));
         }
@@ -48,7 +48,7 @@ namespace StirlingLabs.Utilties.Tests
         public static void SliceIntIntPastEnd()
         {
             int[] a = { 90, 91, 92, 93, 94, 95, 96, 97, 98, 99 };
-            var span = new BigSpan<int>(a).Slice(a.GetLength(), 0);
+            var span = new BigSpan<int>(a).Slice(a.GetLength(), (nuint)0);
             Assert.AreEqual((nuint)0, span.Length);
             Assert.True(Unsafe.AreSame(ref a[^1], ref Unsafe.Subtract<int>(ref span.GetReference(), 1)));
         }

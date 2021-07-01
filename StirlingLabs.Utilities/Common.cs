@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 
 #nullable enable
@@ -11,7 +8,6 @@ namespace StirlingLabs.Utilities
     [PublicAPI]
     public static class Common
     {
-        private static readonly Assembly ThisAssembly = typeof(Common).Assembly;
         public static T OnDemand<T>(ref WeakReference<T>? cache, Func<T> factory)
             where T : class
         {
@@ -69,101 +65,6 @@ namespace StirlingLabs.Utilities
 
         public static nuint GetLength<T>(this T[] array)
             => BigSpanHelpers.Is64Bit ? (nuint)array.LongLength : (nuint)array.Length;
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe void FreeUnmanagedMemory(ref nint nativePointer)
-        {
-            free((void*)nativePointer);
-            nativePointer = default;
-        }
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe void FreeUnmanagedMemory(ref void* nativePointer)
-        {
-            free(nativePointer);
-            nativePointer = default;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe bool AllocateUnmanagedMemory(nuint size, out nint pointer)
-        {
-            try
-            {
-                pointer = (nint)malloc(size);
-            }
-            catch (OutOfMemoryException)
-            {
-                pointer = default;
-                return false;
-            }
-            return true;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe bool AllocateUnmanagedMemory(nuint size, out void* pointer)
-        {
-            try
-            {
-                pointer = malloc(size);
-            }
-            catch (OutOfMemoryException)
-            {
-                pointer = default;
-                return false;
-            }
-            return true;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe bool AllocateUnmanagedMemory<T>(nuint count, out T* pointer)
-            where T : unmanaged
-        {
-            var success = AllocateUnmanagedMemory(count * (nuint)sizeof(T), out void* pointerValue);
-            pointer = (T*)pointerValue;
-            return success;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe BigSpan<T> AllocateNativeMemoryBigSpan<T>(nuint count)
-            where T : unmanaged
-        {
-            if (AllocateUnmanagedMemory(count * (nuint)sizeof(T), out void* pointerValue))
-            {
-                return new(pointerValue, count);
-            }
-            throw new OutOfMemoryException();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static unsafe void FreeNativeMemoryBigSpan<T>(ref BigSpan<T> span)
-            where T : unmanaged
-        {
-            free(span.GetUnsafePointer());
-            span = default;
-        }
-
-        static Common()
-        {
-            NativeLibrary.SetDllImportResolver(ThisAssembly, (name, assembly, path) => {
-                if (name == "c" && assembly == ThisAssembly)
-                {
-                    return NativeLibrary.Load(
-                        RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
-                            ? "msvcrt"
-                            : "libc"
-                    );
-                }
-                return default;
-            });
-        }
-
-        [DllImport("c")]
-        internal static extern unsafe void* malloc(nuint size);
-
-        [DllImport("c")]
-        internal static extern unsafe void free(void* size);
-
-        [DllImport("c")]
-        internal static extern unsafe int memcmp(void* ptr1, void* ptr2, nuint num);
+        
     }
 }

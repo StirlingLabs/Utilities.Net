@@ -43,22 +43,17 @@ namespace StirlingLabs.Utilities
 
             if (pointerSizeLength >= 4)
             {
-                goto Write4To7;
+                //goto Write4To7; // fall through
             }
             else if (pointerSizeLength >= 2)
-            {
                 goto Write2To3;
-            }
             else if (pointerSizeLength > 0)
-            {
                 goto Write1;
-            }
             else
-            {
                 return; // nothing to write
-            }
 
-            Write4To7:
+            //Write4To7:
+
             Debug.Assert(pointerSizeLength >= 4);
 
             // Write first four and last three.
