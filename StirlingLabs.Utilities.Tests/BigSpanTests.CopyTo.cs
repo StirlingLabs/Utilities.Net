@@ -17,7 +17,7 @@ namespace StirlingLabs.Utilities.Tests
             int[] dst = { 99, 100, 101 };
 
             var srcSpan = new BigSpan<int>(src);
-            var success = srcSpan.TryCopyTo(dst);
+            var success = srcSpan.TryCopyTo((BigSpan<int>)dst);
             Assert.True(success);
             Assert.AreEqual(src, dst);
         }
@@ -29,7 +29,7 @@ namespace StirlingLabs.Utilities.Tests
             int[] dst = { 99 };
 
             var srcSpan = new BigSpan<int>(src);
-            var success = srcSpan.TryCopyTo(dst);
+            var success = srcSpan.TryCopyTo((BigSpan<int>)dst);
             Assert.True(success);
             Assert.AreEqual(src, dst);
         }
@@ -42,7 +42,7 @@ namespace StirlingLabs.Utilities.Tests
             var segment = new ArraySegment<int>(dst, 1, 3);
 
             var srcSpan = new BigSpan<int>(src);
-            var success = srcSpan.TryCopyTo(segment);
+            var success = srcSpan.TryCopyTo((BigSpan<int>)segment);
             Assert.True(success);
             Assert.AreEqual(src, segment);
         }
@@ -54,7 +54,7 @@ namespace StirlingLabs.Utilities.Tests
             int[] dst = { 99, 100, 101 };
 
             var srcSpan = new BigSpan<int>(src);
-            var success = srcSpan.TryCopyTo(dst);
+            var success = srcSpan.TryCopyTo((BigSpan<int>)dst);
             Assert.True(success);
             int[] expected = { 99, 100, 101 };
             Assert.AreEqual(expected, dst);
@@ -67,7 +67,7 @@ namespace StirlingLabs.Utilities.Tests
             int[] dst = { 99, 100, 101, 102 };
 
             var srcSpan = new BigSpan<int>(src);
-            var success = srcSpan.TryCopyTo(dst);
+            var success = srcSpan.TryCopyTo((BigSpan<int>)dst);
             Assert.True(success);
             int[] expected = { 1, 2, 3, 102 };
             Assert.AreEqual(expected, dst);
@@ -80,7 +80,7 @@ namespace StirlingLabs.Utilities.Tests
             int[] dst = { 99, 100 };
 
             var srcSpan = new BigSpan<int>(src);
-            var success = srcSpan.TryCopyTo(dst);
+            var success = srcSpan.TryCopyTo((BigSpan<int>)dst);
             Assert.False(success);
             int[] expected = { 99, 100 };
             Assert.AreEqual(expected, dst); // TryCopyTo() checks for sufficient space before doing any copying.
@@ -93,7 +93,7 @@ namespace StirlingLabs.Utilities.Tests
             int[] dst = { 99, 100 };
 
             var srcSpan = new BigSpan<int>(src);
-            BigSpanAssert<int>.Throws<ArgumentException>(srcSpan, _srcSpan => _srcSpan.CopyTo(dst));
+            BigSpanAssert<int>.Throws<ArgumentException>(srcSpan, _srcSpan => _srcSpan.CopyTo((BigSpan<int>)dst));
             int[] expected = { 99, 100 };
             Assert.AreEqual(expected, dst); // CopyTo() checks for sufficient space before doing any copying.
         }
@@ -128,7 +128,7 @@ namespace StirlingLabs.Utilities.Tests
         public static void CopyToArray()
         {
             int[] src = { 1, 2, 3 };
-            BigSpan<int> dst = new int[3] { 99, 100, 101 };
+            var dst = (BigSpan<int>)new int[3] { 99, 100, 101 };
 
             src.CopyTo(dst);
             Assert.AreEqual(src, dst.ToArray());
@@ -138,7 +138,7 @@ namespace StirlingLabs.Utilities.Tests
         public static void CopyToSingleArray()
         {
             int[] src = { 1 };
-            BigSpan<int> dst = new int[1] { 99 };
+            var dst = (BigSpan<int>)new int[1] { 99 };
 
             src.CopyTo(dst);
             Assert.AreEqual(src, dst.ToArray());
@@ -148,13 +148,13 @@ namespace StirlingLabs.Utilities.Tests
         public static void CopyToEmptyArray()
         {
             int[] src = { };
-            BigSpan<int> dst = new int[3] { 99, 100, 101 };
+            var dst = (BigSpan<int>)new int[3] { 99, 100, 101 };
 
             src.CopyTo(dst);
             int[] expected = { 99, 100, 101 };
             Assert.AreEqual(expected, dst.ToArray());
 
-            BigSpan<int> dstEmpty = new int[0] { };
+            var dstEmpty = (BigSpan<int>)new int[0] { };
 
             src.CopyTo(dstEmpty);
             int[] expectedEmpty = { };
@@ -165,7 +165,7 @@ namespace StirlingLabs.Utilities.Tests
         public static void CopyToLongerArray()
         {
             int[] src = { 1, 2, 3 };
-            BigSpan<int> dst = new int[4] { 99, 100, 101, 102 };
+            var dst = (BigSpan<int>)new int[4] { 99, 100, 101, 102 };
 
             src.CopyTo(dst);
             int[] expected = { 1, 2, 3, 102 };
@@ -175,10 +175,10 @@ namespace StirlingLabs.Utilities.Tests
         [Test]
         public static void CopyToShorterArray()
         {
-            int[] src = { 1, 2, 3 };
+            var src = (BigSpan<int>)new[] { 1, 2, 3 };
             var dst = new int[2] { 99, 100 };
 
-            BigSpanAssert<int>.Throws<ArgumentException>(src, _src => _src.CopyTo(dst));
+            BigSpanAssert<int>.Throws<ArgumentException>(src, _src => _src.CopyTo((BigSpan<int>)dst));
             int[] expected = { 99, 100 };
             Assert.AreEqual(expected, dst); // CopyTo() checks for sufficient space before doing any copying.
         }
@@ -187,7 +187,7 @@ namespace StirlingLabs.Utilities.Tests
         public static void CopyToCovariantArray()
         {
             var src = new[] { "Hello" };
-            BigSpan<object> dst = new object[] { "world" };
+            var dst = (BigSpan<object>)new object[] { "world" };
 
             src.CopyTo(dst);
             Assert.AreEqual("Hello", dst[0u]);
@@ -288,7 +288,7 @@ namespace StirlingLabs.Utilities.Tests
                     spanFirst.FillWithNonZeroRandomData();
 
                     // take a sample and ensure all of the sampled bytes are non-zero
-                    for (nuint i = 0; i < Math.Min(bufferSize - 1,63); ++i)
+                    for (nuint i = 0; i < Math.Min(bufferSize - 1, 63); ++i)
                         Assert.NotZero(spanFirst[i]);
                     Assert.NotZero(spanFirst[^1]);
 
@@ -308,7 +308,8 @@ namespace StirlingLabs.Utilities.Tests
 
         [Theory]
         [Explicit]
-        public static void CopyToLargeSizeTest([Values(256uL + int.MaxValue, 256uL + uint.MaxValue)] ulong longBufferSize)
+        public static void CopyToLargeSizeTest([Values(256uL + int.MaxValue, 256uL + uint.MaxValue)]
+            ulong longBufferSize)
         {
             var bufferSize = (nuint)longBufferSize;
 
@@ -355,9 +356,9 @@ namespace StirlingLabs.Utilities.Tests
 
             var rng = new Random();
             var inputArray = new byte[MaxLength];
-            BigSpan<byte> inputSpan = inputArray;
-            BigSpan<byte> outputSpan = new byte[MaxLength];
-            BigSpan<byte> allZerosSpan = new byte[MaxLength];
+            var inputSpan = (BigSpan<byte>)inputArray;
+            BigSpan<byte> outputSpan = (BigSpan<byte>)new byte[MaxLength];
+            BigSpan<byte> allZerosSpan = (BigSpan<byte>)new byte[MaxLength];
 
             // Test all inputs from size 0 .. MaxLength (inclusive) to make sure we don't have
             // gaps in our Memmove logic.

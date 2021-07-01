@@ -12,7 +12,6 @@
       </PackageReference>
       <PackageReference Include="InlineIL.Fody" Version="1.7.0" />
       <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
-      <PackageReference Include="Portable.BouncyCastle" Version="1.8.10" />
     </ItemGroup>
 
     <ItemGroup>

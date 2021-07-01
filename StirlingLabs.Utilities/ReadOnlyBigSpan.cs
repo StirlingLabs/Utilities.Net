@@ -227,12 +227,12 @@ namespace StirlingLabs.Utilities
         /// Defines an implicit conversion of an array to a <see cref="ReadOnlyBigSpan{T}"/>
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator ReadOnlyBigSpan<T>(T[]? array) => new(array);
+        public static explicit operator ReadOnlyBigSpan<T>(T[]? array) => new(array);
 
         /// <summary>
         /// Defines an implicit conversion of a <see cref="ArraySegment{T}"/> to a <see cref="ReadOnlyBigSpan{T}"/>
         /// </summary>
-        public static implicit operator ReadOnlyBigSpan<T>(ArraySegment<T> segment)
+        public static explicit operator ReadOnlyBigSpan<T>(ArraySegment<T> segment)
             => new(segment.Array, (nuint)segment.Offset, (nuint)segment.Count);
 
         /// <summary>
@@ -523,7 +523,7 @@ namespace StirlingLabs.Utilities
                             $"Arrays larger than {long.MaxValue} (maximum signed 64-bit integer) are not possible at this time.");
                 }
             }
-            CopyTo(destination);
+            CopyTo((BigSpan<T>)destination);
             return destination;
         }
 

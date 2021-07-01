@@ -245,16 +245,16 @@ namespace StirlingLabs.Utilities
             throw new NotSupportedException();
 
         /// <summary>
-        /// Defines an implicit conversion of an array to a <see cref="BigSpan{T}"/>
+        /// Defines an explicit conversion of an array to a <see cref="BigSpan{T}"/>
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator BigSpan<T>(T[]? array) => new(array);
+        public static explicit operator BigSpan<T>(T[]? array) => new(array);
 
         /// <summary>
-        /// Defines an implicit conversion of a <see cref="ArraySegment{T}"/> to a <see cref="BigSpan{T}"/>
+        /// Defines an explicit conversion of a <see cref="ArraySegment{T}"/> to a <see cref="BigSpan{T}"/>
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator BigSpan<T>(ArraySegment<T> segment) =>
+        public static explicit operator BigSpan<T>(ArraySegment<T> segment) =>
             new(segment.Array, (nuint)segment.Offset, (nuint)segment.Count);
 
         /// <summary>
@@ -472,7 +472,7 @@ namespace StirlingLabs.Utilities
             new(ref bigSpan._pointer.Value, bigSpan._length);
 
         /// <summary>
-        /// Defines an implicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlySpan{T}"/>
+        /// Defines an explicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlySpan{T}"/>
         /// </summary>
         public static explicit operator ReadOnlySpan<T>(BigSpan<T> bigSpan) =>
             bigSpan._length <= int.MaxValue
@@ -481,7 +481,7 @@ namespace StirlingLabs.Utilities
                     $"Not possible to create ReadOnlySpans longer than {int.MaxValue} (maximum 32-bit integer value)");
 
         /// <summary>
-        /// Defines an implicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="Span{T}"/>
+        /// Defines an explicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="Span{T}"/>
         /// </summary>
         public static explicit operator Span<T>(BigSpan<T> bigSpan) =>
             bigSpan._length <= int.MaxValue
@@ -610,7 +610,7 @@ namespace StirlingLabs.Utilities
                             $"Arrays larger than {long.MaxValue} (maximum signed 64-bit integer) are not possible at this time.");
                 }
             }
-            CopyTo(destination);
+            CopyTo((BigSpan<T>)destination);
             return destination;
         }
 

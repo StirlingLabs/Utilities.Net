@@ -7,10 +7,8 @@ using static StirlingLabs.Utilities.Common;
 
 namespace StirlingLabs.Utilities.Tests
 {
-
     public static partial class BigSpanTests
     {
-
         [Test]
         public static void GetPinnableReferenceArray()
         {
@@ -24,7 +22,7 @@ namespace StirlingLabs.Utilities.Tests
         public static unsafe void UsingSpanInFixed()
         {
             byte[] a = { 91, 92, 93, 94, 95 };
-            BigSpan<byte> span = a;
+            var span = (BigSpan<byte>)a;
             fixed (byte* ptr = span)
             {
                 for (nuint i = 0; i < span.Length; i++)
@@ -45,7 +43,7 @@ namespace StirlingLabs.Utilities.Tests
             }
 
             // ReSharper disable HeuristicUnreachableCode
-            BigSpan<int> spanFromEmptyArray = Array.Empty<int>();
+            var spanFromEmptyArray = (BigSpan<int>)Array.Empty<int>();
             fixed (int* ptr = spanFromEmptyArray)
             {
                 Assert.True(ptr == null);
@@ -82,7 +80,7 @@ namespace StirlingLabs.Utilities.Tests
             ref var pinnableReference = ref span.GetPinnableReference();
             Assert.True(Unsafe.AreSame(ref Unsafe.AsRef<int>(null), ref pinnableReference));
 
-            span = Array.Empty<int>();
+            span = (BigSpan<int>)Array.Empty<int>();
             pinnableReference = ref span.GetPinnableReference();
             Assert.True(Unsafe.AreSame(ref Unsafe.AsRef<int>(null), ref pinnableReference));
         }
