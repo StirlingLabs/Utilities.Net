@@ -1,6 +1,5 @@
 using System;
 using System.Buffers.Binary;
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics;
@@ -26,7 +25,7 @@ namespace StirlingLabs.Utilities
             0x8000000000008080, 0x0000000080000001, 0x8000000080008008
         };
 
-        private struct Context
+        internal struct Context
         {
             public State st;
 
@@ -34,7 +33,7 @@ namespace StirlingLabs.Utilities
         }
 
         [StructLayout(LayoutKind.Sequential, Size = 25 * 8)]
-        private struct State
+        internal struct State
         {
             public Span<ulong> q
             {
@@ -65,7 +64,7 @@ namespace StirlingLabs.Utilities
         private static ref byte b(ref this State st, int i)
             => ref st.p<byte>(i);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static unsafe void KeccakF(ref this Context ctx)
         {
             // variables
@@ -144,7 +143,7 @@ namespace StirlingLabs.Utilities
             FlipEndianIfNeeded(st);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void KeccakFRhoPi(ref State st)
         {
             var t = st.q(1);
@@ -309,7 +308,7 @@ namespace StirlingLabs.Utilities
             st.q(i + 4) ^= ~bc0 & bc1;
         }
 
-        private static void FlipEndianIfNeeded(State st)
+        internal static void FlipEndianIfNeeded(State st)
         {
             if (BitConverter.IsLittleEndian)
                 return;
@@ -320,7 +319,7 @@ namespace StirlingLabs.Utilities
 
         // Initialize the context for SHA3
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int Init(ref this Context c, int mdLen)
+        internal static int Init(ref this Context c, int mdLen)
         {
             int i;
 
@@ -336,12 +335,12 @@ namespace StirlingLabs.Utilities
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static int InitShake(ref this Context c, int bits)
+        internal static int InitShake(ref this Context c, int bits)
             => c.Init(bits / 8);
 
         // update state with more data
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        private static int Update(ref this Context c, ReadOnlySpan<byte> data)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static int Update(ref this Context c, ReadOnlySpan<byte> data)
         {
             int i;
             var len = data.Length;
@@ -364,8 +363,8 @@ namespace StirlingLabs.Utilities
         }
 
         // update state with more data
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        private static int Update(ref this Context c, ReadOnlyBigSpan<byte> data)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static int Update(ref this Context c, ReadOnlyBigSpan<byte> data)
         {
             nuint i;
             var len = data.Length;
@@ -388,7 +387,7 @@ namespace StirlingLabs.Utilities
         }
 
         // finalize and output a hash
-        private static int Final(ref this Context c, Span<byte> md)
+        internal static int Final(ref this Context c, Span<byte> md)
         {
             int i;
 
@@ -407,8 +406,8 @@ namespace StirlingLabs.Utilities
         }
 
         // SHAKE128 and SHAKE256 extensible-output functionality
-        [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-        private static void ShakeExtensibleOutputFormatMode(ref this Context c)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void ShakeExtensibleOutputFormatMode(ref this Context c)
         {
             ref var st = ref c.st;
 
@@ -419,7 +418,7 @@ namespace StirlingLabs.Utilities
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void ShakeOut(ref this Context c, Span<byte> output)
+        internal static void ShakeOut(ref this Context c, Span<byte> output)
         {
             int i;
             var len = output.Length;
@@ -442,7 +441,7 @@ namespace StirlingLabs.Utilities
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void ShakeOut(ref this Context c, BigSpan<byte> output)
+        internal static void ShakeOut(ref this Context c, BigSpan<byte> output)
         {
             nuint i;
             var len = output.Length;
@@ -464,7 +463,6 @@ namespace StirlingLabs.Utilities
             c.pt = j;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public static void Hash(ReadOnlySpan<byte> input, Span<byte> digest)
         {
             Context sha3 = default;
@@ -502,7 +500,6 @@ namespace StirlingLabs.Utilities
             return digest;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public static void Hash(ReadOnlyBigSpan<byte> input, Span<byte> digest)
         {
             Context sha3 = default;
@@ -540,7 +537,6 @@ namespace StirlingLabs.Utilities
             return digest;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
         public static void Shake(int bits, ReadOnlySpan<byte> input, Span<byte> digest)
         {
             Context sha3 = default;
@@ -549,95 +545,6 @@ namespace StirlingLabs.Utilities
             sha3.Update(input);
             sha3.ShakeExtensibleOutputFormatMode();
             sha3.ShakeOut(digest);
-        }
-
-        public sealed class ShakeStream : Stream
-        {
-            private Context _sha3;
-
-            private bool _finishedInput;
-
-            public ShakeStream(int bits)
-                => _sha3.Init(bits / 8);
-
-            [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-            public void FinishedInput()
-            {
-                _sha3.ShakeExtensibleOutputFormatMode();
-                _finishedInput = true;
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-            public override int Read(Span<byte> buffer)
-            {
-                if (!_finishedInput)
-                    throw new InvalidOperationException("FinishedInput should be invoked first.");
-
-                _sha3.ShakeOut(buffer);
-                return buffer.Length;
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-            public nuint Read(BigSpan<byte> buffer)
-            {
-                if (!_finishedInput)
-                    throw new InvalidOperationException("FinishedInput should be invoked first.");
-
-                _sha3.ShakeOut(buffer);
-                return buffer.Length;
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public override int Read(byte[] buffer, int offset, int count)
-                => checked((int)(uint)Read(new(buffer, checked((uint)offset), checked((uint)count))));
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public override int ReadByte()
-            {
-                byte x = 0;
-                Read(MemoryMarshal.CreateSpan(ref x, 1));
-                return x;
-            }
-
-            public override long Seek(long offset, SeekOrigin origin)
-                => throw new NotSupportedException();
-
-            public override void SetLength(long value)
-                => throw new NotSupportedException();
-
-            [MethodImpl(MethodImplOptions.AggressiveOptimization)]
-            public override void Write(ReadOnlySpan<byte> buffer)
-            {
-                if (_finishedInput)
-                    throw new InvalidOperationException("FinishedInput was already invoked.");
-
-                _sha3.Update(buffer);
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public override void Write(byte[] buffer, int offset, int count)
-                => Write(new ReadOnlySpan<byte>(buffer, offset, count));
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public override void WriteByte(byte x)
-                => Write(MemoryMarshal.CreateReadOnlySpan(ref x, 1));
-
-            public override bool CanRead => _finishedInput;
-
-            public override bool CanWrite => !_finishedInput;
-
-            public override bool CanSeek => false;
-
-            public override long Length => throw new NotSupportedException();
-
-            public override long Position
-            {
-                get => throw new NotSupportedException();
-                set => throw new NotSupportedException();
-            }
-
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public override void Flush() { }
         }
     }
 }
