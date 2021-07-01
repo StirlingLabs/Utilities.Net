@@ -6,18 +6,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.ilproj" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Fody" Version="6.5.1">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="InlineIL.Fody" Version="1.7.0" />
-      <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\StirlingLabs.Utilities.BigSpans\StirlingLabs.Utilities.BigSpans.csproj" />
-      <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.ilproj" />
-      <ProjectReference Include="..\StirlingLabs.Utilities.Security.Sha3\StirlingLabs.Utilities.Security.Sha3.csproj" />
+        <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>

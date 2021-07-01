@@ -9,6 +9,20 @@ namespace StirlingLabs.Utilities
 {
     public static class BigSpanExtensions
     {
+        /// <summary>
+        /// Returns a reference to the 0th element of the BigSpan. If the BigSpan is empty, returns a reference to the location where the 0th element
+        /// would have been stored. Such a reference may or may not be null. It can be used for pinning but must never be dereferenced.
+        /// </summary>
+        public static ref T GetReference<T>(in this BigSpan<T> span) where T : unmanaged
+            => ref span._pointer.Value;
+
+        /// <summary>
+        /// Returns a reference to the 0th element of the ReadOnlyBigSpan. If the ReadOnlyBigSpan is empty, returns a reference to the location where the 0th element
+        /// would have been stored. Such a reference may or may not be null. It can be used for pinning but must never be dereferenced.
+        /// </summary>
+        public static ref T GetReference<T>(in this ReadOnlyBigSpan<T> span) where T : unmanaged
+            => ref span._pointer.Value;
+        
         public static unsafe void CopyTo<T>(this T[] srcArray, BigSpan<T> dst)
             => (new BigSpan<T>(srcArray,false)).CopyTo(dst);
 

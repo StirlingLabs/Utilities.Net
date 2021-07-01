@@ -8,6 +8,9 @@ namespace StirlingLabs.Utilities
     [PublicAPI]
     public static class Common
     {
+        
+        public static readonly unsafe bool Is64Bit = sizeof(nint) == 8;
+
         public static T OnDemand<T>(ref WeakReference<T>? cache, Func<T> factory)
             where T : class
         {
@@ -48,23 +51,8 @@ namespace StirlingLabs.Utilities
             // This space intentionally left blank.
         }
 
-
-        /// <summary>
-        /// Returns a reference to the 0th element of the BigSpan. If the BigSpan is empty, returns a reference to the location where the 0th element
-        /// would have been stored. Such a reference may or may not be null. It can be used for pinning but must never be dereferenced.
-        /// </summary>
-        public static ref T GetReference<T>(in this BigSpan<T> span) where T : unmanaged
-            => ref span._pointer.Value;
-
-        /// <summary>
-        /// Returns a reference to the 0th element of the ReadOnlyBigSpan. If the ReadOnlyBigSpan is empty, returns a reference to the location where the 0th element
-        /// would have been stored. Such a reference may or may not be null. It can be used for pinning but must never be dereferenced.
-        /// </summary>
-        public static ref T GetReference<T>(in this ReadOnlyBigSpan<T> span) where T : unmanaged
-            => ref span._pointer.Value;
-
         public static nuint GetLength<T>(this T[] array)
-            => BigSpanHelpers.Is64Bit ? (nuint)array.LongLength : (nuint)array.Length;
+            => Is64Bit ? (nuint)array.LongLength : (nuint)array.Length;
         
     }
 }
