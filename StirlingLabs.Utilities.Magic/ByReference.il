@@ -20,7 +20,7 @@
     // string('Types with embedded references are not supported in this version of your compiler.')
     // bool(true)
 
-  .field private initonly !0* _value
+  .field private initonly object _value
   //.field private initonly valuetype [System.Runtime]System.ByReference`1<!0> _value
   //.field private initonly !0& _value // ByRef field not supported yet
 
@@ -35,7 +35,8 @@
         ldarg.0
         ldarg.1
         //conv.i
-        stfld !0* valuetype StirlingLabs.Utilities.ByReference`1<!0>::_value
+        stfld object StirlingLabs.Utilities.ByReference`1::_value
+        //stfld !0* valuetype StirlingLabs.Utilities.ByReference`1<!0>::_value
         ret
   }
 
@@ -46,7 +47,8 @@
       = (01 00 00 00 )
     .maxstack 8
         ldarg.0
-        ldfld !0* valuetype StirlingLabs.Utilities.ByReference`1<!0>::_value
+        ldfld object StirlingLabs.Utilities.ByReference`1::_value
+        //ldfld !0* valuetype StirlingLabs.Utilities.ByReference`1<!0>::_value
         ret
   }
 
