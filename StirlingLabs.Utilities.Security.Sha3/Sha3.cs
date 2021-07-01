@@ -546,5 +546,15 @@ namespace StirlingLabs.Utilities
             sha3.ShakeExtensibleOutputFormatMode();
             sha3.ShakeOut(digest);
         }
+
+        public static void Shake(int bits, ReadOnlyBigSpan<byte> input, Span<byte> digest)
+        {
+            Context sha3 = default;
+
+            sha3.Init(bits / 8);
+            sha3.Update(input);
+            sha3.ShakeExtensibleOutputFormatMode();
+            sha3.ShakeOut(digest);
+        }
     }
 }
