@@ -196,6 +196,8 @@ namespace StirlingLabs.Utilties.Tests
         [Test]
         public static void FillWithRandomDataCoverage()
         {
+            var k = new Span<byte>();
+            
             nuint bufferSize = 256;
 
             var allocated = false;

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Yaml
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilties.Tests", "StirlingLabs.Utilties.Tests\StirlingLabs.Utilties.Tests.csproj", "{808B6CDD-C1A7-4CD1-9DC3-5DF183037F50}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Magic", "StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.ilproj", "{11947B25-5E60-4574-9F75-1734B77F9DF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,5 +31,9 @@ Global
 		{808B6CDD-C1A7-4CD1-9DC3-5DF183037F50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{808B6CDD-C1A7-4CD1-9DC3-5DF183037F50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{808B6CDD-C1A7-4CD1-9DC3-5DF183037F50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11947B25-5E60-4574-9F75-1734B77F9DF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11947B25-5E60-4574-9F75-1734B77F9DF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11947B25-5E60-4574-9F75-1734B77F9DF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11947B25-5E60-4574-9F75-1734B77F9DF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

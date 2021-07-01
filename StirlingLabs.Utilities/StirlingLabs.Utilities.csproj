@@ -9,4 +9,8 @@
       <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.ilproj" />
+    </ItemGroup>
+
 </Project>

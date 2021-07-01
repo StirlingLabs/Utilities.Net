@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.IL">
+
+    <PropertyGroup>
+        <Configuration>Release</Configuration>
+        <TargetFramework>net5.0</TargetFramework>
+        <MicrosoftNetCoreIlasmPackageVersion>5.0.0</MicrosoftNetCoreIlasmPackageVersion>
+        <DebugOptimization>IMPL</DebugOptimization>
+        <DebugOptimization Condition="'$(Configuration)' == 'Release'">OPT</DebugOptimization>
+        <DocumentationFile>$(MSBuildThisFileDirectory)System.Runtime.CompilerServices.Unsafe.xml</DocumentationFile>
+        <IlasmFlags>$(IlasmFlags) -DEBUG=$(DebugOptimization)</IlasmFlags>
+        <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+        <_HasReferenceToSystemRuntime>true</_HasReferenceToSystemRuntime>
+    </PropertyGroup>
+</Project>
