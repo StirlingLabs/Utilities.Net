@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using StirlingLabs.Utilities;
+using InlineIL;
+using static InlineIL.IL;
+using static InlineIL.IL.Emit;
 
 #pragma warning disable 0809 //warning CS0809: Obsolete member 'Span<T>.Equals(object)' overrides non-obsolete member 'object.Equals(object)'
 
@@ -17,7 +19,7 @@ namespace StirlingLabs.Utilities
     /// </summary>
     [NonVersionable]
     [DebuggerDisplay("{ToString(),raw}")]
-    public readonly ref struct ReadOnlyBigSpan<T> where T : unmanaged
+    public readonly ref struct ReadOnlyBigSpan<T>
     {
         /// <summary>A byref or a native ptr.</summary>
         internal readonly ByReference<T> _pointer;
@@ -65,6 +67,7 @@ namespace StirlingLabs.Utilities
                 this = default;
                 return; // returns default
             }
+            
             // See comment in Span<T>.Slice for how this works.
             if (start + length > (nuint)array.Length)
                 throw new ArgumentOutOfRangeException(nameof(length));
@@ -93,6 +96,7 @@ namespace StirlingLabs.Utilities
         {
             if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
                 throw new NotSupportedException("Invalid type with pointers.");
+            
             if (length < 0)
                 throw new ArgumentOutOfRangeException(nameof(length));
 
@@ -322,11 +326,35 @@ namespace StirlingLabs.Utilities
             // check, and one for the result of TryCopyTo. Since these checks are equivalent,
             // we can optimize by performing the check once ourselves then calling Memmove directly.
 
-            if ((uint)_length > (uint)destination.Length)
-            {
+            var sizeOfT = (nuint)Unsafe.SizeOf<T>();
+            var srcLen = _length * sizeOfT;
+            var dstLen = destination._length * sizeOfT;
+            if (srcLen > dstLen)
                 throw new ArgumentException("Too short.", nameof(destination));
-            }
-            BigSpanHelpers.Copy(destination.GetUnsafePointer(), GetUnsafePointer(), _length * (nuint)sizeof(T));
+
+            var length = srcLen < dstLen ? srcLen : dstLen;
+            if (length == default) return;
+
+            DeclareLocals(
+                new LocalVar("rDst", TypeRef.Type<T>().MakeByRefType())
+                    .Pinned(),
+                new LocalVar("rSrc", TypeRef.Type<T>().MakeByRefType())
+                    .Pinned()
+            );
+
+            Push(ref destination.GetPinnableReference()!);
+            Stloc("rDst");
+            Push(ref Unsafe.AsRef(GetPinnableReference())!);
+            Stloc("rSrc");
+            Ldloc("rDst");
+            Pop(out var pDst);
+            Ldloc("rSrc");
+            Pop(out var pSrc);
+            if (pDst == default) throw new ArgumentNullException(nameof(destination));
+            if (pSrc == default) throw new NullReferenceException();
+            if (length <= 0)
+                return;
+            BigSpanHelpers.Copy(pDst, pSrc, length);
         }
 
         /// <summary>
@@ -339,13 +367,36 @@ namespace StirlingLabs.Utilities
         /// <param name="destination">The span to copy items into.</param>
         public unsafe bool TryCopyTo(BigSpan<T> destination)
         {
-            bool retVal = false;
-            if ((uint)_length <= (uint)destination.Length)
-            {
-                BigSpanHelpers.Copy(destination.GetUnsafePointer(), GetUnsafePointer(), _length * (nuint)sizeof(T));
-                retVal = true;
-            }
-            return retVal;
+            var sizeOfT = (nuint)Unsafe.SizeOf<T>();
+            var srcLen = _length * sizeOfT;
+            var dstLen = destination._length * sizeOfT;
+            if (srcLen > dstLen)
+                return false;
+
+            var length = srcLen < dstLen ? srcLen : dstLen;
+            if (length == default) return true;
+
+            DeclareLocals(
+                new LocalVar("rDst", TypeRef.Type<T>().MakeByRefType())
+                    .Pinned(),
+                new LocalVar("rSrc", TypeRef.Type<T>().MakeByRefType())
+                    .Pinned()
+            );
+
+            Push(ref destination.GetPinnableReference()!);
+            Stloc("rDst");
+            Push(ref Unsafe.AsRef(GetPinnableReference())!);
+            Stloc("rSrc");
+            Ldloc("rDst");
+            Pop(out var pDst);
+            Ldloc("rSrc");
+            Pop(out var pSrc);
+            if (pDst == default) throw new ArgumentNullException(nameof(destination));
+            if (pSrc == default) throw new NullReferenceException();
+            if (length <= 0)
+                return true;
+            BigSpanHelpers.Copy(pDst, pSrc, length);
+            return true;
         }
 
         /// <summary>
@@ -477,13 +528,13 @@ namespace StirlingLabs.Utilities
         }
 
         public unsafe ReadOnlyBigSpan<byte> AsBytes()
-            => new(ref Unsafe.As<T, byte>(ref _pointer.Value), _length * (nuint)sizeof(T));
+            => new(ref Unsafe.As<T, byte>(ref _pointer.Value), _length * (nuint)Unsafe.SizeOf<T>());
 
         public unsafe int CompareMemory(BigSpan<T> other)
         {
             var lengthComparison = _length.CompareTo(other._length);
             return lengthComparison == 0
-                ? UnmanagedMemory.C_CompareMemory(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)sizeof(T))
+                ? UnmanagedMemory.C_CompareMemory(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)Unsafe.SizeOf<T>())
                 : lengthComparison;
         }
 
@@ -491,7 +542,25 @@ namespace StirlingLabs.Utilities
         {
             var lengthComparison = _length.CompareTo(other._length);
             return lengthComparison == 0
-                ? UnmanagedMemory.C_CompareMemory(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)sizeof(T))
+                ? UnmanagedMemory.C_CompareMemory(GetUnsafePointer(), other.GetUnsafePointer(), _length * (nuint)Unsafe.SizeOf<T>())
+                : lengthComparison;
+        }
+
+        public unsafe int CompareMemory(Span<T> other)
+        {
+            var lengthComparison = _length.CompareTo(other.Length);
+            var pOther = Unsafe.AsPointer(ref other.GetPinnableReference());
+            return lengthComparison == 0
+                ? UnmanagedMemory.C_CompareMemory(GetUnsafePointer(), pOther, _length * (nuint)Unsafe.SizeOf<T>())
+                : lengthComparison;
+        }
+
+        public unsafe int CompareMemory(ReadOnlySpan<T> other)
+        {
+            var lengthComparison = _length.CompareTo(other.Length);
+            var pOther = Unsafe.AsPointer(ref Unsafe.AsRef(other.GetPinnableReference()));
+            return lengthComparison == 0
+                ? UnmanagedMemory.C_CompareMemory(GetUnsafePointer(), pOther, _length * (nuint)Unsafe.SizeOf<T>())
                 : lengthComparison;
         }
     }

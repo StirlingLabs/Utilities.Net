@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using NUnit.Framework;
 using StirlingLabs.Utilities;
 
-namespace StirlingLabs.Utilties.Tests
+namespace StirlingLabs.Utilities.Tests
 {
     public partial class BigSpanTests
     {

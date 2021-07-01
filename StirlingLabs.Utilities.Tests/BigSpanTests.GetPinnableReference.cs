@@ -5,7 +5,7 @@ using NUnit.Framework;
 using StirlingLabs.Utilities;
 using static StirlingLabs.Utilities.Common;
 
-namespace StirlingLabs.Utilties.Tests
+namespace StirlingLabs.Utilities.Tests
 {
 
     public static partial class BigSpanTests

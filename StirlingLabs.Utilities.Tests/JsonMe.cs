@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace StirlingLabs.Utilties.Tests
+namespace StirlingLabs.Utilities.Tests
 {
     public partial class JsonMe
     {

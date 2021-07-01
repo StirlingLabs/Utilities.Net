@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using StirlingLabs.Utilities;
 
-namespace StirlingLabs.Utilties.Tests
+namespace StirlingLabs.Utilities.Tests
 {
     public partial class JsonMe : IEquatable<JsonMe>
     {

@@ -12,7 +12,7 @@ using StirlingLabs.Utilities.Yaml;
 using YamlDotNet.RepresentationModel;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
-namespace StirlingLabs.Utilties.Tests
+namespace StirlingLabs.Utilities.Tests
 {
     public class YamlTests
     {

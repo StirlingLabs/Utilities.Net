@@ -20,8 +20,9 @@
     // string('Types with embedded references are not supported in this version of your compiler.')
     // bool(true)
 
-  //.field private initonly !0& _value // ByRef field not supported yet
   .field private initonly !0* _value
+  //.field private initonly valuetype [System.Runtime]System.ByReference`1<!0> _value
+  //.field private initonly !0& _value // ByRef field not supported yet
 
   .method public hidebysig specialname rtspecialname instance void
     .ctor(

@@ -1,4 +1,4 @@
-namespace StirlingLabs.Utilties.Tests
+namespace StirlingLabs.Utilities.Tests
 {
     public class ReadOnlyBigSpanTests
     {

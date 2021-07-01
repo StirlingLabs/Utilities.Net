@@ -6,7 +6,7 @@ using NUnit.Framework;
 using StirlingLabs.Utilities;
 using static StirlingLabs.Utilities.Common;
 
-namespace StirlingLabs.Utilties.Tests
+namespace StirlingLabs.Utilities.Tests
 {
     public static partial class BigSpanTests
     {
@@ -93,7 +93,7 @@ namespace StirlingLabs.Utilties.Tests
             int[] dst = { 99, 100 };
 
             var srcSpan = new BigSpan<int>(src);
-            BigSpanAssertHelpers.Throws<ArgumentException, int>(srcSpan, _srcSpan => _srcSpan.CopyTo(dst));
+            BigSpanAssert<int>.Throws<ArgumentException>(srcSpan, _srcSpan => _srcSpan.CopyTo(dst));
             int[] expected = { 99, 100 };
             Assert.AreEqual(expected, dst); // CopyTo() checks for sufficient space before doing any copying.
         }
@@ -128,7 +128,7 @@ namespace StirlingLabs.Utilties.Tests
         public static void CopyToArray()
         {
             int[] src = { 1, 2, 3 };
-            Span<int> dst = new int[3] { 99, 100, 101 };
+            BigSpan<int> dst = new int[3] { 99, 100, 101 };
 
             src.CopyTo(dst);
             Assert.AreEqual(src, dst.ToArray());
@@ -138,7 +138,7 @@ namespace StirlingLabs.Utilties.Tests
         public static void CopyToSingleArray()
         {
             int[] src = { 1 };
-            Span<int> dst = new int[1] { 99 };
+            BigSpan<int> dst = new int[1] { 99 };
 
             src.CopyTo(dst);
             Assert.AreEqual(src, dst.ToArray());
@@ -148,13 +148,13 @@ namespace StirlingLabs.Utilties.Tests
         public static void CopyToEmptyArray()
         {
             int[] src = { };
-            Span<int> dst = new int[3] { 99, 100, 101 };
+            BigSpan<int> dst = new int[3] { 99, 100, 101 };
 
             src.CopyTo(dst);
             int[] expected = { 99, 100, 101 };
             Assert.AreEqual(expected, dst.ToArray());
 
-            Span<int> dstEmpty = new int[0] { };
+            BigSpan<int> dstEmpty = new int[0] { };
 
             src.CopyTo(dstEmpty);
             int[] expectedEmpty = { };
@@ -165,7 +165,7 @@ namespace StirlingLabs.Utilties.Tests
         public static void CopyToLongerArray()
         {
             int[] src = { 1, 2, 3 };
-            Span<int> dst = new int[4] { 99, 100, 101, 102 };
+            BigSpan<int> dst = new int[4] { 99, 100, 101, 102 };
 
             src.CopyTo(dst);
             int[] expected = { 1, 2, 3, 102 };
@@ -178,7 +178,7 @@ namespace StirlingLabs.Utilties.Tests
             int[] src = { 1, 2, 3 };
             var dst = new int[2] { 99, 100 };
 
-            BigSpanAssertHelpers.Throws<ArgumentException, int>(src, _src => _src.CopyTo(dst));
+            BigSpanAssert<int>.Throws<ArgumentException>(src, _src => _src.CopyTo(dst));
             int[] expected = { 99, 100 };
             Assert.AreEqual(expected, dst); // CopyTo() checks for sufficient space before doing any copying.
         }
@@ -187,17 +187,15 @@ namespace StirlingLabs.Utilties.Tests
         public static void CopyToCovariantArray()
         {
             var src = new[] { "Hello" };
-            Span<object> dst = new object[] { "world" };
+            BigSpan<object> dst = new object[] { "world" };
 
             src.CopyTo(dst);
-            Assert.AreEqual("Hello", dst[0]);
+            Assert.AreEqual("Hello", dst[0u]);
         }
 
         [Test]
         public static void FillWithRandomDataCoverage()
         {
-            var k = new Span<byte>();
-            
             nuint bufferSize = 256;
 
             var allocated = false;
@@ -357,13 +355,13 @@ namespace StirlingLabs.Utilties.Tests
 
             var rng = new Random();
             var inputArray = new byte[MaxLength];
-            Span<byte> inputSpan = inputArray;
-            Span<byte> outputSpan = new byte[MaxLength];
-            Span<byte> allZerosSpan = new byte[MaxLength];
+            BigSpan<byte> inputSpan = inputArray;
+            BigSpan<byte> outputSpan = new byte[MaxLength];
+            BigSpan<byte> allZerosSpan = new byte[MaxLength];
 
             // Test all inputs from size 0 .. MaxLength (inclusive) to make sure we don't have
             // gaps in our Memmove logic.
-            for (var i = 0; i <= MaxLength; i++)
+            for (var i = 0u; i <= MaxLength; i++)
             {
                 // Arrange
 
