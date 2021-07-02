@@ -1,8 +1,8 @@
 using System;
-using System.Buffers;
 using System.Security.Cryptography;
 using JetBrains.Annotations;
 
+#nullable enable
 namespace StirlingLabs.Utilities
 {
     [PublicAPI]
@@ -51,12 +51,21 @@ namespace StirlingLabs.Utilities
         }
 
         public static byte[] GetHash(byte[] data)
-            => Sha3.Hash256((ReadOnlyBigSpan<byte>)data);
+            => Xkcp.Sha3_256(data);
 
         public static byte[] GetHash(ReadOnlySpan<byte> data)
-            => Sha3.Hash256(data);
+            => Xkcp.Sha3_256(data);
 
-        public static byte[] GetHash(ReadOnlyBigSpan<byte> data)
-            => Sha3.Hash256(data);
+        public static unsafe byte[] GetHash(ReadOnlyBigSpan<byte> data)
+        {
+            var numArray = new byte[32];
+            fixed (byte* output = numArray)
+            fixed (byte* input = data)
+            {
+                if (Xkcp.Sha3_256(output, input, data.Length) != 0)
+                    throw new NotImplementedException("Hashing failed.");
+                return numArray;
+            }
+        }
     }
 }

@@ -12,12 +12,12 @@
       </PackageReference>
       <PackageReference Include="InlineIL.Fody" Version="1.7.0" />
       <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
+      <PackageReference Include="XKCP.NET" Version="2021.7.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\StirlingLabs.Utilities.BigSpans\StirlingLabs.Utilities.BigSpans.csproj" />
       <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.ilproj" />
-      <ProjectReference Include="..\StirlingLabs.Utilities.Security.Sha3\StirlingLabs.Utilities.Security.Sha3.csproj" />
     </ItemGroup>
 
 </Project>
