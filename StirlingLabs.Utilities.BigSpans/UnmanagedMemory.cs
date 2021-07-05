@@ -11,9 +11,10 @@ namespace StirlingLabs.Utilities
     {
         private static readonly Assembly ThisAssembly = typeof(UnmanagedMemory).Assembly;
 
+#if !NETSTANDARD
         static UnmanagedMemory()
             => NativeLibrary.SetDllImportResolver(ThisAssembly, (name, assembly, path) => {
-                if (name == "c" && assembly == ThisAssembly)
+                if (name == "libc" && assembly == ThisAssembly)
                 {
                     return NativeLibrary.Load(
                         RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
@@ -25,6 +26,7 @@ namespace StirlingLabs.Utilities
                 }
                 return default;
             });
+#endif
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe bool Allocate(nuint size, out nint pointer)
@@ -107,13 +109,22 @@ namespace StirlingLabs.Utilities
             span = default;
         }
 
-        [DllImport("c", EntryPoint = "malloc")]
+#if !NETSTANDARD
+        [SuppressGCTransition]
+#endif
+        [DllImport("libc", EntryPoint = "malloc")]
         internal static extern unsafe void* C_Allocate(nuint size);
 
-        [DllImport("c", EntryPoint = "free")]
+#if !NETSTANDARD
+        [SuppressGCTransition]
+#endif
+        [DllImport("libc", EntryPoint = "free")]
         internal static extern unsafe void C_Free(void* size);
 
-        [DllImport("c", EntryPoint = "memcmp")]
-        internal static extern unsafe int C_CompareMemory(void* ptr1, void* ptr2, nuint num);
+#if !NETSTANDARD
+        [SuppressGCTransition]
+#endif
+        [DllImport("libc", EntryPoint = "memcmp")]
+        internal static extern unsafe int C_CompareMemory(void* a, void* b, nuint size);
     }
 }

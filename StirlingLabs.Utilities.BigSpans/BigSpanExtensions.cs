@@ -22,9 +22,9 @@ namespace StirlingLabs.Utilities
         /// </summary>
         public static ref T GetReference<T>(in this ReadOnlyBigSpan<T> span) where T : unmanaged
             => ref span._pointer.Value;
-        
+
         public static unsafe void CopyTo<T>(this T[] srcArray, BigSpan<T> dst)
-            => (new BigSpan<T>(srcArray,false)).CopyTo(dst);
+            => (new BigSpan<T>(srcArray, false)).CopyTo(dst);
 
         public static unsafe void CopyTo<T>(this Span<T> src, BigSpan<T> dst)
         {
@@ -155,5 +155,57 @@ namespace StirlingLabs.Utilities
         public static unsafe int SequenceCompare<T>(this ReadOnlyBigSpan<T> a, ReadOnlySpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b);
+
+
+        /// <summary>
+        /// Writes a structure of type T into a span of bytes.
+        /// </summary>
+        /// <returns>If the span is too small to contain the type T, return false.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool TryWrite<T>(this BigSpan<byte> destination, in T value)
+            where T : unmanaged
+        {
+            if ((nuint)Unsafe.SizeOf<T>() > (uint)destination.Length)
+                return false;
+            Unsafe.WriteUnaligned(ref GetReference(destination), value);
+            return true;
+        }
+
+
+        /// <summary>
+        /// Writes a structure of type T into a span of bytes.
+        /// </summary>
+        /// <returns>If the span is too small to contain the type T, return false.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool TryWrite<T>(this BigSpan<byte> destination, in T value, nuint offset)
+            where T : unmanaged
+        {
+            if (offset + (nuint)Unsafe.SizeOf<T>() > destination.Length)
+                return false;
+            Unsafe.WriteUnaligned(ref Unsafe.AddByteOffset(ref GetReference(destination), (nint)offset), value);
+            return true;
+        }
+
+        /// <summary>
+        /// Writes a structure of type T into a span of bytes.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Write<T>(this BigSpan<byte> destination, in T value)
+            where T : unmanaged
+        {
+            if (!TryWrite(destination, value))
+                throw new ArgumentOutOfRangeException(nameof(destination));
+        }
+
+        /// <summary>
+        /// Writes a structure of type T into a span of bytes.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Write<T>(this BigSpan<byte> destination, in T value, nuint offset)
+            where T : unmanaged
+        {
+            if (!TryWrite(destination, value, offset))
+                throw new ArgumentOutOfRangeException(nameof(destination));
+        }
     }
 }

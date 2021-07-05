@@ -3,14 +3,21 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Stirling Labs</Authors>
+        <PackageOutputPath>../artifacts</PackageOutputPath>
     </PropertyGroup>
+    
+    <ImportGroup>
+        <Import Project="../Version.proj" />
+    </ImportGroup>
 
     <ItemGroup>
       <PackageReference Include="Fody" Version="6.5.1">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="InlineIL.Fody" Version="1.7.0" />
+      <PackageReference Include="InlineIL.Fody" Version="1.7.0" PrivateAssets="all" />
       <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
       <PackageReference Include="XKCP.NET" Version="2021.7.0" />
     </ItemGroup>

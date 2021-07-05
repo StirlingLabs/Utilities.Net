@@ -1,7 +1,9 @@
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+#if !NETSTANDARD
 using System.Runtime.Intrinsics;
+#endif
 
 namespace StirlingLabs.Utilities
 {
@@ -15,7 +17,7 @@ namespace StirlingLabs.Utilities
             // - T's size must not exceed the vector's size
             // - T's size must be a whole power of 2
 
-            if (RuntimeHelpers.IsReferenceOrContainsReferences<T>()) { goto CannotVectorize; }
+            if (BigSpanHelpers.IsReferenceOrContainsReferences<T>()) { goto CannotVectorize; }
             if (!Vector.IsHardwareAccelerated) { goto CannotVectorize; }
             if (Unsafe.SizeOf<T>() > Vector<byte>.Count) { goto CannotVectorize; }
             if (!IsPow2(Unsafe.SizeOf<T>())) { goto CannotVectorize; }
@@ -38,17 +40,18 @@ namespace StirlingLabs.Utilities
                 else if (Unsafe.SizeOf<T>() == 4)
                 {
                     // special-case float since it's already passed in a SIMD reg
-                    vector = (typeof(T) == typeof(float))
-                        ? (Vector<byte>)(new Vector<float>((float)(object)tmp!))
+                    vector = tmp is float f
+                        ? (Vector<byte>)new Vector<float>(f)
                         : (Vector<byte>)(new Vector<uint>(Unsafe.As<T, uint>(ref tmp)));
                 }
                 else if (Unsafe.SizeOf<T>() == 8)
                 {
                     // special-case double since it's already passed in a SIMD reg
-                    vector = (typeof(T) == typeof(double))
-                        ? (Vector<byte>)(new Vector<double>((double)(object)tmp!))
+                    vector = tmp is double f
+                        ? (Vector<byte>)new Vector<double>(f)
                         : (Vector<byte>)(new Vector<ulong>(Unsafe.As<T, ulong>(ref tmp)));
                 }
+#if !NETSTANDARD
                 else if (Unsafe.SizeOf<T>() == 16)
                 {
                     Vector128<byte> vec128 = Unsafe.As<T, Vector128<byte>>(ref tmp);
@@ -78,9 +81,12 @@ namespace StirlingLabs.Utilities
                         goto CannotVectorize;
                     }
                 }
+#endif
                 else
                 {
+#if !NETSTANDARD
                     Debug.Fail("Vector<T> is greater than 256 bits in size?");
+#endif
                     goto CannotVectorize;
                 }
 

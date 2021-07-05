@@ -106,8 +106,10 @@ namespace StirlingLabs.Utilities.Tests
 
             var expected = (ReadOnlySpan<byte>)digest;
 
+            /*
             var expectedHex = Convert.ToHexString(expected);
             var actualHex = Convert.ToHexString(actual);
+            */
 
             Assert.IsTrue(expected.SequenceEqual((Span<byte>)actual));
         }

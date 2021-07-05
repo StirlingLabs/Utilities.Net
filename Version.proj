@@ -1,0 +1,5 @@
+<Project>
+    <PropertyGroup>
+        <Version>$([System.DateTime]::Now.ToString(`yyyy.MM`))</Version>
+    </PropertyGroup>
+</Project>
