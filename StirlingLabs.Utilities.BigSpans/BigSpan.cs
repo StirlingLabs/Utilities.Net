@@ -142,7 +142,7 @@ namespace StirlingLabs.Utilities
         {
             if (BigSpanHelpers.IsReferenceOrContainsReferences<T>())
                 throw new NotSupportedException("Invalid type with pointers.");
-            
+
             if (length < 0)
                 throw new ArgumentOutOfRangeException(nameof(length));
 
@@ -687,6 +687,9 @@ namespace StirlingLabs.Utilities
 
         public BigSpan<byte> AsBytes()
             => new(ref Unsafe.As<T, byte>(ref _pointer.Value), _length * (nuint)Unsafe.SizeOf<T>());
+
+        public BigSpan<T2> CastAs<T2>()
+            => new(ref Unsafe.As<T, T2>(ref _pointer.Value), (_length * (nuint)Unsafe.SizeOf<T>()) / (nuint)Unsafe.SizeOf<T2>());
 
         public unsafe int CompareMemory(BigSpan<T> other)
         {

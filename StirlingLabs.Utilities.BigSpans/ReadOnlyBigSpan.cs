@@ -72,11 +72,10 @@ namespace StirlingLabs.Utilities
                 this = default;
                 return; // returns default
             }
-            
+
             // See comment in Span<T>.Slice for how this works.
             if (start + length > (nuint)array.Length)
                 throw new ArgumentOutOfRangeException(nameof(length));
-
 
 #if NETSTANDARD
             _pointer = new(ref Unsafe.Add(ref array[0],
@@ -107,7 +106,7 @@ namespace StirlingLabs.Utilities
         {
             if (BigSpanHelpers.IsReferenceOrContainsReferences<T>())
                 throw new NotSupportedException("Invalid type with pointers.");
-            
+
             if (length < 0)
                 throw new ArgumentOutOfRangeException(nameof(length));
 
@@ -154,7 +153,7 @@ namespace StirlingLabs.Utilities
                 return ref Unsafe.Add(ref _pointer.Value, (nint)index);
             }
         }
-        
+
 #if !NETSTANDARD2_0
         /// <summary>
         /// Returns the specified element of the read-only span.
@@ -257,7 +256,6 @@ namespace StirlingLabs.Utilities
                 : throw new NotSupportedException(
                     $"Not possible to create ReadOnlySpans longer than {int.MaxValue} (maximum 32-bit integer value)");
 #else
-
         public static explicit operator ReadOnlySpan<T>(ReadOnlyBigSpan<T> bigSpan) =>
             bigSpan._length <= int.MaxValue
                 ? MemoryMarshal.CreateReadOnlySpan(ref bigSpan._pointer.Value, (int)bigSpan._length)
@@ -587,6 +585,9 @@ namespace StirlingLabs.Utilities
 
         public unsafe ReadOnlyBigSpan<byte> AsBytes()
             => new(ref Unsafe.As<T, byte>(ref _pointer.Value), _length * (nuint)Unsafe.SizeOf<T>());
+
+        public BigSpan<T2> CastAs<T2>()
+            => new(ref Unsafe.As<T, T2>(ref _pointer.Value), (_length * (nuint)Unsafe.SizeOf<T>()) / (nuint)Unsafe.SizeOf<T2>());
 
         public unsafe int CompareMemory(BigSpan<T> other)
         {
