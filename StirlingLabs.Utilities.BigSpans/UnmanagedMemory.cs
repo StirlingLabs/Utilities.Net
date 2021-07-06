@@ -42,7 +42,7 @@ namespace StirlingLabs.Utilities
                 pointer = default;
                 return false;
             }
-            return true;
+            return pointer != default;
         }
 
         [SuppressMessage("Microsoft.Design","CA1021", Justification = "Not for general audience")]
@@ -58,7 +58,7 @@ namespace StirlingLabs.Utilities
                 pointer = default;
                 return false;
             }
-            return true;
+            return pointer != default;
         }
 
         [SuppressMessage("Microsoft.Design","CA1021", Justification = "Not for general audience")]

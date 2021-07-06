@@ -598,7 +598,7 @@ namespace StirlingLabs.Utilities
         public unsafe Span<T> Slice(nuint start, int length)
         {
             if (length < 0)
-                throw new ArgumentOutOfRangeException(nameof(length));
+                throw new ArgumentOutOfRangeException(nameof(length), $"Length was less than zero. ({length})");
             if (start + (nuint)length > _length)
                 throw new ArgumentOutOfRangeException(nameof(length));
 
@@ -608,7 +608,7 @@ namespace StirlingLabs.Utilities
         public Span<T> Slice(nuint start, int length)
         {
             if (length < 0)
-                throw new ArgumentOutOfRangeException(nameof(length));
+                throw new ArgumentOutOfRangeException(nameof(length), $"Length was less than zero. ({length})");
             if (start + (nuint)length > _length)
                 throw new ArgumentOutOfRangeException(nameof(length));
 

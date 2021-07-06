@@ -16,19 +16,36 @@ namespace StirlingLabs.Utilities.Tests
         [Test]
         public static void BigSpanSize()
         {
-            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfByReference<byte>());
-            
-            
-            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<byte>());
-            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<byte>());
-            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<int>());
-            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<int>());
-            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<double>());
-            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<double>());
-            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<object>());
-            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<object>());
-            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<string>());
-            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<string>());
+            if (BigSpanHelpers.Is64Bit)
+            {
+                Assert.AreEqual(16, BigSpanHelpers.GetSizeOfByReference<byte>());
+
+                Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<byte>());
+                Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<byte>());
+                Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<int>());
+                Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<int>());
+                Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<double>());
+                Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<double>());
+                Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<object>());
+                Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<object>());
+                Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<string>());
+                Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<string>());
+            }
+            else
+            {
+                Assert.AreEqual(8, BigSpanHelpers.GetSizeOfByReference<byte>());
+
+                Assert.AreEqual(8, BigSpanHelpers.GetSizeOfBigSpan<byte>());
+                Assert.AreEqual(8, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<byte>());
+                Assert.AreEqual(8, BigSpanHelpers.GetSizeOfBigSpan<int>());
+                Assert.AreEqual(8, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<int>());
+                Assert.AreEqual(8, BigSpanHelpers.GetSizeOfBigSpan<double>());
+                Assert.AreEqual(8, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<double>());
+                Assert.AreEqual(8, BigSpanHelpers.GetSizeOfBigSpan<object>());
+                Assert.AreEqual(8, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<object>());
+                Assert.AreEqual(8, BigSpanHelpers.GetSizeOfBigSpan<string>());
+                Assert.AreEqual(8, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<string>());
+            }
         }
 
         [Test]

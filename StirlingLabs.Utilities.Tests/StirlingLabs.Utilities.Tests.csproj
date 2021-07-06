@@ -2,28 +2,24 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
-
         <IsPackable>false</IsPackable>
-
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-
         <Authors>Stirling Labs</Authors>
-
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoBogus" Version="2.13.0" />
-        <PackageReference Include="NUnit" Version="3.12.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+        <PackageReference Include="AutoBogus" Version="2.13.0"/>
+        <PackageReference Include="NUnit" Version="3.12.0"/>
+        <PackageReference Include="NUnit3TestAdapter" Version="3.16.1"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\StirlingLabs.Utilities.BigSpans\StirlingLabs.Utilities.BigSpans.csproj" />
-      <ProjectReference Include="..\StirlingLabs.Utilities.Security.Sha3\StirlingLabs.Utilities.Security.Sha3.csproj" />
-      <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj" />
-      <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj" />
+        <ProjectReference Include="..\StirlingLabs.Utilities.BigSpans\StirlingLabs.Utilities.BigSpans.csproj"/>
+        <ProjectReference Include="..\StirlingLabs.Utilities.Security.Sha3\StirlingLabs.Utilities.Security.Sha3.csproj"/>
+        <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj"/>
+        <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj"/>
     </ItemGroup>
 
 </Project>

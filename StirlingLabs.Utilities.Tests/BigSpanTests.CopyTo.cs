@@ -248,7 +248,7 @@ namespace StirlingLabs.Utilities.Tests
                     var memoryFirst = (byte*)memBlock.ToPointer();
                     var spanFirst = new BigSpan<byte>(memoryFirst, bufferSize);
 
-                    spanFirst.FillWithNonZeroRandomData();
+                    spanFirst.FillWithNonZeroRandomData(new InsecureRandomNumberGenerator());
 
                     for (nuint i = 0; i < bufferSize; ++i)
                         Assert.NotZero(spanFirst[i]);
@@ -308,10 +308,13 @@ namespace StirlingLabs.Utilities.Tests
 
         [Theory]
         [Explicit]
-        public static void CopyToLargeSizeTest([Values(256uL + int.MaxValue, 256uL + uint.MaxValue)]
+        public static void CopyToLargeSizeTest([Values(uint.MaxValue / 32uL, 256uL + int.MaxValue, 256uL + uint.MaxValue)]
             ulong longBufferSize)
         {
             var bufferSize = (nuint)longBufferSize;
+
+            if (bufferSize != longBufferSize)
+                Assert.Inconclusive($"Can't address 0x{longBufferSize:X} within a nuint on this platform.");
 
             var allocatedFirst = false;
             var allocatedSecond = false;
@@ -322,17 +325,18 @@ namespace StirlingLabs.Utilities.Tests
             {
                 try
                 {
-
                     Assert.True(allocatedFirst = UnmanagedMemory.Allocate(bufferSize, out memBlockFirst));
-                    Assert.True(allocatedSecond = UnmanagedMemory.Allocate(bufferSize, out memBlockSecond));
-
                     var memoryFirst = (byte*)memBlockFirst.ToPointer();
+                    Assert.NotZero((nint)memoryFirst);
                     var spanFirst = new BigSpan<byte>(memoryFirst, bufferSize);
 
+                    Assert.True(allocatedSecond = UnmanagedMemory.Allocate(bufferSize, out memBlockSecond));
                     var memorySecond = (byte*)memBlockSecond.ToPointer();
+                    Assert.NotZero((nint)memorySecond);
                     var spanSecond = new BigSpan<byte>(memorySecond, bufferSize);
 
-                    spanFirst.FillWithNonZeroRandomData();
+                    spanFirst.FillWithRandomData();
+                    //spanFirst.FillWithRandomData(new InsecureRandomNumberGenerator());
 
                     spanFirst.CopyTo(spanSecond);
 
