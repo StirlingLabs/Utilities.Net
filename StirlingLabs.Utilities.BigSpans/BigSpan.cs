@@ -1,7 +1,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-#nullable enable
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using StirlingLabs.Utilities.Compatibility;
 using InlineIL;
+using StirlingLabs.Utilities.Magic;
 using static InlineIL.IL;
 using static InlineIL.IL.Emit;
 
@@ -24,12 +25,14 @@ namespace StirlingLabs.Utilities
     /// </summary>
     [NonVersionable]
     [DebuggerDisplay("{ToString(),raw}")]
-    public readonly ref struct BigSpan<T> //where T : unmanaged
+    [StructLayout(LayoutKind.Sequential)]
+    public readonly ref struct BigSpan<T>
     {
         /// <summary>A byref or a native ptr.</summary>
-        internal readonly ByReference<T> _pointer;
+        internal readonly StirlingLabs.Utilities.Magic.ByReference64<T> _pointer;
 
         /// <summary>The number of elements this Span contains.</summary>
+        /// <remarks>Due to _pointer being a hack, this must written to immediately after.</remarks>
         internal readonly nuint _length;
 
         /// <summary>
@@ -57,6 +60,7 @@ namespace StirlingLabs.Utilities
 #endif
             _length = BigSpanHelpers.Is64Bit ? (nuint)array.LongLength : (nuint)array.Length;
         }
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal BigSpan(T[]? array, bool _)
         {

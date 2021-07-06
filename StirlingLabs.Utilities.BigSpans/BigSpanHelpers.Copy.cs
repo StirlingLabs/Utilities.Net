@@ -13,8 +13,10 @@ namespace StirlingLabs.Utilities
             while (l >= uint.MaxValue)
             {
                 Unsafe.CopyBlockUnaligned(ref dstRef, ref srcRef, uint.MaxValue);
-                dstRef = ref Unsafe.AddByteOffset(ref dstRef, (nint)uint.MaxValue);
-                srcRef = ref Unsafe.AddByteOffset(ref srcRef, (nint)uint.MaxValue);
+                // ReSharper disable RedundantOverflowCheckingContext // CS8778
+                dstRef = ref Unsafe.AddByteOffset(ref dstRef, unchecked((nint)uint.MaxValue));
+                srcRef = ref Unsafe.AddByteOffset(ref srcRef, unchecked((nint)uint.MaxValue));
+                // ReSharper restore RedundantOverflowCheckingContext
                 l -= uint.MaxValue;
             }
             if (l > 0)

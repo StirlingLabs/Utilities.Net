@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 using YamlDotNet.Serialization;
 
-#nullable enable
+
 namespace StirlingLabs.Utilities.Yaml
 {
     [PublicAPI]

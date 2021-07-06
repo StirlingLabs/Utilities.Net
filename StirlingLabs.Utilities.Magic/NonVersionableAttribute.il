@@ -1,9 +1,9 @@
 .class public sealed auto ansi beforefieldinit
   System.Runtime.Versioning.NonVersionableAttribute
-    extends [System.Runtime]System.Attribute
+    extends [RUNTIME]System.Attribute
 {
-  .custom instance void [System.Runtime]System.AttributeUsageAttribute::.ctor(
-    valuetype [System.Runtime]System.AttributeTargets
+  .custom instance void [RUNTIME]System.AttributeUsageAttribute::.ctor(
+    valuetype [RUNTIME]System.AttributeTargets
   ) = (
       01 00 6c 00 00 00 01 00 54 02 09 49 6e 68 65 72 // ..l.....T..Inher
       69 74 65 64 00                                  // ited.
@@ -16,7 +16,7 @@
   {
     .maxstack 8
         ldarg.0
-        call instance void [System.Runtime]System.Attribute::.ctor()
+        call instance void [RUNTIME]System.Attribute::.ctor()
         ret
   }
 }

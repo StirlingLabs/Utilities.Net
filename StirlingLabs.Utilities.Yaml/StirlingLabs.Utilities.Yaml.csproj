@@ -5,6 +5,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Authors>Stirling Labs</Authors>
         <PackageOutputPath>../artifacts</PackageOutputPath>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ImportGroup>

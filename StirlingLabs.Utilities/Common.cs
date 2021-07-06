@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-#nullable enable
+
 namespace StirlingLabs.Utilities
 {
     [PublicAPI]

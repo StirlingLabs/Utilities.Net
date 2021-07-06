@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using YamlDotNet.Core.Events;
 using YamlDotNet.RepresentationModel;
 
-#nullable enable
+
 namespace StirlingLabs.Utilities.Yaml.Events
 {
     [PublicAPI]

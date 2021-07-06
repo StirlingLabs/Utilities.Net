@@ -13,7 +13,8 @@ namespace StirlingLabs.Utilities
                 while (l >= uint.MaxValue)
                 {
                     Unsafe.InitBlockUnaligned(ref pb, 0, uint.MaxValue);
-                    pb = ref Unsafe.AddByteOffset(ref pb, (nint)uint.MaxValue);
+                    // ReSharper disable once RedundantOverflowCheckingContext // CS8778
+                    pb = ref Unsafe.AddByteOffset(ref pb, unchecked((nint)uint.MaxValue));
                     l -= uint.MaxValue;
                 }
                 if (l > 0)

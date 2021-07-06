@@ -2,7 +2,7 @@ using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
 using StirlingLabs.Utilities.Yaml.Events;
 
-#nullable enable
+
 namespace StirlingLabs.Utilities.Yaml
 {
     public static partial class Extensions

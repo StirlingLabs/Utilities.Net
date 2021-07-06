@@ -1,7 +1,7 @@
 using System;
 using YamlDotNet.Serialization;
 
-#nullable enable
+
 namespace StirlingLabs.Utilities.Yaml
 {
     public static class OnDemand

@@ -6,12 +6,13 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using StirlingLabs.Utilities.Compatibility;
 using InlineIL;
+using StirlingLabs.Utilities.Magic;
 using static InlineIL.IL;
 using static InlineIL.IL.Emit;
 
 #pragma warning disable 0809 //warning CS0809: Obsolete member 'Span<T>.Equals(object)' overrides non-obsolete member 'object.Equals(object)'
 
-#nullable enable
+
 namespace StirlingLabs.Utilities
 {
     /// <summary>
@@ -20,11 +21,13 @@ namespace StirlingLabs.Utilities
     /// </summary>
     [NonVersionable]
     [DebuggerDisplay("{ToString(),raw}")]
+    [StructLayout(LayoutKind.Sequential)]
     public readonly ref struct ReadOnlyBigSpan<T>
     {
         /// <summary>A byref or a native ptr.</summary>
-        internal readonly ByReference<T> _pointer;
+        internal readonly ByReference64<T> _pointer;
         /// <summary>The number of elements this ReadOnlySpan contains.</summary>
+        /// <remarks>Due to _pointer being a hack, this must written to immediately after.</remarks>
         internal readonly nuint _length;
 
         /// <summary>

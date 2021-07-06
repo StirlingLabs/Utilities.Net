@@ -125,7 +125,6 @@ namespace StirlingLabs.Utilities
         /// <summary>
         /// Write a UInt16 into a span of bytes as little endian.
         /// </summary>
-        [CLSCompliant(false)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void WriteUInt16LittleEndian(BigSpan<byte> destination, ushort value)
             => destination.Write(BitConverter.IsLittleEndian ? value : ReverseEndianness(value));
@@ -133,7 +132,6 @@ namespace StirlingLabs.Utilities
         /// <summary>
         /// Write a UInt32 into a span of bytes as little endian.
         /// </summary>
-        [CLSCompliant(false)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void WriteUInt32LittleEndian(BigSpan<byte> destination, uint value)
             => destination.Write(BitConverter.IsLittleEndian ? value : ReverseEndianness(value));
@@ -141,7 +139,6 @@ namespace StirlingLabs.Utilities
         /// <summary>
         /// Write a UInt64 into a span of bytes as little endian.
         /// </summary>
-        [CLSCompliant(false)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void WriteUInt64LittleEndian(BigSpan<byte> destination, ulong value)
             => destination.Write(BitConverter.IsLittleEndian ? value : ReverseEndianness(value));
@@ -204,7 +201,6 @@ namespace StirlingLabs.Utilities
         /// Write a UInt16 into a span of bytes as little endian.
         /// </summary>
         /// <returns>If the span is too small to contain the value, return false.</returns>
-        [CLSCompliant(false)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryWriteUInt16LittleEndian(BigSpan<byte> destination, ushort value)
             => destination.TryWrite(BitConverter.IsLittleEndian ? value : ReverseEndianness(value));
@@ -213,7 +209,6 @@ namespace StirlingLabs.Utilities
         /// Write a UInt32 into a span of bytes as little endian.
         /// </summary>
         /// <returns>If the span is too small to contain the value, return false.</returns>
-        [CLSCompliant(false)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryWriteUInt32LittleEndian(BigSpan<byte> destination, uint value)
             => destination.TryWrite(BitConverter.IsLittleEndian ? value : ReverseEndianness(value));
@@ -222,7 +217,6 @@ namespace StirlingLabs.Utilities
         /// Write a UInt64 into a span of bytes as little endian.
         /// </summary>
         /// <returns>If the span is too small to contain the value, return false.</returns>
-        [CLSCompliant(false)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryWriteUInt64LittleEndian(BigSpan<byte> destination, ulong value)
             => destination.TryWrite(BitConverter.IsLittleEndian ? value : ReverseEndianness(value));

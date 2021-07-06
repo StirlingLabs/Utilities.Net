@@ -113,18 +113,21 @@ namespace StirlingLabs.Utilities
         [SuppressGCTransition]
 #endif
         [DllImport("libc", EntryPoint = "malloc")]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.UseDllDirectoryForDependencies)]
         internal static extern unsafe void* C_Allocate(nuint size);
 
 #if !NETSTANDARD
         [SuppressGCTransition]
 #endif
         [DllImport("libc", EntryPoint = "free")]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.UseDllDirectoryForDependencies)]
         internal static extern unsafe void C_Free(void* size);
 
 #if !NETSTANDARD
         [SuppressGCTransition]
 #endif
         [DllImport("libc", EntryPoint = "memcmp")]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.UseDllDirectoryForDependencies)]
         internal static extern unsafe int C_CompareMemory(void* a, void* b, nuint size);
     }
 }

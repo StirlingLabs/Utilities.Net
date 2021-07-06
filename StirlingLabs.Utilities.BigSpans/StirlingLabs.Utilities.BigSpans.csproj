@@ -7,6 +7,7 @@
         <Authors>Stirling Labs</Authors>
         <PackageOutputPath>../artifacts</PackageOutputPath>
         <LangVersion>9</LangVersion>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ImportGroup>

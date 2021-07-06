@@ -8,6 +8,8 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
         <Authors>Stirling Labs</Authors>
+
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
