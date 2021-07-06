@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -12,6 +13,24 @@ namespace StirlingLabs.Utilities.Tests
 {
     public static partial class BigSpanTests
     {
+        [Test]
+        public static void BigSpanSize()
+        {
+            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfByReference<byte>());
+            
+            
+            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<byte>());
+            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<byte>());
+            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<int>());
+            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<int>());
+            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<double>());
+            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<double>());
+            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<object>());
+            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<object>());
+            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfBigSpan<string>());
+            Assert.AreEqual(16, BigSpanHelpers.GetSizeOfReadOnlyBigSpan<string>());
+        }
+
         [Test]
         public static void IndexAccess()
         {

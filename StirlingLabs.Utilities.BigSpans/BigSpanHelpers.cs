@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
+using InlineIL;
+using StirlingLabs.Utilities.Magic;
 
 // @formatter:off
 #if NETSTANDARD2_0
@@ -15,6 +17,22 @@ namespace StirlingLabs.Utilities
     {
         public static readonly unsafe bool Is64Bit = sizeof(nint) == 8;
 
+        public static int GetSizeOfByReference<T>()
+        {
+            IL.Emit.Sizeof(typeof(ByReference<T>));
+            return IL.Return<int>();
+        }
+        public static int GetSizeOfBigSpan<T>()
+        {
+            IL.Emit.Sizeof(typeof(BigSpan<T>));
+            return IL.Return<int>();
+        }
+        public static int GetSizeOfReadOnlyBigSpan<T>()
+        {
+            IL.Emit.Sizeof(typeof(ReadOnlyBigSpan<T>));
+            return IL.Return<int>();
+        }
+        
         /// <summary>
         /// Evaluate whether a given integral value is a power of 2.
         /// </summary>

@@ -33,10 +33,10 @@ namespace StirlingLabs.Utilities
     public readonly ref struct ReadOnlyBigSpan<T>
     {
         /// <summary>A byref or a native ptr.</summary>
-        internal readonly ByReference64<T> _pointer;
+        internal readonly ByReference<T> _pointer;
         /// <summary>The number of elements this ReadOnlySpan contains.</summary>
         /// <remarks>Due to _pointer being a hack, this must written to immediately after.</remarks>
-        internal readonly nuint _length;
+        internal ref nuint _length => ref _pointer.Length;
 
         /// <summary>
         /// Creates a new read-only span over the entirety of the target array.
