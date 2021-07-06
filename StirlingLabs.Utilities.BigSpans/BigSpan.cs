@@ -1,19 +1,21 @@
-// Licensed to the .NET Foundation under one or more agreements.
-// The .NET Foundation licenses this file to you under the MIT license.
-
-
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Reflection;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using StirlingLabs.Utilities.Compatibility;
 using InlineIL;
+using JetBrains.Annotations;
 using StirlingLabs.Utilities.Magic;
 using static InlineIL.IL;
 using static InlineIL.IL.Emit;
+
+// @formatter:off
+#if NETSTANDARD
+using StirlingLabs.Utilities.Compatibility;
+#endif
+// @formatter:on
 
 #pragma warning disable 0809 //warning CS0809: Obsolete member 'Span<T>.Equals(object)' overrides non-obsolete member 'object.Equals(object)'
 
@@ -23,13 +25,14 @@ namespace StirlingLabs.Utilities
     /// Span represents a contiguous region of arbitrary memory. Unlike arrays, it can point to either managed
     /// or native memory, or to memory allocated on the stack. It is type- and memory-safe.
     /// </summary>
+    [PublicAPI]
     [NonVersionable]
     [DebuggerDisplay("{ToString(),raw}")]
     [StructLayout(LayoutKind.Sequential)]
     public readonly ref struct BigSpan<T>
     {
         /// <summary>A byref or a native ptr.</summary>
-        internal readonly StirlingLabs.Utilities.Magic.ByReference64<T> _pointer;
+        internal readonly ByReference64<T> _pointer;
 
         /// <summary>The number of elements this Span contains.</summary>
         /// <remarks>Due to _pointer being a hack, this must written to immediately after.</remarks>
@@ -62,7 +65,7 @@ namespace StirlingLabs.Utilities
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal BigSpan(T[]? array, bool _)
+        internal BigSpan(T[]? array, [UsedImplicitly] bool _)
         {
             if (array == null)
             {
@@ -172,6 +175,8 @@ namespace StirlingLabs.Utilities
         /// <exception cref="System.IndexOutOfRangeException">
         /// Thrown when index less than 0 or index greater than or equal to Length
         /// </exception>
+        [SuppressMessage("Microsoft.Design","CA1043", Justification = "Intentional")]
+        [SuppressMessage("Microsoft.Design","CA1065", Justification = "Patterned after System.Span")]
         public ref T this[nuint index]
         {
             [Intrinsic]
@@ -250,6 +255,7 @@ namespace StirlingLabs.Utilities
         /// </exception>
         /// </summary>
         [Obsolete("Equals() on Span will always throw an exception. Use == instead.", true)]
+        [SuppressMessage("Microsoft.Design", "CA1065", Justification = "Patterned after System.Span")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override bool Equals(object? obj) =>
             throw new NotSupportedException();
@@ -261,6 +267,7 @@ namespace StirlingLabs.Utilities
         /// </exception>
         /// </summary>
         [Obsolete("GetHashCode() on Span will always throw an exception.", true)]
+        [SuppressMessage("Microsoft.Design", "CA1065", Justification = "Patterned after System.Span")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override int GetHashCode() =>
             throw new NotSupportedException();
@@ -270,13 +277,26 @@ namespace StirlingLabs.Utilities
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator BigSpan<T>(T[]? array) => new(array);
+        
+        /// <summary>
+        /// Defines an explicit conversion of an array to a <see cref="BigSpan{T}"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyBigSpan<T> From(T[]? array) => new(array);
 
         /// <summary>
         /// Defines an explicit conversion of a <see cref="ArraySegment{T}"/> to a <see cref="BigSpan{T}"/>
         /// </summary>
+        [SuppressMessage("Usage", "CA2225", Justification = "See From(ArraySegment<T>)")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator BigSpan<T>(ArraySegment<T> segment) =>
             new(segment.Array, (nuint)segment.Offset, (nuint)segment.Count);
+        
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="ArraySegment{T}"/> to a <see cref="BigSpan{T}"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyBigSpan<T> From(ArraySegment<T> segment) => (ReadOnlyBigSpan<T>)segment;
 
         /// <summary>
         /// Returns an empty <see cref="BigSpan{T}"/>
@@ -285,49 +305,7 @@ namespace StirlingLabs.Utilities
 
         /// <summary>Gets an enumerator for this span.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Enumerator GetEnumerator() => new(this);
-
-        /// <summary>Enumerates the elements of a <see cref="BigSpan{T}"/>.</summary>
-        public ref struct Enumerator
-        {
-            /// <summary>The span being enumerated.</summary>
-            private readonly BigSpan<T> _bigSpan;
-            /// <summary>The next index to yield.</summary>
-            private nuint _index;
-
-            /// <summary>Initialize the enumerator.</summary>
-            /// <param name="bigSpan">The span to enumerate.</param>
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            internal Enumerator(BigSpan<T> bigSpan)
-            {
-                _bigSpan = bigSpan;
-#if NETSTANDARD
-                _index = ~(nuint)0;
-#else
-                _index = nuint.MaxValue;
-#endif
-            }
-
-            /// <summary>Advances the enumerator to the next element of the span.</summary>
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public bool MoveNext()
-            {
-                var index = _index + 1;
-                if (index >= _bigSpan.Length)
-                    return false;
-
-                _index = index;
-                return true;
-
-            }
-
-            /// <summary>Gets the element at the current position of the enumerator.</summary>
-            public ref T Current
-            {
-                [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                get => ref _bigSpan[_index];
-            }
-        }
+        public BigSpanEnumerator<T> GetEnumerator() => new(this);
 
         /// <summary>
         /// Returns a reference to the 0th element of the Span. If the Span is empty, returns null reference.
@@ -493,19 +471,24 @@ namespace StirlingLabs.Utilities
         /// <summary>
         /// Defines an implicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlyBigSpan{T}"/>
         /// </summary>
-        public static implicit operator ReadOnlyBigSpan<T>(BigSpan<T> bigSpan) =>
-            new(ref bigSpan._pointer.Value, bigSpan._length);
+        [SuppressMessage("Usage", "CA2225", Justification = "Exists as an extension method")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator ReadOnlyBigSpan<T>(in BigSpan<T> bigSpan)
+            => bigSpan.ToReadOnlyBigSpan();
+            //=> new(ref bigSpan._pointer.Value, bigSpan._length);
 
         /// <summary>
         /// Defines an explicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlySpan{T}"/>
         /// </summary>
 #if NETSTANDARD2_0
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe explicit operator ReadOnlySpan<T>(BigSpan<T> bigSpan) =>
             bigSpan._length <= int.MaxValue
                 ? new ReadOnlySpan<T>(bigSpan.GetUnsafePointer(), (int)bigSpan._length)
                 : throw new NotSupportedException(
                     $"Not possible to create ReadOnlySpans longer than {int.MaxValue} (maximum 32-bit integer value)");
 #else
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator ReadOnlySpan<T>(BigSpan<T> bigSpan) =>
             bigSpan._length <= int.MaxValue
                 ? MemoryMarshal.CreateReadOnlySpan(ref bigSpan._pointer.Value, (int)bigSpan._length)
@@ -517,12 +500,14 @@ namespace StirlingLabs.Utilities
         /// Defines an explicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="Span{T}"/>
         /// </summary>
 #if NETSTANDARD2_0
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe explicit operator Span<T>(BigSpan<T> bigSpan) =>
             bigSpan._length <= int.MaxValue
                 ? new Span<T>(bigSpan.GetUnsafePointer(), (int)bigSpan._length)
                 : throw new NotSupportedException(
                     $"Not possible to create ReadOnlySpans longer than {int.MaxValue} (maximum 32-bit integer value)");
 #else
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator Span<T>(BigSpan<T> bigSpan) =>
             bigSpan._length <= int.MaxValue
                 ? MemoryMarshal.CreateSpan(ref bigSpan._pointer.Value, (int)bigSpan._length)
@@ -531,20 +516,32 @@ namespace StirlingLabs.Utilities
 #endif
 
         /// <summary>
+        /// Defines an explicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="Span{T}"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Span<T> ToSpan() => (Span<T>)this;
+
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlySpan{T}"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ReadOnlySpan<T> ToReadOnlySpan() => (ReadOnlySpan<T>)this;
+
+        /// <summary>
         /// For <see cref="BigSpan{T}"/>, returns a new instance of string that represents the characters pointed to by the span.
         /// Otherwise, returns a <see cref="string"/> with the name of the type and the number of elements.
         /// </summary>
 #if NETSTANDARD2_0
         public override unsafe string ToString()
         {
-            if (typeof(T) == typeof(char) && _length <= int.MaxValue)
+            if (IfType<T>.Is<char>() && _length <= int.MaxValue)
                 return new((char*)GetUnsafePointer(), 0, (int)_length);
             return $"BigSpan<{typeof(T).Name}>[{_length}]";
         }
 #else
         public override string ToString()
         {
-            if (typeof(T) == typeof(char) && _length <= int.MaxValue)
+            if (IfType<T>.Is<char>() && _length <= int.MaxValue)
                 return new(MemoryMarshal.CreateReadOnlySpan(ref Unsafe.As<T, char>(ref _pointer.Value), (int)_length));
             return $"BigSpan<{typeof(T).Name}>[{_length}]";
         }

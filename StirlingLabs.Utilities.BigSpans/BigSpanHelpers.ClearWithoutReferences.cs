@@ -1,10 +1,12 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace StirlingLabs.Utilities
 {
     internal static partial class BigSpanHelpers
     {
+        [SuppressMessage("Maintainability","CA1502", Justification = "Copy of official implementation")]
         public static unsafe void ClearWithoutReferences(ref byte b, nuint byteLength)
         {
             if (byteLength == 0)

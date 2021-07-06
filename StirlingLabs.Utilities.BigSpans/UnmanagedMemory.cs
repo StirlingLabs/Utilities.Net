@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -7,7 +8,7 @@ using JetBrains.Annotations;
 namespace StirlingLabs.Utilities
 {
     [PublicAPI]
-    public static class UnmanagedMemory
+    public static partial class UnmanagedMemory
     {
         private static readonly Assembly ThisAssembly = typeof(UnmanagedMemory).Assembly;
 
@@ -28,6 +29,7 @@ namespace StirlingLabs.Utilities
             });
 #endif
 
+        [SuppressMessage("Microsoft.Design","CA1021", Justification = "Not for general audience")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe bool Allocate(nuint size, out nint pointer)
         {
@@ -42,6 +44,8 @@ namespace StirlingLabs.Utilities
             }
             return true;
         }
+
+        [SuppressMessage("Microsoft.Design","CA1021", Justification = "Not for general audience")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe bool Allocate(nuint size, out void* pointer)
         {
@@ -56,6 +60,8 @@ namespace StirlingLabs.Utilities
             }
             return true;
         }
+
+        [SuppressMessage("Microsoft.Design","CA1021", Justification = "Not for general audience")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe bool Allocate<T>(nuint count, out T* pointer)
             where T : unmanaged
@@ -64,12 +70,16 @@ namespace StirlingLabs.Utilities
             pointer = (T*)pointerValue;
             return success;
         }
+        
+        [SuppressMessage("Microsoft.Design","CA1045", Justification = "Nope")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void Free(ref nint nativePointer)
         {
             C_Free((void*)nativePointer);
             nativePointer = default;
         }
+        
+        [SuppressMessage("Microsoft.Design","CA1045", Justification = "Nope")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void Free(ref void* nativePointer)
         {
@@ -85,6 +95,8 @@ namespace StirlingLabs.Utilities
                 return new(pointerValue, count);
             throw new OutOfMemoryException();
         }
+        
+        [SuppressMessage("Microsoft.Design","CA1045", Justification = "Nope")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void FreeBigSpan<T>(ref BigSpan<T> span)
             where T : unmanaged
@@ -101,6 +113,8 @@ namespace StirlingLabs.Utilities
                 return new(pointerValue, count);
             throw new OutOfMemoryException();
         }
+        
+        [SuppressMessage("Microsoft.Design","CA1045", Justification = "Nope")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static unsafe void FreeSpan<T>(ref Span<T> span)
             where T : unmanaged
@@ -108,26 +122,5 @@ namespace StirlingLabs.Utilities
             C_Free(Unsafe.AsPointer(ref span.GetPinnableReference()));
             span = default;
         }
-
-#if !NETSTANDARD
-        [SuppressGCTransition]
-#endif
-        [DllImport("libc", EntryPoint = "malloc")]
-        [DefaultDllImportSearchPaths(DllImportSearchPath.UseDllDirectoryForDependencies)]
-        internal static extern unsafe void* C_Allocate(nuint size);
-
-#if !NETSTANDARD
-        [SuppressGCTransition]
-#endif
-        [DllImport("libc", EntryPoint = "free")]
-        [DefaultDllImportSearchPaths(DllImportSearchPath.UseDllDirectoryForDependencies)]
-        internal static extern unsafe void C_Free(void* size);
-
-#if !NETSTANDARD
-        [SuppressGCTransition]
-#endif
-        [DllImport("libc", EntryPoint = "memcmp")]
-        [DefaultDllImportSearchPaths(DllImportSearchPath.UseDllDirectoryForDependencies)]
-        internal static extern unsafe int C_CompareMemory(void* a, void* b, nuint size);
     }
 }

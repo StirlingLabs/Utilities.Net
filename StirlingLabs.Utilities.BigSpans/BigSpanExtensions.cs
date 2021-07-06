@@ -1,12 +1,13 @@
 using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using InlineIL;
+using JetBrains.Annotations;
 using static InlineIL.IL;
 using static InlineIL.IL.Emit;
 
 namespace StirlingLabs.Utilities
 {
+    [PublicAPI]
     public static class BigSpanExtensions
     {
         /// <summary>
@@ -27,7 +28,7 @@ namespace StirlingLabs.Utilities
         //public static ref T GetReference<T>(in this ReadOnlyBigSpan<T> span) where T : unmanaged
         //    => ref span._pointer.Value;
 
-        public static unsafe void CopyTo<T>(this T[] srcArray, BigSpan<T> dst)
+        public static void CopyTo<T>(this T[] srcArray, BigSpan<T> dst)
             => (new BigSpan<T>(srcArray, false)).CopyTo(dst);
 
         public static unsafe void CopyTo<T>(this Span<T> src, BigSpan<T> dst)
@@ -96,67 +97,67 @@ namespace StirlingLabs.Utilities
                 BigSpanHelpers.Copy((byte*)pDst + srcOffset, pSrc, copyLength);
         }
 
-        public static unsafe bool SequenceEqual<T>(this BigSpan<T> a, BigSpan<T> b)
+        public static bool SequenceEqual<T>(this BigSpan<T> a, BigSpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b) == 0;
 
-        public static unsafe bool SequenceEqual<T>(this ReadOnlyBigSpan<T> a, BigSpan<T> b)
+        public static bool SequenceEqual<T>(this ReadOnlyBigSpan<T> a, BigSpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b) == 0;
 
-        public static unsafe bool SequenceEqual<T>(this BigSpan<T> a, ReadOnlyBigSpan<T> b)
+        public static bool SequenceEqual<T>(this BigSpan<T> a, ReadOnlyBigSpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b) == 0;
 
-        public static unsafe bool SequenceEqual<T>(this ReadOnlyBigSpan<T> a, ReadOnlyBigSpan<T> b)
+        public static bool SequenceEqual<T>(this ReadOnlyBigSpan<T> a, ReadOnlyBigSpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b) == 0;
 
-        public static unsafe bool SequenceEqual<T>(this Span<T> a, BigSpan<T> b)
+        public static bool SequenceEqual<T>(this Span<T> a, BigSpan<T> b)
             where T : unmanaged
             => b.CompareMemory(a) == 0;
 
-        public static unsafe bool SequenceEqual<T>(this ReadOnlySpan<T> a, BigSpan<T> b)
+        public static bool SequenceEqual<T>(this ReadOnlySpan<T> a, BigSpan<T> b)
             where T : unmanaged
             => b.CompareMemory(a) == 0;
 
-        public static unsafe bool SequenceEqual<T>(this BigSpan<T> a, ReadOnlySpan<T> b)
+        public static bool SequenceEqual<T>(this BigSpan<T> a, ReadOnlySpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b) == 0;
 
-        public static unsafe bool SequenceEqual<T>(this ReadOnlyBigSpan<T> a, ReadOnlySpan<T> b)
+        public static bool SequenceEqual<T>(this ReadOnlyBigSpan<T> a, ReadOnlySpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b) == 0;
 
-        public static unsafe int SequenceCompare<T>(this BigSpan<T> a, BigSpan<T> b)
+        public static int SequenceCompare<T>(this BigSpan<T> a, BigSpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b);
 
-        public static unsafe int SequenceCompare<T>(this ReadOnlyBigSpan<T> a, BigSpan<T> b)
+        public static int SequenceCompare<T>(this ReadOnlyBigSpan<T> a, BigSpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b);
 
-        public static unsafe int SequenceCompare<T>(this BigSpan<T> a, ReadOnlyBigSpan<T> b)
+        public static int SequenceCompare<T>(this BigSpan<T> a, ReadOnlyBigSpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b);
 
-        public static unsafe int SequenceCompare<T>(this ReadOnlyBigSpan<T> a, ReadOnlyBigSpan<T> b)
+        public static int SequenceCompare<T>(this ReadOnlyBigSpan<T> a, ReadOnlyBigSpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b);
 
-        public static unsafe int SequenceCompare<T>(this Span<T> a, BigSpan<T> b)
+        public static int SequenceCompare<T>(this Span<T> a, BigSpan<T> b)
             where T : unmanaged
             => -b.CompareMemory(a);
 
-        public static unsafe int SequenceCompare<T>(this ReadOnlySpan<T> a, BigSpan<T> b)
+        public static int SequenceCompare<T>(this ReadOnlySpan<T> a, BigSpan<T> b)
             where T : unmanaged
             => -b.CompareMemory(a);
 
-        public static unsafe int SequenceCompare<T>(this BigSpan<T> a, ReadOnlySpan<T> b)
+        public static int SequenceCompare<T>(this BigSpan<T> a, ReadOnlySpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b);
 
-        public static unsafe int SequenceCompare<T>(this ReadOnlyBigSpan<T> a, ReadOnlySpan<T> b)
+        public static int SequenceCompare<T>(this ReadOnlyBigSpan<T> a, ReadOnlySpan<T> b)
             where T : unmanaged
             => a.CompareMemory(b);
 
@@ -210,6 +211,18 @@ namespace StirlingLabs.Utilities
         {
             if (!TryWrite(destination, value, offset))
                 throw new ArgumentOutOfRangeException(nameof(destination));
+        }
+
+
+        /// <summary>
+        /// Defines a conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlyBigSpan{T}"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ref readonly ReadOnlyBigSpan<T> ToReadOnlyBigSpan<T>(in this BigSpan<T> span)
+        {
+            Ldarg_0();
+            Ret();
+            throw Unreachable();
         }
     }
 }

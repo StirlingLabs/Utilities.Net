@@ -1,14 +1,21 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using StirlingLabs.Utilities.Compatibility;
 using InlineIL;
+using JetBrains.Annotations;
 using StirlingLabs.Utilities.Magic;
 using static InlineIL.IL;
 using static InlineIL.IL.Emit;
+
+// @formatter:off
+#if NETSTANDARD
+using StirlingLabs.Utilities.Compatibility;
+#endif
+// @formatter:on
 
 #pragma warning disable 0809 //warning CS0809: Obsolete member 'Span<T>.Equals(object)' overrides non-obsolete member 'object.Equals(object)'
 
@@ -19,6 +26,7 @@ namespace StirlingLabs.Utilities
     /// ReadOnlySpan represents a contiguous region of arbitrary memory. Unlike arrays, it can point to either managed
     /// or native memory, or to memory allocated on the stack. It is type- and memory-safe.
     /// </summary>
+    [PublicAPI]
     [NonVersionable]
     [DebuggerDisplay("{ToString(),raw}")]
     [StructLayout(LayoutKind.Sequential)]
@@ -145,6 +153,8 @@ namespace StirlingLabs.Utilities
         /// <exception cref="System.IndexOutOfRangeException">
         /// Thrown when index less than 0 or index greater than or equal to Length
         /// </exception>
+        [SuppressMessage("Microsoft.Design","CA1043", Justification = "Intentional")]
+        [SuppressMessage("Microsoft.Design","CA1065", Justification = "Patterned after System.Span")]
         public ref readonly T this[nuint index]
         {
             [Intrinsic]
@@ -222,6 +232,7 @@ namespace StirlingLabs.Utilities
         /// </exception>
         /// </summary>
         [Obsolete("Equals() on ReadOnlySpan will always throw an exception. Use == instead.", true)]
+        [SuppressMessage("Microsoft.Design", "CA1065", Justification = "Patterned after System.Span")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override bool Equals(object? obj) =>
             throw new NotSupportedException();
@@ -233,6 +244,7 @@ namespace StirlingLabs.Utilities
         /// </exception>
         /// </summary>
         [Obsolete("GetHashCode() on ReadOnlySpan will always throw an exception.", true)]
+        [SuppressMessage("Microsoft.Design", "CA1065", Justification = "Patterned after System.Span")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public override int GetHashCode() =>
             throw new NotSupportedException();
@@ -242,12 +254,26 @@ namespace StirlingLabs.Utilities
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator ReadOnlyBigSpan<T>(T[]? array) => new(array);
+        
+        /// <summary>
+        /// Defines an explicit conversion of an array to a <see cref="ReadOnlyBigSpan{T}"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyBigSpan<T> From(T[]? array) => new(array);
 
         /// <summary>
-        /// Defines an implicit conversion of a <see cref="ArraySegment{T}"/> to a <see cref="ReadOnlyBigSpan{T}"/>
+        /// Defines an explicit conversion of a <see cref="ArraySegment{T}"/> to a <see cref="ReadOnlyBigSpan{T}"/>
         /// </summary>
+        [SuppressMessage("Usage", "CA2225", Justification = "See From(ArraySegment<T>)")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator ReadOnlyBigSpan<T>(ArraySegment<T> segment)
             => new(segment.Array, (nuint)segment.Offset, (nuint)segment.Count);
+        
+        /// <summary>
+        /// Defines an explicit conversion of a <see cref="ArraySegment{T}"/> to a <see cref="ReadOnlyBigSpan{T}"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyBigSpan<T> From(ArraySegment<T> segment) => (ReadOnlyBigSpan<T>)segment;
 
         /// <summary>
         /// Defines an implicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlySpan{T}"/>
@@ -267,55 +293,19 @@ namespace StirlingLabs.Utilities
 #endif
 
         /// <summary>
+        /// Defines an explicit conversion of a <see cref="ReadOnlyBigSpan{T}"/> to a <see cref="ReadOnlySpan{T}"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ReadOnlySpan<T> ToReadOnlySpan() => (ReadOnlySpan<T>)this;
+
+        /// <summary>
         /// Returns a 0-length read-only span whose base is the null pointer.
         /// </summary>
         public static ReadOnlyBigSpan<T> Empty => default;
 
         /// <summary>Gets an enumerator for this span.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Enumerator GetEnumerator() => new(this);
-
-        /// <summary>Enumerates the elements of a <see cref="ReadOnlyBigSpan{T}"/>.</summary>
-        public ref struct Enumerator
-        {
-            /// <summary>The span being enumerated.</summary>
-            private readonly ReadOnlyBigSpan<T> _bigSpan;
-            /// <summary>The next index to yield.</summary>
-            private nuint _index;
-
-            /// <summary>Initialize the enumerator.</summary>
-            /// <param name="bigSpan">The span to enumerate.</param>
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            internal Enumerator(ReadOnlyBigSpan<T> bigSpan)
-            {
-                _bigSpan = bigSpan;
-#if NETSTANDARD
-                _index = ~(nuint)0;
-#else
-                _index = nuint.MaxValue;
-#endif
-            }
-
-            /// <summary>Advances the enumerator to the next element of the span.</summary>
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public bool MoveNext()
-            {
-                var index = _index + 1;
-                if (index >= _bigSpan.Length)
-                    return false;
-
-                _index = index;
-                return true;
-
-            }
-
-            /// <summary>Gets the element at the current position of the enumerator.</summary>
-            public ref readonly T Current
-            {
-                [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                get => ref _bigSpan[_index];
-            }
-        }
+        public ReadOnlyBigSpanEnumerator<T> GetEnumerator() => new(this);
 
         /// <summary>
         /// Returns a reference to the 0th element of the Span. If the Span is empty, returns null reference.
@@ -441,14 +431,14 @@ namespace StirlingLabs.Utilities
 #if NETSTANDARD2_0
         public override unsafe string ToString()
         {
-            if (typeof(T) == typeof(char) && _length <= int.MaxValue)
+            if (IfType<T>.Is<char>() && _length <= int.MaxValue)
                 return new((char*)GetUnsafePointer(), 0, (int)_length);
             return $"ReadOnlyBigSpan<{typeof(T).Name}>[{_length}]";
         }
 #else
         public override string ToString()
         {
-            if (typeof(T) == typeof(char) && _length <= int.MaxValue)
+            if (IfType<T>.Is<char>() && _length <= int.MaxValue)
                 return new(MemoryMarshal.CreateReadOnlySpan(ref Unsafe.As<T, char>(ref _pointer.Value), (int)_length));
             return $"ReadOnlyBigSpan<{typeof(T).Name}>[{_length}]";
         }

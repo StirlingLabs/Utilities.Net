@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 
 // @formatter:off
-#if NETSTANDARD
+#if NETSTANDARD2_0
 using System.Linq;
 using System.Reflection;
 #endif

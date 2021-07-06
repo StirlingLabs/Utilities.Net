@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
@@ -16,10 +17,12 @@ namespace StirlingLabs.Utilities.Magic
             => _span = span;
 
 #if NETSTANDARD2_0
+        [SuppressMessage("Microsoft.Design","CA1045", Justification = "Nope")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe ByReference(ref T item)
             => _span = new(Unsafe.AsPointer(ref item), 1);
 #else
+        [SuppressMessage("Microsoft.Design","CA1045", Justification = "Nope")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ByReference(ref T item)
             => _span = MemoryMarshal.CreateSpan(ref item, 1);
