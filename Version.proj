@@ -8,6 +8,6 @@
         <GitCommitsIgnoreMerges>true</GitCommitsIgnoreMerges>
     </PropertyGroup>
     <ImportGroup>
-        <Import Project="SlVer/Version.proj" />
+        <Import Project="StirlingLabs.Version/Version.proj" />
     </ImportGroup>
 </Project>
