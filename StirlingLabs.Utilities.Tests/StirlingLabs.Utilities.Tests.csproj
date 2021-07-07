@@ -17,7 +17,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\StirlingLabs.Utilities.BigSpans\StirlingLabs.Utilities.BigSpans.csproj"/>
-        <ProjectReference Include="..\StirlingLabs.Utilities.Security.Sha3\StirlingLabs.Utilities.Security.Sha3.csproj"/>
         <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj"/>
         <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj"/>
     </ItemGroup>
