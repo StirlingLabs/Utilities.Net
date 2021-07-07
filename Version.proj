@@ -1,6 +1,8 @@
 <Project>
     <PropertyGroup>
-        <Authors>Stirling Labs</Authors>
+        <Authors>The Stirling Labs Team</Authors>
+        <Owners>Stirling Labs</Owners>
+        <Company>Stirling Labs</Company>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/StirlingLabs/Utilities.Net.git</RepositoryUrl>
         <PackageProjectUrl>https://github.com/StirlingLabs/Utilities.Net</PackageProjectUrl>
