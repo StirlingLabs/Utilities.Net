@@ -15,7 +15,8 @@
         <DeterministicSourcePaths Condition="'$(ContinuousIntegrationBuild)'!=''">$(ContinuousIntegrationBuild)</DeterministicSourcePaths>
         <GitThisAssembly>false</GitThisAssembly>
         <GitBaseVersion>$(GitBaseVersionMajor).$(GitBaseVersionMinor).0</GitBaseVersion>
-        <GitInfoReportImportance>high</GitInfoReportImportance>
+        <!--<GitInfoReportImportance>high</GitInfoReportImportance>-->
+        <IncludeSymbols Condition="'$(DebugSymbols)'=='false'">false</IncludeSymbols>
     </PropertyGroup>
     <ItemGroup Condition="$(RepositoryUrl.StartsWith('https://github.com/'))">
       <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
@@ -42,6 +43,7 @@
         <Message Importance="high" Text="Machine Unique Hash: $(MachineUniqueHash)"/>
         <Message Importance="high" Text="User Unique Hash: $(UserUniqueHash)"/>
         -->
+        <CallTarget Targets="GitInfoReport"/>
         <PropertyGroup>
             <!-- to resolve one of these timestamp: https://dotnetfiddle.net/myVR4R -->
             <TimestampEpoch>637450560000000000</TimestampEpoch> <!-- jan 1st, 2021 -->
@@ -60,7 +62,6 @@
             <!-- non-CI dirty: year.month.update-pre-timestamp+machine/user -->
             <Version>$(VersionPrefix)$(GitSemVerMajor).$(GitSemVerMinor).$(GitSemVerPatch)$(VersionSuffix)</Version>
         </PropertyGroup>
-        <!--<CallTarget Targets="GitInfoReport"/>-->
         <!--<Message Importance="high" Text="Minimum Version: $(GitBaseVersionMajor).$(GitBaseVersionMinor).0"/>-->
         <Message Importance="high" Text="Version: $(Version)"/>
     </Target>
