@@ -2,8 +2,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using NUnit.Framework;
-using StirlingLabs.Utilities;
-using static StirlingLabs.Utilities.Common;
 
 namespace StirlingLabs.Utilities.Tests
 {

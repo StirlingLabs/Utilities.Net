@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using NUnit.Framework;
-using StirlingLabs.Utilities;
 
 namespace StirlingLabs.Utilities.Tests
 {
