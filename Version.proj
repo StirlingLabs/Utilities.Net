@@ -1,5 +1,13 @@
 <Project>
     <PropertyGroup>
-        <Version>$([System.DateTime]::Now.ToString(`yyyy.MM`))</Version>
+        <Authors>Stirling Labs</Authors>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/StirlingLabs/Utilities.Net.git</RepositoryUrl>
+        <PackageProjectUrl>https://github.com/StirlingLabs/Utilities.Net</PackageProjectUrl>
+        <GitDefaultBranch>main</GitDefaultBranch>
+        <GitCommitsIgnoreMerges>true</GitCommitsIgnoreMerges>
     </PropertyGroup>
+    <ImportGroup>
+        <Import Project="SlVer/Version.proj" />
+    </ImportGroup>
 </Project>
