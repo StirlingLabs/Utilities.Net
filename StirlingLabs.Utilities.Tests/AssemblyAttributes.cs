@@ -1,3 +1,3 @@
 #if !DEBUG
-[assembly: Debuggable(true, false)]
+[assembly: System.Diagnostics.Debuggable(true, false)]
 #endif
