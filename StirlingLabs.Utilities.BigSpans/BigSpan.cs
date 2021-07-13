@@ -168,6 +168,22 @@ namespace StirlingLabs.Utilities
         }
 
         /// <summary>
+        /// Creates a new read-only span over the target managed buffer.
+        /// </summary>
+        /// <param name="ptr">A managed reference to memory.</param>
+        /// <param name="length">The number of <typeparamref name="T"/> elements the memory contains.</param>
+        /// <exception cref="System.ArgumentException">
+        /// Thrown when <typeparamref name="T"/> is reference type or contains pointers and hence cannot be stored in unmanaged memory.
+        /// </exception>
+        public static BigSpan<T> Create(ref T ptr, nuint length)
+        {
+            if (BigSpanHelpers.IsReferenceOrContainsReferences<T>())
+                throw new NotSupportedException("Invalid type with pointers.");
+
+            return new(ref ptr, length);
+        }
+
+        /// <summary>
         /// Returns a reference to specified element of the Span.
         /// </summary>
         /// <param name="index"></param>
@@ -690,7 +706,7 @@ namespace StirlingLabs.Utilities
             => new(ref Unsafe.As<T, byte>(ref _pointer.Value), _length * (nuint)Unsafe.SizeOf<T>());
 
         public BigSpan<T2> CastAs<T2>()
-            => new(ref Unsafe.As<T, T2>(ref _pointer.Value), (_length * (nuint)Unsafe.SizeOf<T>()) / (nuint)Unsafe.SizeOf<T2>());
+            => new(ref Unsafe.As<T, T2>(ref _pointer.Value), _length * (nuint)Unsafe.SizeOf<T>() / (nuint)Unsafe.SizeOf<T2>());
 
         public unsafe int CompareMemory(BigSpan<T> other)
         {

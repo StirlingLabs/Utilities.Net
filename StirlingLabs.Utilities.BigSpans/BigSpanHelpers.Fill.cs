@@ -35,21 +35,21 @@ namespace StirlingLabs.Utilities
                 }
                 else if (Unsafe.SizeOf<T>() == 2)
                 {
-                    vector = (Vector<byte>)(new Vector<ushort>(Unsafe.As<T, ushort>(ref tmp)));
+                    vector = (Vector<byte>)new Vector<ushort>(Unsafe.As<T, ushort>(ref tmp));
                 }
                 else if (Unsafe.SizeOf<T>() == 4)
                 {
                     // special-case float since it's already passed in a SIMD reg
                     vector = tmp is float f
                         ? (Vector<byte>)new Vector<float>(f)
-                        : (Vector<byte>)(new Vector<uint>(Unsafe.As<T, uint>(ref tmp)));
+                        : (Vector<byte>)new Vector<uint>(Unsafe.As<T, uint>(ref tmp));
                 }
                 else if (Unsafe.SizeOf<T>() == 8)
                 {
                     // special-case double since it's already passed in a SIMD reg
                     vector = tmp is double f
                         ? (Vector<byte>)new Vector<double>(f)
-                        : (Vector<byte>)(new Vector<ulong>(Unsafe.As<T, ulong>(ref tmp)));
+                        : (Vector<byte>)new Vector<ulong>(Unsafe.As<T, ulong>(ref tmp));
                 }
 #if !NETSTANDARD
                 else if (Unsafe.SizeOf<T>() == 16)

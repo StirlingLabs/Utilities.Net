@@ -29,7 +29,7 @@ namespace StirlingLabs.Utilities
         //    => ref span._pointer.Value;
 
         public static void CopyTo<T>(this T[] srcArray, BigSpan<T> dst)
-            => (new BigSpan<T>(srcArray, false)).CopyTo(dst);
+            => new BigSpan<T>(srcArray, false).CopyTo(dst);
 
         public static unsafe void CopyTo<T>(this Span<T> src, BigSpan<T> dst)
         {
