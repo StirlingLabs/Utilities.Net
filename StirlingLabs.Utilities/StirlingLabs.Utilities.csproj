@@ -19,8 +19,8 @@
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="InlineIL.Fody" Version="1.7.0" PrivateAssets="all" />
-      <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
-      <PackageReference Include="XKCP.NET" Version="2021.7.1" />
+        <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
+        <PackageReference Include="XKCP.NET" Version="21.7.1" />
     </ItemGroup>
 
     <ItemGroup>
