@@ -21,6 +21,25 @@ using StirlingLabs.Utilities.Compatibility;
 
 namespace StirlingLabs.Utilities
 {
+    public static class BigSpan
+    {
+        /// <summary>
+        /// Creates a new read-only span over the target managed buffer.
+        /// </summary>
+        /// <param name="ptr">A managed reference to memory.</param>
+        /// <param name="length">The number of <typeparamref name="T"/> elements the memory contains.</param>
+        /// <exception cref="System.ArgumentException">
+        /// Thrown when <typeparamref name="T"/> is reference type or contains pointers and hence cannot be stored in unmanaged memory.
+        /// </exception>
+        public static BigSpan<T> Create<T>(ref T ptr, nuint length)
+        {
+            if (BigSpanHelpers.IsReferenceOrContainsReferences<T>())
+                throw new NotSupportedException("Invalid type with pointers.");
+
+            return new(ref ptr, length);
+        }
+    }
+
     /// <summary>
     /// Span represents a contiguous region of arbitrary memory. Unlike arrays, it can point to either managed
     /// or native memory, or to memory allocated on the stack. It is type- and memory-safe.
@@ -63,7 +82,7 @@ namespace StirlingLabs.Utilities
 #endif
             _length = BigSpanHelpers.Is64Bit ? (nuint)array.LongLength : (nuint)array.Length;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal BigSpan(T[]? array, [UsedImplicitly] bool _)
         {
@@ -168,22 +187,6 @@ namespace StirlingLabs.Utilities
         }
 
         /// <summary>
-        /// Creates a new read-only span over the target managed buffer.
-        /// </summary>
-        /// <param name="ptr">A managed reference to memory.</param>
-        /// <param name="length">The number of <typeparamref name="T"/> elements the memory contains.</param>
-        /// <exception cref="System.ArgumentException">
-        /// Thrown when <typeparamref name="T"/> is reference type or contains pointers and hence cannot be stored in unmanaged memory.
-        /// </exception>
-        public static BigSpan<T> Create(ref T ptr, nuint length)
-        {
-            if (BigSpanHelpers.IsReferenceOrContainsReferences<T>())
-                throw new NotSupportedException("Invalid type with pointers.");
-
-            return new(ref ptr, length);
-        }
-
-        /// <summary>
         /// Returns a reference to specified element of the Span.
         /// </summary>
         /// <param name="index"></param>
@@ -191,8 +194,8 @@ namespace StirlingLabs.Utilities
         /// <exception cref="System.IndexOutOfRangeException">
         /// Thrown when index less than 0 or index greater than or equal to Length
         /// </exception>
-        [SuppressMessage("Microsoft.Design","CA1043", Justification = "Intentional")]
-        [SuppressMessage("Microsoft.Design","CA1065", Justification = "Patterned after System.Span")]
+        [SuppressMessage("Microsoft.Design", "CA1043", Justification = "Intentional")]
+        [SuppressMessage("Microsoft.Design", "CA1065", Justification = "Patterned after System.Span")]
         public ref T this[nuint index]
         {
             [Intrinsic]
@@ -293,7 +296,7 @@ namespace StirlingLabs.Utilities
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator BigSpan<T>(T[]? array) => new(array);
-        
+
         /// <summary>
         /// Defines an explicit conversion of an array to a <see cref="BigSpan{T}"/>
         /// </summary>
@@ -307,7 +310,7 @@ namespace StirlingLabs.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator BigSpan<T>(ArraySegment<T> segment) =>
             new(segment.Array, (nuint)segment.Offset, (nuint)segment.Count);
-        
+
         /// <summary>
         /// Defines an explicit conversion of a <see cref="ArraySegment{T}"/> to a <see cref="BigSpan{T}"/>
         /// </summary>
@@ -491,7 +494,7 @@ namespace StirlingLabs.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator ReadOnlyBigSpan<T>(in BigSpan<T> bigSpan)
             => bigSpan.ToReadOnlyBigSpan();
-            //=> new(ref bigSpan._pointer.Value, bigSpan._length);
+        //=> new(ref bigSpan._pointer.Value, bigSpan._length);
 
         /// <summary>
         /// Defines an explicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlySpan{T}"/>
@@ -670,6 +673,7 @@ namespace StirlingLabs.Utilities
         /// allocates, so should generally be avoided, however it is sometimes
         /// necessary to bridge the gap with APIs written in terms of arrays.
         /// </summary>
+#pragma warning disable 652 // not assuming pointer can be at most 64-bit here 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T[] ToArray()
         {
@@ -701,6 +705,7 @@ namespace StirlingLabs.Utilities
             CopyTo((BigSpan<T>)destination);
             return destination;
         }
+#pragma warning restore 652
 
         public BigSpan<byte> AsBytes()
             => new(ref Unsafe.As<T, byte>(ref _pointer.Value), _length * (nuint)Unsafe.SizeOf<T>());
