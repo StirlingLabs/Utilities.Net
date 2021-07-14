@@ -2,69 +2,12 @@ using System;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-// @formatter:off
-#if !NETSTANDARD
-using System.Runtime.Intrinsics;
-using System.Runtime.Intrinsics.X86;
-#endif
-// @formatter:on
-
 namespace StirlingLabs.Utilities
 {
     [PublicAPI]
-    public static class BinaryPrimitives
+    public static partial class BinaryPrimitives
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static byte ReverseEndianness(byte value) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(value);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static sbyte ReverseEndianness(sbyte value) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(value);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static short ReverseEndianness(short value) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(value);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ushort ReverseEndianness(ushort value) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(value);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int ReverseEndianness(int value) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(value);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint ReverseEndianness(uint value) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(value);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static long ReverseEndianness(long value) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(value);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong ReverseEndianness(ulong value) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(value);
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        // ReSharper disable once RedundantUnsafeContext
-        public static unsafe int SingleToInt32Bits(float value)
-        {
-#if !NETSTANDARD
-            // Workaround for https://github.com/dotnet/runtime/issues/11413
-            // ReSharper disable once ConvertIfStatementToReturnStatement
-            if (Sse2.IsSupported)
-                return Sse2.ConvertToInt32(Vector128.CreateScalarUnsafe(value).AsInt32());
-#endif
-            return Unsafe.As<float, int>(ref value);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        // ReSharper disable once RedundantUnsafeContext
-        public static unsafe long DoubleToInt64Bits(double value)
-        {
-#if !NETSTANDARD
-            // Workaround for https://github.com/dotnet/runtime/issues/11413
-            // ReSharper disable once ConvertIfStatementToReturnStatement
-            if (Sse2.X64.IsSupported)
-                return Sse2.X64.ConvertToInt64(Vector128.CreateScalarUnsafe(value).AsInt64());
-#endif
-            return Unsafe.As<double, long>(ref value);
-        }
-
+        
         /// <summary>
         /// Writes a <see cref="double" /> into a span of bytes, as little endian.
         /// </summary>

@@ -213,6 +213,26 @@ namespace StirlingLabs.Utilities
                 throw new ArgumentOutOfRangeException(nameof(destination));
         }
 
+        /// <summary>
+        /// Reads a structure of type T from a span of bytes.
+        /// </summary>
+        /// <returns>If the span is too small to contain the type T, return false.</returns>
+        public static bool TryRead<T>(this ReadOnlyBigSpan<byte> source, out T value)
+        {
+            if (source.Length < (nuint)Unsafe.SizeOf<T>())
+            {
+                Unsafe.SkipInit(out value);
+                return false;
+            }
+            value = source.Read<T>();
+            return true;
+        }
+
+        /// <summary>
+        /// Reads a structure of type T from a span of bytes.
+        /// </summary>
+        public static ref readonly T Read<T>(this ReadOnlyBigSpan<byte> source)
+            => ref Unsafe.As<byte, T>(ref source.GetReference());
 
         /// <summary>
         /// Defines a conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlyBigSpan{T}"/>
