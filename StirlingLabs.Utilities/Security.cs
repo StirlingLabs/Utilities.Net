@@ -9,7 +9,6 @@ namespace StirlingLabs.Utilities
     [PublicAPI]
     public static class Security
     {
-        private static bool _cspIsFucked;
         public static unsafe void FillWithRandomData(this BigSpan<byte> span)
         {
             nuint index = 0;
