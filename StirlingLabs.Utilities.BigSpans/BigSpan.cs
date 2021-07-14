@@ -105,6 +105,10 @@ namespace StirlingLabs.Utilities
             _length = BigSpanHelpers.Is64Bit ? (nuint)array.LongLength : (nuint)array.Length;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal BigSpan(ByReference<T> byRef)
+            => _pointer = byRef;
+
         /// <summary>
         /// Creates a new span over the portion of the target array beginning
         /// at 'start' index and ending at 'end' index (exclusive).
@@ -487,6 +491,13 @@ namespace StirlingLabs.Utilities
             left._length == right._length &&
             Unsafe.AreSame(ref left._pointer.Value, ref right._pointer.Value);
 
+        /// <summary>
+        /// Defines an implicit conversion of a <see cref="Span{T}"/> to a <see cref="BigSpan{T}"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator BigSpan<T>(in Span<T> span)
+            => new(new ByReference<T>(span));
+        
         /// <summary>
         /// Defines an implicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlyBigSpan{T}"/>
         /// </summary>

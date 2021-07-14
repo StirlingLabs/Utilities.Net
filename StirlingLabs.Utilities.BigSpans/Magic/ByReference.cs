@@ -12,10 +12,14 @@ namespace StirlingLabs.Utilities.Magic
     [StructLayout(LayoutKind.Sequential)]
     public readonly ref struct ByReference<T>
     {
-        private readonly Span<T> _span;
+        private readonly ReadOnlySpan<T> _span;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ByReference(Span<T> span)
+            => _span = span;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ByReference(ReadOnlySpan<T> span)
             => _span = span;
 
 #if NETSTANDARD2_0
@@ -27,7 +31,7 @@ namespace StirlingLabs.Utilities.Magic
         [SuppressMessage("Microsoft.Design", "CA1045", Justification = "Nope")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ByReference(ref T item)
-            => _span = MemoryMarshal.CreateSpan(ref item, 1);
+            => _span = MemoryMarshal.CreateReadOnlySpan(ref item, 1);
 #endif
 
         public ref T Value

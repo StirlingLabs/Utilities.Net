@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 
 namespace StirlingLabs.Utilities.Compatibility
 {
-    public static class NetStandard2Compatibility
+    internal static class NetStandard2Compatibility
     {
 #if NETSTANDARD2_1 || NETSTANDARD2_0
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

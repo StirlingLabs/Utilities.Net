@@ -181,6 +181,10 @@ namespace StirlingLabs.Utilities
             _length = length;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal ReadOnlyBigSpan(ByReference<T> byRef)
+            => _pointer = byRef;
+
         /// <summary>
         /// Returns the specified element of the read-only span.
         /// </summary>
@@ -285,6 +289,13 @@ namespace StirlingLabs.Utilities
         public override int GetHashCode() =>
             throw new NotSupportedException();
 
+        /// <summary>
+        /// Defines an implicit conversion of a <see cref="ReadOnlySpan{T}"/> to a <see cref="ReadOnlyBigSpan{T}"/>
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator ReadOnlyBigSpan<T>(in ReadOnlySpan<T> span)
+            => new(new ByReference<T>(span));
+        
         /// <summary>
         /// Defines an implicit conversion of an array to a <see cref="ReadOnlyBigSpan{T}"/>
         /// </summary>

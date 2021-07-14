@@ -171,6 +171,23 @@ namespace StirlingLabs.Utilities.Tests
             Assert.IsTrue(collected);
         }
 
+
+        [Test]
+        public static unsafe void ImplicitSpanUpgradeTest2G()
+        {
+            var notTwoGigs = new Span<byte>((void*)0, int.MaxValue);
+            BigSpan<byte> twoGigs = notTwoGigs;
+            Assert.AreEqual(twoGigs.Length, (nuint)int.MaxValue);
+        }
+
+        [Test]
+        public static void ImplicitSpanUpgradeTest4G()
+        {
+            var notFourGigs = MemoryMarshal.CreateSpan(ref Unsafe.NullRef<byte>(), unchecked((int)uint.MaxValue));
+            BigSpan<byte> fourGigs = notFourGigs;
+            Assert.AreEqual(fourGigs.Length, (nuint)uint.MaxValue);
+        }
+
         private static BigSpan<object> CreateObjectRefs(out WeakReference<object> wr, out Span<object> sp)
         {
             var o = new object();
