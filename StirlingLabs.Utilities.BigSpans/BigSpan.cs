@@ -495,17 +495,8 @@ namespace StirlingLabs.Utilities
         /// Defines an implicit conversion of a <see cref="Span{T}"/> to a <see cref="BigSpan{T}"/>
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator BigSpan<T>(in Span<T> span)
+        public static implicit operator BigSpan<T>(Span<T> span)
             => new(new ByReference<T>(span));
-        
-        /// <summary>
-        /// Defines an implicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlyBigSpan{T}"/>
-        /// </summary>
-        [SuppressMessage("Usage", "CA2225", Justification = "Exists as an extension method")]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator ReadOnlyBigSpan<T>(in BigSpan<T> bigSpan)
-            => bigSpan.ToReadOnlyBigSpan();
-        //=> new(ref bigSpan._pointer.Value, bigSpan._length);
 
         /// <summary>
         /// Defines an explicit conversion of a <see cref="BigSpan{T}"/> to a <see cref="ReadOnlySpan{T}"/>
