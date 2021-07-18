@@ -1,0 +1,29 @@
+name: Create PR from new XKCP.NET Release
+on:
+  repository_dispatch:
+    types:
+      - New XKCP.NET Release
+jobs:
+  fetch-new-xkcp-artifacts-and-create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true      
+      - name: Add XKCP.NET Nuget Package for StirlingLabs.Utilities Project
+        run: |
+           git config user.email "daemon@stirlinglabs.com"
+           git config user.name "StirlingLabsDaemon"
+           dotnet add StirlingLabs.Utilities/StirlingLabs.Utilities.csproj package XKCP.NET --version ${{ github.event.client_payload.tag }}
+           git commit -am "New version of StirlingLabs/XKCP.NET ${{ github.event.client_payload.tag }}"
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ github.token }}
+          title: 'New version of StirlingLabs/XKCP.NET ${{ github.event.client_payload.tag }}'
+          branch: check-xkcp-net
+          body: |
+            [${{ github.event.client_payload.tag }} release of StirlingLabs/XKCP.NET](https://github.com/StirlingLabs/XKCP.NET/releases/tag/${{ github.event.client_payload.tag }})
+          labels: |
+            automated-pr
+            xkcp.net

@@ -13,6 +13,10 @@
         <PackageReference Include="NUnit" Version="3.12.0"/>
         <PackageReference Include="NUnit3TestAdapter" Version="3.16.1"/>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0"/>
+        <PackageReference Include="coverlet.collector" Version="3.0.3" PrivateAssets="all" />
+        <PackageReference Include="coverlet.msbuild" Version="3.0.3" PrivateAssets="all" />
+        <PackageReference Include="GitHubActionsTestLogger" Version="1.2.0" PrivateAssets="all" />
+        <PackageReference Include="ReportGenerator" Version="4.8.11" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
@@ -20,5 +24,54 @@
         <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj"/>
         <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj"/>
     </ItemGroup>
+    <Target Name="GenerateHtmlCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
+        <!-- remove absolute path using backslashes for windows -->
+        <ReplaceFileTextByLines
+                Condition="$(OS.StartsWith('Windows'))"
+                InputFilename="@(CoverletReport)"
+                OutputFilename="@(CoverletReport)"
+                MatchText="$([System.IO.Path]::GetFullPath('..\StirlingLabs.Utilities\'))"
+                ReplacementText="" />
+    
+        <!-- remove absolute path using forward slashes for other platforms -->
+        <ReplaceFileTextByLines
+                Condition="!$(OS.StartsWith('Windows'))"
+                InputFilename="@(CoverletReport)"
+                OutputFilename="@(CoverletReport)"
+                MatchText="$([System.IO.Path]::GetFullPath('../StirlingLabs.Utilities/'))"
+                ReplacementText="" />
+    
+        <!-- generate markdown coverage report and badges -->
+        <ReportGenerator ReportFiles="@(CoverletReport)"
+                         ReportTypes="MarkdownSummary;Badges"
+                         SourceDirectories="../StirlingLabs.Utilities"
+                         TargetDirectory="../coverage/" />
+      </Target>
+    
+      <!-- task to replace text line for line -->
+      <UsingTask TaskName="ReplaceFileTextByLines" TaskFactory="RoslynCodeTaskFactory"
+                 AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+        <ParameterGroup>
+          <InputFilename ParameterType="System.String" Required="true" />
+          <OutputFilename ParameterType="System.String" Required="true" />
+          <MatchText ParameterType="System.String" Required="true" />
+          <ReplacementText ParameterType="System.String" Required="false" />
+        </ParameterGroup>
+        <Task>
+          <Using Namespace="System" />
+          <Using Namespace="System.Linq" />
+          <Using Namespace="System.IO" />
+          <Using Namespace="System.Text.RegularExpressions" />
+          <Code Type="Fragment" Language="cs">
+            <![CDATA[
+                File.WriteAllLines(
+                    OutputFilename,
+                    File.ReadAllLines(InputFilename)
+                        .Select(l => l.Replace(MatchText, ReplacementText))
+                );
+              ]]>
+          </Code>
+        </Task>
+      </UsingTask>
 
 </Project>
