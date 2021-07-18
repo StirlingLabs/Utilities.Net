@@ -9,7 +9,7 @@
     <PackageOutputPath>../artifacts</PackageOutputPath>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
-    <DeterministicSourcePaths Condition="'$(Configuration)'=='Release'">true</DeterministicSourcePaths>    
+    <DeterministicSourcePaths Condition="'$(Configuration)'=='Release'">true</DeterministicSourcePaths>
   </PropertyGroup>
   <ImportGroup>
     <Import Project="../Version.proj" />
@@ -21,11 +21,11 @@
     </PackageReference>
     <PackageReference Include="InlineIL.Fody" Version="1.7.0" PrivateAssets="all" />
     <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
-    <PackageReference Include="XKCP.NET" Version="21.7.1" />
+    <PackageReference Include="XKCP.NET" Version="21.7.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StirlingLabs.Utilities.BigSpans\StirlingLabs.Utilities.BigSpans.csproj" />
-    <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.ilproj" />
+    <!-- <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.ilproj" /> -->
   </ItemGroup>
 
 </Project>
