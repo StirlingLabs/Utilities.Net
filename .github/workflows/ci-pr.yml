@@ -19,6 +19,8 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ github.token }}
       - name: Build
         run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
+        env:
+          NUGET_AUTH_TOKEN: ${{ github.token }}
       - name: Test
         run: dotnet test StirlingLabs.Utilities.Net.sln --no-build -c Release --logger GitHubActions
       - name: Artifacts
