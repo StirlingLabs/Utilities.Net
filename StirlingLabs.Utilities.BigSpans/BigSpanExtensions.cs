@@ -2,6 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using InlineIL;
 using JetBrains.Annotations;
+using StirlingLabs.Utilities.Magic;
 using static InlineIL.IL;
 using static InlineIL.IL.Emit;
 
@@ -10,21 +11,9 @@ namespace StirlingLabs.Utilities
     [PublicAPI]
     public static class BigSpanExtensions
     {
-        /// <summary>
-        /// Returns a reference to the 0th element of the BigSpan. If the BigSpan is empty, returns a reference to the location where the 0th element
-        /// would have been stored. Such a reference may or may not be null. It can be used for pinning but must never be dereferenced.
-        /// </summary>
-        public static ref T GetReference<T>(this BigSpan<T> span) where T : unmanaged
-            => ref span._pointer.Value;
         //public static ref T GetReference<T>(in this BigSpan<T> span) where T : unmanaged
         //    => ref span._pointer.Value;
 
-        /// <summary>
-        /// Returns a reference to the 0th element of the ReadOnlyBigSpan. If the ReadOnlyBigSpan is empty, returns a reference to the location where the 0th element
-        /// would have been stored. Such a reference may or may not be null. It can be used for pinning but must never be dereferenced.
-        /// </summary>
-        public static ref T GetReference<T>(this ReadOnlyBigSpan<T> span) where T : unmanaged
-            => ref span._pointer.Value;
         //public static ref T GetReference<T>(in this ReadOnlyBigSpan<T> span) where T : unmanaged
         //    => ref span._pointer.Value;
 
@@ -172,7 +161,7 @@ namespace StirlingLabs.Utilities
         {
             if ((nuint)Unsafe.SizeOf<T>() > (uint)destination.Length)
                 return false;
-            Unsafe.WriteUnaligned(ref GetReference(destination), value);
+            Unsafe.WriteUnaligned(ref destination.GetReference(), value);
             return true;
         }
 
@@ -187,7 +176,7 @@ namespace StirlingLabs.Utilities
         {
             if (offset + (nuint)Unsafe.SizeOf<T>() > destination.Length)
                 return false;
-            Unsafe.WriteUnaligned(ref Unsafe.AddByteOffset(ref GetReference(destination), (nint)offset), value);
+            Unsafe.WriteUnaligned(ref Unsafe.AddByteOffset(ref destination.GetReference(), (nint)offset), value);
             return true;
         }
 

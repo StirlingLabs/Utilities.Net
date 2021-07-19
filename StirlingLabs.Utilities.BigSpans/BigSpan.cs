@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -37,6 +39,83 @@ namespace StirlingLabs.Utilities
                 throw new NotSupportedException("Invalid type with pointers.");
 
             return new(ref ptr, length);
+        }
+
+        public static void AsPinnedEnumerables<T>(ReadOnlyBigSpan<T> a, Action<IEnumerable<T>> f)
+        {
+
+            DeclareLocals(new LocalVar(typeof(T).MakeByRefType()).Pinned());
+
+            PushInRef(a.GetPinnableReference());
+            Stloc_0();
+
+            var e = new UnsafeEnumerator<T>(a);
+            f(e);
+        }
+
+        public static void AsPinnedEnumerables<T1, T2>(ReadOnlyBigSpan<T1> a, ReadOnlyBigSpan<T2> b, Action<IEnumerable<T1>, IEnumerable<T2>> f)
+        {
+            DeclareLocals(
+                new LocalVar(typeof(T1).MakeByRefType()).Pinned(),
+                new LocalVar(typeof(T2).MakeByRefType()).Pinned()
+            );
+
+            PushInRef(a.GetPinnableReference());
+            Stloc_0();
+            PushInRef(b.GetPinnableReference());
+            Stloc_1();
+
+            var e1 = new UnsafeEnumerator<T1>(a);
+            var e2 = new UnsafeEnumerator<T2>(b);
+            f(e1,e2);
+        }
+
+        public static void AsPinnedEnumerables<T1, T2, T3>(ReadOnlyBigSpan<T1> a, ReadOnlyBigSpan<T2> b, ReadOnlyBigSpan<T3> c,
+            Action<IEnumerable<T1>, IEnumerable<T2>, IEnumerable<T3>> f)
+        {
+            DeclareLocals(
+                new LocalVar(typeof(T1).MakeByRefType()).Pinned(),
+                new LocalVar(typeof(T2).MakeByRefType()).Pinned(),
+                new LocalVar(typeof(T3).MakeByRefType()).Pinned()
+            );
+
+            PushInRef(a.GetPinnableReference());
+            Stloc_0();
+            PushInRef(b.GetPinnableReference());
+            Stloc_1();
+            PushInRef(c.GetPinnableReference());
+            Stloc_2();
+
+            var e1 = new UnsafeEnumerator<T1>(a);
+            var e2 = new UnsafeEnumerator<T2>(b);
+            var e3 = new UnsafeEnumerator<T3>(c);
+            f(e1,e2,e3);
+        }
+
+        public static void AsPinnedEnumerables<T1, T2, T3, T4>(ReadOnlyBigSpan<T1> a, ReadOnlyBigSpan<T2> b, ReadOnlyBigSpan<T3> c,
+            ReadOnlyBigSpan<T4> d, Action<IEnumerable<T1>, IEnumerable<T2>, IEnumerable<T3>, IEnumerable<T4>> f)
+        {
+            DeclareLocals(
+                new LocalVar(typeof(T1).MakeByRefType()).Pinned(),
+                new LocalVar(typeof(T2).MakeByRefType()).Pinned(),
+                new LocalVar(typeof(T3).MakeByRefType()).Pinned(),
+                new LocalVar(typeof(T4).MakeByRefType()).Pinned()
+            );
+
+            PushInRef(a.GetPinnableReference());
+            Stloc_0();
+            PushInRef(b.GetPinnableReference());
+            Stloc_1();
+            PushInRef(c.GetPinnableReference());
+            Stloc_2();
+            PushInRef(d.GetPinnableReference());
+            Stloc_3();
+
+            var e1 = new UnsafeEnumerator<T1>(a);
+            var e2 = new UnsafeEnumerator<T2>(b);
+            var e3 = new UnsafeEnumerator<T3>(c);
+            var e4 = new UnsafeEnumerator<T4>(d);
+            f(e1,e2,e3,e4);
         }
     }
 
@@ -733,7 +812,7 @@ namespace StirlingLabs.Utilities
 
         public unsafe int CompareMemory(Span<T> other)
         {
-            var lengthComparison = _length.CompareTo(other.Length);
+            var lengthComparison = _length.CompareTo((uint)other.Length);
             var pOther = Unsafe.AsPointer(ref other.GetPinnableReference());
             return lengthComparison == 0
                 ? UnmanagedMemory.C_CompareMemory(GetUnsafePointer(), pOther, _length * (nuint)Unsafe.SizeOf<T>())
@@ -742,7 +821,7 @@ namespace StirlingLabs.Utilities
 
         public unsafe int CompareMemory(ReadOnlySpan<T> other)
         {
-            var lengthComparison = _length.CompareTo(other.Length);
+            var lengthComparison = _length.CompareTo((uint)other.Length);
             var pOther = Unsafe.AsPointer(ref Unsafe.AsRef(other.GetPinnableReference()));
             return lengthComparison == 0
                 ? UnmanagedMemory.C_CompareMemory(GetUnsafePointer(), pOther, _length * (nuint)Unsafe.SizeOf<T>())
