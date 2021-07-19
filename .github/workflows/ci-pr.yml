@@ -21,7 +21,7 @@ jobs:
           dotnet nuget remove source github
       - name: Ensure GitHub NuGet Source
         run: |
-          dotnet nuget add source https://nuget.pkg.github.com/StirlingLabs/index.json -n github -u StirlingLabsDaemon -p ${{ github.token }} --store-password-in-clear-text
+          dotnet nuget add source https://nuget.pkg.github.com/StirlingLabs/index.json -n github -u StirlingLabsDaemon -p ${{ secrets.GH_PAT }} --store-password-in-clear-text
       - name: Build
         run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
         env:
