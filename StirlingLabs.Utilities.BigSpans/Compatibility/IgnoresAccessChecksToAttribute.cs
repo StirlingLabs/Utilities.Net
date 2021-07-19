@@ -4,7 +4,7 @@ namespace System.Runtime.CompilerServices
 {
     [PublicAPI]
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-    internal class IgnoresAccessChecksToAttribute : Attribute
+    internal sealed class IgnoresAccessChecksToAttribute : Attribute
     {
         private readonly string _assemblyName;
 

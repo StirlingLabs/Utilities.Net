@@ -9,16 +9,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AutoBogus" Version="2.13.0"/>
-        <PackageReference Include="NUnit" Version="3.12.0"/>
-        <PackageReference Include="NUnit3TestAdapter" Version="3.16.1"/>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0"/>
+        <PackageReference Include="AutoBogus" Version="2.13.0" />
+        <PackageReference Include="NUnit" Version="3.13.2" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\StirlingLabs.Utilities.BigSpans\StirlingLabs.Utilities.BigSpans.csproj"/>
-        <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj"/>
-        <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj"/>
+        <ProjectReference Include="..\StirlingLabs.Utilities.BigSpan.NUnit\StirlingLabs.Utilities.BigSpan.NUnit.csproj" />
+        <ProjectReference Include="..\StirlingLabs.Utilities.BigSpans\StirlingLabs.Utilities.BigSpans.csproj" />
+        <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj" />
+        <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj" />
     </ItemGroup>
 
 </Project>

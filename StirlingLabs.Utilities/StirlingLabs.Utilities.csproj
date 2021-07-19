@@ -25,7 +25,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\StirlingLabs.Utilities.BigSpans\StirlingLabs.Utilities.BigSpans.csproj" />
-      <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.ilproj" />
     </ItemGroup>
 
 </Project>

@@ -1,8 +1,11 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
 using NUnit.Framework;
+using StirlingLabs.Utilities.Assertions;
 
 namespace StirlingLabs.Utilities.Tests
 {
@@ -89,86 +92,105 @@ namespace StirlingLabs.Utilities.Tests
         [Test]
         public static void HoldsObjectReference()
         {
-            //var wrCtrl = CreateWeakRefObject();
-            var bsObj = CreateObjectRefs(out var wrObj, out var sObj);
 
             var garbageCollected = 0uL;
 
-            GarbageCollectedNotifier.GarbageCollected += () => {
-                ++garbageCollected;
-            };
+            void OnGc() => ++garbageCollected;
 
-            var collected = false;
-
-            for (var i = 0; i < 10000; ++i)
+            try
             {
-                Unsafe.AreSame(ref sObj[0], ref bsObj[0u]);
+                //var wrCtrl = CreateWeakRefObject();
+                var bsObj = CreateObjectRefs(out var wrObj, out var sObj);
 
-                if (wrObj.TryGetTarget(out var expected))
-                {
-                    // not yet collected
-                }
-                else
-                {
-                    collected = true;
-                }
-                GC.Collect(0, GCCollectionMode.Forced, true, true);
+                GarbageCollectedNotifier.GarbageCollected += OnGc;
 
-                if (collected) return;
+                var collected = false;
+
+                for (var i = 0; i < 10000; ++i)
+                {
+                    Unsafe.AreSame(ref sObj[0], ref bsObj[0u]);
+
+                    if (wrObj.TryGetTarget(out var expected))
+                    {
+                        // not yet collected
+                    }
+                    else
+                    {
+                        collected = true;
+                    }
+                    GC.Collect(0, GCCollectionMode.Forced, true, true);
+
+                    if (collected) return;
+                }
+
+                Assert.IsFalse(collected);
             }
-
-            Assert.IsFalse(collected);
+            finally
+            {
+                GarbageCollectedNotifier.GarbageCollected -= OnGc;
+            }
         }
 
 
+#if DEBUG
+        [Ignore("Garbage collector will hold a reference to items expected to be collected under Debug mode.")]
+#endif
         [Test]
         public static void ReleasesObjectReference()
         {
-            //var wrCtrl = CreateWeakRefObject();
-            var bsObj = CreateObjectRefs(out var wrObj, out var sObj);
-            //var sObj = CreateObjectRefs(out var wrObj);
 
             var garbageCollected = 0uL;
 
-            GarbageCollectedNotifier.GarbageCollected += () => {
-                ++garbageCollected;
-            };
+            void OnGc() => ++garbageCollected;
 
-            var collected = false;
-
-            for (var i = 0; i < 10000; ++i)
+            try
             {
-                Unsafe.AreSame(ref sObj[0], ref bsObj[0u]);
+                //var wrCtrl = CreateWeakRefObject();
+                var bsObj = CreateObjectRefs(out var wrObj, out var sObj);
+                //var sObj = CreateObjectRefs(out var wrObj);
 
-                if (wrObj.TryGetTarget(out var expected))
-                {
-                    // not yet collected
-                }
-                else
-                {
-                    collected = true;
-                }
-                GC.Collect(0, GCCollectionMode.Forced, true, true);
+                GarbageCollectedNotifier.GarbageCollected += OnGc;
 
-                if (collected) return;
+                var collected = false;
+
+                for (var i = 0; i < 10000; ++i)
+                {
+                    Unsafe.AreSame(ref sObj[0], ref bsObj[0u]);
+
+                    if (wrObj.TryGetTarget(out var expected))
+                    {
+                        // not yet collected
+                    }
+                    else
+                    {
+                        collected = true;
+                    }
+                    GC.Collect(0, GCCollectionMode.Forced, true, true);
+
+                    if (collected) return;
+                }
+
+                Assert.IsFalse(collected);
+
+                sObj = null;
+                bsObj = default;
+
+                for (var i = 0; i < 10000; ++i)
+                {
+                    if (!wrObj.TryGetTarget(out var expected))
+                        collected = true;
+
+                    GC.Collect(0, GCCollectionMode.Forced, true, true);
+
+                    if (collected) return;
+                }
+
+                Assert.IsTrue(collected);
             }
-
-            Assert.IsFalse(collected);
-
-            sObj = null;
-            bsObj = default;
-
-            for (var i = 0; i < 10000; ++i)
+            finally
             {
-                if (!wrObj.TryGetTarget(out var expected))
-                    collected = true;
-
-                GC.Collect(0, GCCollectionMode.Forced, true, true);
-
-                if (collected) return;
+                GarbageCollectedNotifier.GarbageCollected -= OnGc;
             }
-
-            Assert.IsTrue(collected);
         }
 
 
@@ -209,5 +231,97 @@ namespace StirlingLabs.Utilities.Tests
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         private static void DebugProbe<T>(ref T a, ref T b)
             => Debugger.Break();
+
+#if DEBUG
+        [Ignore("Garbage collector will hold a reference to items expected to be collected under Debug mode.")]
+#endif
+        [Test]
+        public static void ObjPinnedEnumForEachTest()
+        {
+            var garbageCollected = 0uL;
+
+            void OnGc() => ++garbageCollected;
+
+            try
+            {
+                GarbageCollectedNotifier.GarbageCollected += OnGc;
+
+                var objects = new object[] { new(), new(), new(), new(), new() };
+
+                var objBigSpan = new BigSpan<object>(objects);
+
+                GC.Collect(0, GCCollectionMode.Forced, true, true);
+                objBigSpan.AsPinnedEnumerable(e => {
+                        for (var i = 0; i < 10; ++i)
+                            GC.Collect(0, GCCollectionMode.Forced, true, true);
+                        foreach (var (o, i) in e.Zip(Enumerable.Range(0, 5)))
+                        {
+                            for (var j = 0; j < 10; ++j)
+                                GC.Collect(0, GCCollectionMode.Forced, true, true);
+
+                            Assert.IsNotNull(o);
+
+                            Assert.AreEqual(objects[i], o);
+                        }
+                    }
+                );
+
+                Assert.Greater(garbageCollected, 0);
+            }
+            finally
+            {
+                GarbageCollectedNotifier.GarbageCollected -= OnGc;
+            }
+        }
+
+#if DEBUG
+        [Ignore("Garbage collector will hold a reference to items expected to be collected under Debug mode.")]
+#endif
+        [Test]
+        public static void ObjPinnedEnumForEachTest2()
+        {
+            var garbageCollected = 0uL;
+
+            void OnGc() => ++garbageCollected;
+
+            BigSpan<object> CreateFiveObjects() => (BigSpan<object>)new object[] { new(), new(), new(), new(), new() };
+
+            try
+            {
+                GarbageCollectedNotifier.GarbageCollected += OnGc;
+
+                var objBigSpan = CreateFiveObjects();
+
+                GC.Collect(0, GCCollectionMode.Forced, true, true);
+                objBigSpan.AsPinnedEnumerable(e => {
+                        for (var i = 0; i < 10; ++i)
+                            GC.Collect(0, GCCollectionMode.Forced, true, true);
+                        foreach (var (o, i) in e.Zip(Enumerable.Range(0, 5)))
+                        {
+                            for (var j = 0; j < 10; ++j)
+                                GC.Collect(0, GCCollectionMode.Forced, true, true);
+
+                            Assert.IsNotNull(o);
+                        }
+                    }
+                );
+
+                Assert.Greater(garbageCollected, 0);
+            }
+            finally
+            {
+                GarbageCollectedNotifier.GarbageCollected -= OnGc;
+            }
+        }
+
+        [Test]
+        public static void ObjPinnedEnumAssertTest()
+        {
+            var objects = new object[] { new(), new(), new(), new(), new() };
+
+            var objBigSpan = new BigSpan<object>(objects);
+
+            BigSpanAssert.AllItemsAreNotNull(objBigSpan);
+        }
     }
 }

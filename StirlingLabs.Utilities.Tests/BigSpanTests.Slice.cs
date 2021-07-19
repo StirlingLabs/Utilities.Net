@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using NUnit.Framework;
+using StirlingLabs.Utilities.Magic;
 
 namespace StirlingLabs.Utilities.Tests
 {

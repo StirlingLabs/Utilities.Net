@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using StirlingLabs.Utilities.Magic;
 
 namespace StirlingLabs.Utilities
 {
@@ -66,7 +67,6 @@ namespace StirlingLabs.Utilities
         /// <summary>
         /// Reads a UInt16 out of a read-only span of bytes as little endian.
         /// </summary>
-        [CLSCompliant(false)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ushort ReadUInt16LittleEndian(ReadOnlyBigSpan<byte> source)
         {
@@ -77,7 +77,6 @@ namespace StirlingLabs.Utilities
         /// <summary>
         /// Reads a UInt32 out of a read-only span of bytes as little endian.
         /// </summary>
-        [CLSCompliant(false)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint ReadUInt32LittleEndian(ReadOnlyBigSpan<byte> source)
         {
@@ -88,7 +87,6 @@ namespace StirlingLabs.Utilities
         /// <summary>
         /// Reads a UInt64 out of a read-only span of bytes as little endian.
         /// </summary>
-        [CLSCompliant(false)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong ReadUInt64LittleEndian(ReadOnlyBigSpan<byte> source)
         {
@@ -192,7 +190,6 @@ namespace StirlingLabs.Utilities
         /// Reads a UInt16 out of a read-only span of bytes as little endian.
         /// </summary>
         /// <returns>If the span is too small to contain a UInt16, return false.</returns>
-        [CLSCompliant(false)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryReadUInt16LittleEndian(ReadOnlyBigSpan<byte> source, out ushort value)
         {
@@ -211,7 +208,6 @@ namespace StirlingLabs.Utilities
         /// Reads a UInt32 out of a read-only span of bytes as little endian.
         /// </summary>
         /// <returns>If the span is too small to contain a UInt32, return false.</returns>
-        [CLSCompliant(false)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryReadUInt32LittleEndian(ReadOnlyBigSpan<byte> source, out uint value)
         {
@@ -230,7 +226,6 @@ namespace StirlingLabs.Utilities
         /// Reads a UInt64 out of a read-only span of bytes as little endian.
         /// </summary>
         /// <returns>If the span is too small to contain a UInt64, return false.</returns>
-        [CLSCompliant(false)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool TryReadUInt64LittleEndian(ReadOnlyBigSpan<byte> source, out ulong value)
         {
