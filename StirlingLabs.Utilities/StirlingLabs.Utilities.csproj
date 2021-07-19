@@ -20,11 +20,7 @@
       </PackageReference>
       <PackageReference Include="InlineIL.Fody" Version="1.7.0" PrivateAssets="all" />
         <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
+        <PackageReference Include="StirlingLabs.BigSpans" Version="21.7.0-pre-462b7" />
         <PackageReference Include="XKCP.NET" Version="21.7.1" />
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\StirlingLabs.Utilities.BigSpans\StirlingLabs.Utilities.BigSpans.csproj" />
-    </ItemGroup>
-
 </Project>
