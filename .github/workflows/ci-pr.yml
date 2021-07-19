@@ -17,6 +17,8 @@ jobs:
           source-url: https://nuget.pkg.github.com/StirlingLabs/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ github.token }}
+      - name: Delete Nuget Config
+        run: rm nuget.config
       - name: Build
         run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
         env:
