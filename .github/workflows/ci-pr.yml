@@ -14,18 +14,13 @@ jobs:
       - uses: actions/setup-dotnet@v1.8.1
         with:
           dotnet-version: 5.0.x
-      - name: Cleanup
-        if: always()
-        continue-on-error: true
-        run: |
-          dotnet nuget remove source github
-      - name: Ensure GitHub NuGet Source
-        run: |
-          dotnet nuget add source https://nuget.pkg.github.com/StirlingLabs/index.json -n github -u StirlingLabsDaemon -p ${{ secrets.GH_PAT }} --store-password-in-clear-text
+          source-url: https://nuget.pkg.github.com/StirlingLabs/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.GH_PAT }}
       - name: Build
         run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
         env:
-          NUGET_AUTH_TOKEN: ${{ github.token }}
+          NUGET_AUTH_TOKEN: ${{ secrets.GH_PAT }}
       - name: Test
         run: dotnet test StirlingLabs.Utilities.Net.sln --no-build -c Release --logger GitHubActions
       - name: Artifacts
