@@ -13,11 +13,10 @@
         <PackageReference Include="NUnit" Version="3.13.2" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
+        <PackageReference Include="StirlingLabs.BigSpan.NUnit" Version="21.7.0-pre-462b7" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\StirlingLabs.Utilities.BigSpan.NUnit\StirlingLabs.Utilities.BigSpan.NUnit.csproj" />
-        <ProjectReference Include="..\StirlingLabs.Utilities.BigSpans\StirlingLabs.Utilities.BigSpans.csproj" />
         <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj" />
         <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj" />
     </ItemGroup>

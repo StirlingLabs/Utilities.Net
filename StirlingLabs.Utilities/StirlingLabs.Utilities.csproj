@@ -1,27 +1,26 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Stirling Labs</Authors>
-    <PackageOutputPath>../artifacts</PackageOutputPath>
-    <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
-    <DeterministicSourcePaths Condition="'$(Configuration)'=='Release'">true</DeterministicSourcePaths>
-  </PropertyGroup>
-  <ImportGroup>
-    <Import Project="../Version.proj" />
-  </ImportGroup>
-  <ItemGroup>
-    <PackageReference Include="Fody" Version="6.5.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="InlineIL.Fody" Version="1.7.0" PrivateAssets="all" />
-    <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
-    <PackageReference Include="StirlingLabs.BigSpans" Version="21.7.0-pre-462b7" />
-    <PackageReference Include="XKCP.NET" Version="21.7.2" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Stirling Labs</Authors>
+        <PackageOutputPath>../artifacts</PackageOutputPath>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ImportGroup>
+        <Import Project="../Version.proj" />
+    </ImportGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Fody" Version="6.5.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="InlineIL.Fody" Version="1.7.0" PrivateAssets="all" />
+        <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
+        <PackageReference Include="StirlingLabs.BigSpans" Version="21.7.0-pre-462b7" />
+        <PackageReference Include="XKCP.NET" Version="21.7.1" />
+    </ItemGroup>
 </Project>
