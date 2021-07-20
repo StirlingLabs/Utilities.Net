@@ -1,0 +1,52 @@
+name: Deployment
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Fetch tag git metadata
+        run: git fetch --force --update-shallow --depth 1 origin 'refs/tags/*:refs/tags/*'
+      - uses: actions/setup-dotnet@v1.8.1
+        with:
+          dotnet-version: 5.0.x
+      - name: NuGet Auth
+        shell: bash
+        run: |
+          [ ! -f ~/NuGet.config ] && echo '<?xml version="1.0" encoding="utf-8"?><configuration/>' > ~/NuGet.Config
+          dotnet nuget add source https://nuget.pkg.github.com/${{github.repository_owner}}/index.json \
+            --configfile ~/NuGet.Config \
+            -n GitHub-${{github.repository_owner}} \
+            -u ${{github.repository_owner}} \
+            -p ${{secrets.DAEMON_NUGET}} \
+            --store-password-in-clear-text
+      - name: Build
+        run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
+      - name: Test
+        run: dotnet test StirlingLabs.Utilities.Net.sln --no-build -c Release --logger GitHubActions
+      - name: Push NuPkg
+        run: dotnet nuget push artifacts/*.nupkg -k ${{github.token}} -s https://nuget.pkg.github.com/${{github.repository_owner}}/index.json -n 1
+      - name: Save coverage to storage branch
+        uses: StirlingLabs/action-storage@v21.07.2
+        with:
+          comment: |
+            Coverage for ${{github.ref}}
+            Action: https://github.com/${{github.repository_owner}}/${{github.repository}}/actions/runs/${{github.run_id}}
+            Commit: https://github.com/${{github.repository_owner}}/${{github.repository}}/commit/${{github.sha}}
+          storage-branch: coverage
+          src: coverage
+          dst: coverage
+          overwrite: true
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Utilities.Net
+          files: |
+            artifacts/*.*
+        env:
+          GITHUB_TOKEN: ${{github.token}}

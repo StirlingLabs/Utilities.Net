@@ -8,19 +8,19 @@
         <PackageOutputPath>../artifacts</PackageOutputPath>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-    
+
     <ImportGroup>
         <Import Project="../Version.proj" />
     </ImportGroup>
 
     <ItemGroup>
-      <PackageReference Include="Fody" Version="6.5.1">
+      <PackageReference Include="Fody" Version="6.5.2">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="InlineIL.Fody" Version="1.7.0" PrivateAssets="all" />
+      <PackageReference Include="InlineIL.Fody" Version="1.7.1" PrivateAssets="all" />
         <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" PrivateAssets="all" />
         <PackageReference Include="StirlingLabs.BigSpans" Version="21.7.0-pre-462b7" />
-        <PackageReference Include="XKCP.NET" Version="21.7.0-rc1" />
+        <PackageReference Include="XKCP.NET" Version="21.7.2" />
     </ItemGroup>
 </Project>
