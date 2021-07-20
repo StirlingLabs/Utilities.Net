@@ -35,7 +35,7 @@ jobs:
           storage-branch: coverage
           src: coverage
           dst: coverage
-          overwrite: true
+          prune: true
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
