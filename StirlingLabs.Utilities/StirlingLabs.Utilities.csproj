@@ -8,7 +8,7 @@
         <PackageOutputPath>../artifacts</PackageOutputPath>
         <Nullable>enable</Nullable>
     </PropertyGroup>
-    
+
     <ImportGroup>
         <Import Project="../Version.proj" />
     </ImportGroup>
