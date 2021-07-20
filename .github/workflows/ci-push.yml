@@ -17,15 +17,9 @@ jobs:
         with:
           dotnet-version: 5.0.x
       - name: NuGet Auth
-        shell: bash
-        run: |
-          [ ! -f ~/NuGet.config ] && echo '<?xml version="1.0" encoding="utf-8"?><configuration/>' > ~/NuGet.Config
-          dotnet nuget add source https://nuget.pkg.github.com/${{github.repository_owner}}/index.json \
-            --configfile ~/NuGet.Config \
-            -n GitHub-${{github.repository_owner}} \
-            -u ${{github.repository_owner}} \
-            -p ${{secrets.DAEMON_NUGET}} \
-            --store-password-in-clear-text
+        uses: StirlingLabs/GithubNugetAuthAction@main
+        with:
+          token: ${{secrets.DAEMON_NUGET}}
       - name: Build
         run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
       - name: Test
