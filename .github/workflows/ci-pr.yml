@@ -16,11 +16,11 @@ jobs:
           dotnet-version: 5.0.x
           source-url: https://nuget.pkg.github.com/StirlingLabs/index.json
         env:
-          NUGET_AUTH_TOKEN: ${{ secrets.GH_PAT }}
+          NUGET_AUTH_TOKEN: ${{ github.token }}
       - name: Build
         run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
         env:
-          NUGET_AUTH_TOKEN: ${{ secrets.GH_PAT }}
+          NUGET_AUTH_TOKEN: ${{ github.token }}
       - name: Test
         run: dotnet test StirlingLabs.Utilities.Net.sln --no-build -c Release --logger GitHubActions
       - name: Artifacts
