@@ -6,6 +6,12 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Authors>Stirling Labs</Authors>
         <Nullable>enable</Nullable>
+
+        <CollectCoverage>true</CollectCoverage>
+        <CoverletOutputFormat>lcov</CoverletOutputFormat>
+        <CoverletOutput>../coverage/</CoverletOutput>
+        <DeterministicReport>true</DeterministicReport>
+        <DeterministicSourcePaths>true</DeterministicSourcePaths>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +21,9 @@
         <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
         <PackageReference Include="StirlingLabs.BigSpan.NUnit" Version="21.7.0-pre-462b7" />
+        <PackageReference Include="coverlet.collector" Version="3.0.3" PrivateAssets="all" />
+        <PackageReference Include="coverlet.msbuild" Version="3.0.3" PrivateAssets="all" />
+        <PackageReference Include="ReportGenerator" Version="4.8.11" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,7 +38,7 @@
                 OutputFilename="@(CoverletReport)"
                 MatchText="$([System.IO.Path]::GetFullPath('..\StirlingLabs.Utilities\'))"
                 ReplacementText="" />
-    
+
         <!-- remove absolute path using forward slashes for other platforms -->
         <ReplaceFileTextByLines
                 Condition="!$(OS.StartsWith('Windows'))"
@@ -37,14 +46,14 @@
                 OutputFilename="@(CoverletReport)"
                 MatchText="$([System.IO.Path]::GetFullPath('../StirlingLabs.Utilities/'))"
                 ReplacementText="" />
-    
+
         <!-- generate markdown coverage report and badges -->
         <ReportGenerator ReportFiles="@(CoverletReport)"
                          ReportTypes="MarkdownSummary;Badges"
                          SourceDirectories="../StirlingLabs.Utilities"
                          TargetDirectory="../coverage/" />
       </Target>
-    
+
       <!-- task to replace text line for line -->
       <UsingTask TaskName="ReplaceFileTextByLines" TaskFactory="RoslynCodeTaskFactory"
                  AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
