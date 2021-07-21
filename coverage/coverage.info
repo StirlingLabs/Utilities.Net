@@ -1,0 +1,584 @@
+SF:Common.cs
+FN:17,T StirlingLabs.Utilities.Common::OnDemand(System.WeakReference`1<T>&,System.Func`1<T>)
+FNDA:3,T StirlingLabs.Utilities.Common::OnDemand(System.WeakReference`1<T>&,System.Func`1<T>)
+DA:18,3
+DA:19,3
+DA:20,0
+DA:21,0
+DA:22,3
+BRDA:18,2,0,3
+BRDA:18,2,1,0
+BRDA:20,30,0,0
+BRDA:20,30,1,3
+FN:25,System.Collections.Generic.EqualityComparer`1<T> StirlingLabs.Utilities.Common::CreateEqualityComparer(System.Func`3<T,T,System.Boolean>,System.Func`2<T,System.Int32>)
+FNDA:0,System.Collections.Generic.EqualityComparer`1<T> StirlingLabs.Utilities.Common::CreateEqualityComparer(System.Func`3<T,T,System.Boolean>,System.Func`2<T,System.Int32>)
+DA:26,0
+FN:27,System.Collections.Generic.EqualityComparer`1<T> StirlingLabs.Utilities.Common::CreateEqualityComparer(System.Func`3<T,T,System.Boolean>)
+FNDA:0,System.Collections.Generic.EqualityComparer`1<T> StirlingLabs.Utilities.Common::CreateEqualityComparer(System.Func`3<T,T,System.Boolean>)
+DA:28,0
+FN:29,System.Collections.Generic.EqualityComparer`1<T> StirlingLabs.Utilities.Common::CreateEqualityComparer(System.Func`2<T,System.Int32>)
+FNDA:0,System.Collections.Generic.EqualityComparer`1<T> StirlingLabs.Utilities.Common::CreateEqualityComparer(System.Func`2<T,System.Int32>)
+DA:30,0
+FN:51,System.Void StirlingLabs.Utilities.Common::DontBox(System.Span`1<T>)
+FNDA:0,System.Void StirlingLabs.Utilities.Common::DontBox(System.Span`1<T>)
+DA:52,0
+FN:73,System.Void StirlingLabs.Utilities.Common::DontBox(System.ReadOnlySpan`1<T>)
+FNDA:0,System.Void StirlingLabs.Utilities.Common::DontBox(System.ReadOnlySpan`1<T>)
+DA:74,0
+FN:95,System.Void StirlingLabs.Utilities.Common::DontBox(StirlingLabs.Utilities.BigSpan`1<T>)
+FNDA:0,System.Void StirlingLabs.Utilities.Common::DontBox(StirlingLabs.Utilities.BigSpan`1<T>)
+DA:96,0
+FN:117,System.Void StirlingLabs.Utilities.Common::DontBox(StirlingLabs.Utilities.ReadOnlyBigSpan`1<T>)
+FNDA:0,System.Void StirlingLabs.Utilities.Common::DontBox(StirlingLabs.Utilities.ReadOnlyBigSpan`1<T>)
+DA:118,0
+FN:120,System.UIntPtr StirlingLabs.Utilities.Common::GetLength(T[])
+FNDA:0,System.UIntPtr StirlingLabs.Utilities.Common::GetLength(T[])
+DA:121,0
+BRDA:121,5,0,0
+BRDA:121,5,1,0
+FN:11,System.Void StirlingLabs.Utilities.Common::.cctor()
+FNDA:0,System.Void StirlingLabs.Utilities.Common::.cctor()
+DA:12,0
+LF:14
+LH:3
+BRF:6
+BRH:2
+FNF:10
+FNH:1
+end_of_record
+SF:DelegatingEqualityComparer.cs
+FN:29,System.Boolean StirlingLabs.Utilities.DelegatingEqualityComparer`1::Equals(T,T)
+FNDA:6,System.Boolean StirlingLabs.Utilities.DelegatingEqualityComparer`1::Equals(T,T)
+DA:30,6
+FN:32,System.Int32 StirlingLabs.Utilities.DelegatingEqualityComparer`1::GetHashCode(T)
+FNDA:12,System.Int32 StirlingLabs.Utilities.DelegatingEqualityComparer`1::GetHashCode(T)
+DA:33,12
+FN:12,System.Void StirlingLabs.Utilities.DelegatingEqualityComparer`1::.ctor(System.Func`3<T,T,System.Boolean>,System.Func`2<T,System.Int32>)
+FNDA:0,System.Void StirlingLabs.Utilities.DelegatingEqualityComparer`1::.ctor(System.Func`3<T,T,System.Boolean>,System.Func`2<T,System.Int32>)
+DA:13,0
+DA:15,0
+DA:16,0
+DA:17,0
+BRDA:15,9,0,0
+BRDA:15,9,1,0
+BRDA:16,31,0,0
+BRDA:16,31,1,0
+FN:17,System.Void StirlingLabs.Utilities.DelegatingEqualityComparer`1::.ctor(System.Func`3<T,T,System.Boolean>)
+FNDA:1,System.Void StirlingLabs.Utilities.DelegatingEqualityComparer`1::.ctor(System.Func`3<T,T,System.Boolean>)
+DA:18,1
+DA:20,1
+DA:21,1
+DA:22,1
+BRDA:20,9,0,0
+BRDA:20,9,1,1
+FN:22,System.Void StirlingLabs.Utilities.DelegatingEqualityComparer`1::.ctor(System.Func`2<T,System.Int32>)
+FNDA:0,System.Void StirlingLabs.Utilities.DelegatingEqualityComparer`1::.ctor(System.Func`2<T,System.Int32>)
+DA:23,0
+DA:25,0
+DA:26,0
+DA:27,0
+BRDA:26,36,0,0
+BRDA:26,36,1,0
+LF:14
+LH:6
+BRF:8
+BRH:1
+FNF:5
+FNH:3
+end_of_record
+SF:GarbageCollectedNotifier.cs
+FN:20,System.Void StirlingLabs.Utilities.GarbageCollectedNotifier::Finalize()
+FNDA:0,System.Void StirlingLabs.Utilities.GarbageCollectedNotifier::Finalize()
+DA:21,0
+DA:22,0
+DA:23,0
+DA:25,0
+DA:27,0
+DA:28,0
+BRDA:21,5,0,0
+BRDA:21,5,1,0
+BRDA:21,17,0,0
+BRDA:21,17,1,0
+BRDA:25,27,0,0
+BRDA:25,27,1,0
+FN:12,System.Void StirlingLabs.Utilities.GarbageCollectedNotifier::.cctor()
+FNDA:0,System.Void StirlingLabs.Utilities.GarbageCollectedNotifier::.cctor()
+DA:13,0
+FN:14,System.Void StirlingLabs.Utilities.GarbageCollectedNotifier::.ctor()
+FNDA:0,System.Void StirlingLabs.Utilities.GarbageCollectedNotifier::.ctor()
+DA:15,0
+LF:8
+LH:0
+BRF:6
+BRH:0
+FNF:3
+FNH:0
+end_of_record
+SF:InsecureRandomNumberGenerator.cs
+FN:11,System.Void StirlingLabs.Utilities.InsecureRandomNumberGenerator::GetBytes(System.Span`1<System.Byte>)
+FNDA:0,System.Void StirlingLabs.Utilities.InsecureRandomNumberGenerator::GetBytes(System.Span`1<System.Byte>)
+DA:12,0
+FN:14,System.Void StirlingLabs.Utilities.InsecureRandomNumberGenerator::GetBytes(System.Byte[])
+FNDA:0,System.Void StirlingLabs.Utilities.InsecureRandomNumberGenerator::GetBytes(System.Byte[])
+DA:15,0
+FN:18,System.Void StirlingLabs.Utilities.InsecureRandomNumberGenerator::GetNonZeroBytes(System.Span`1<System.Byte>)
+FNDA:0,System.Void StirlingLabs.Utilities.InsecureRandomNumberGenerator::GetNonZeroBytes(System.Span`1<System.Byte>)
+DA:19,0
+DA:20,0
+DA:22,0
+DA:23,0
+DA:24,0
+DA:26,0
+BRDA:20,59,1,0
+BRDA:23,26,0,0
+BRDA:23,26,1,0
+BRDA:20,59,0,0
+FN:28,System.Void StirlingLabs.Utilities.InsecureRandomNumberGenerator::GetNonZeroBytes(System.Byte[])
+FNDA:0,System.Void StirlingLabs.Utilities.InsecureRandomNumberGenerator::GetNonZeroBytes(System.Byte[])
+DA:29,0
+FN:8,System.Void StirlingLabs.Utilities.InsecureRandomNumberGenerator::.cctor()
+FNDA:0,System.Void StirlingLabs.Utilities.InsecureRandomNumberGenerator::.cctor()
+DA:9,0
+LF:10
+LH:0
+BRF:4
+BRH:0
+FNF:5
+FNH:0
+end_of_record
+SF:Security.cs
+FN:13,System.Void StirlingLabs.Utilities.Security::FillWithRandomData(StirlingLabs.Utilities.BigSpan`1<System.Byte>)
+FNDA:0,System.Void StirlingLabs.Utilities.Security::FillWithRandomData(StirlingLabs.Utilities.BigSpan`1<System.Byte>)
+DA:14,0
+DA:15,0
+DA:16,0
+DA:18,0
+DA:20,0
+DA:21,0
+DA:22,0
+DA:26,0
+DA:27,0
+DA:28,0
+BRDA:18,46,1,0
+BRDA:18,46,0,0
+BRDA:26,51,0,0
+BRDA:26,51,1,0
+FN:31,System.Void StirlingLabs.Utilities.Security::FillWithRandomData(StirlingLabs.Utilities.BigSpan`1<System.Byte>,System.Security.Cryptography.RandomNumberGenerator)
+FNDA:0,System.Void StirlingLabs.Utilities.Security::FillWithRandomData(StirlingLabs.Utilities.BigSpan`1<System.Byte>,System.Security.Cryptography.RandomNumberGenerator)
+DA:32,0
+DA:33,0
+DA:34,0
+DA:36,0
+DA:38,0
+DA:39,0
+DA:40,0
+DA:44,0
+DA:45,0
+DA:46,0
+BRDA:36,47,1,0
+BRDA:36,47,0,0
+BRDA:44,52,0,0
+BRDA:44,52,1,0
+FN:48,System.Void StirlingLabs.Utilities.Security::FillWithNonZeroRandomData(StirlingLabs.Utilities.BigSpan`1<System.Byte>,System.Security.Cryptography.RandomNumberGenerator)
+FNDA:0,System.Void StirlingLabs.Utilities.Security::FillWithNonZeroRandomData(StirlingLabs.Utilities.BigSpan`1<System.Byte>,System.Security.Cryptography.RandomNumberGenerator)
+DA:49,0
+DA:50,0
+DA:51,0
+DA:52,0
+DA:54,0
+DA:56,0
+DA:57,0
+DA:58,0
+DA:62,0
+DA:63,0
+DA:64,0
+BRDA:49,1,0,0
+BRDA:49,1,1,0
+BRDA:54,57,1,0
+BRDA:54,57,0,0
+BRDA:62,62,0,0
+BRDA:62,62,1,0
+FN:66,System.Byte[] StirlingLabs.Utilities.Security::GetHash(System.Byte[])
+FNDA:6,System.Byte[] StirlingLabs.Utilities.Security::GetHash(System.Byte[])
+DA:67,6
+FN:69,System.Byte[] StirlingLabs.Utilities.Security::GetHash(System.ReadOnlySpan`1<System.Byte>)
+FNDA:0,System.Byte[] StirlingLabs.Utilities.Security::GetHash(System.ReadOnlySpan`1<System.Byte>)
+DA:70,0
+FN:73,System.Byte[] StirlingLabs.Utilities.Security::GetHash(StirlingLabs.Utilities.ReadOnlyBigSpan`1<System.Byte>)
+FNDA:0,System.Byte[] StirlingLabs.Utilities.Security::GetHash(StirlingLabs.Utilities.ReadOnlyBigSpan`1<System.Byte>)
+DA:74,0
+DA:75,0
+DA:76,0
+DA:78,0
+DA:79,0
+DA:80,0
+BRDA:75,10,0,0
+BRDA:75,10,1,0
+BRDA:75,15,0,0
+BRDA:75,15,1,0
+BRDA:78,56,0,0
+BRDA:78,56,1,0
+LF:39
+LH:1
+BRF:20
+BRH:0
+FNF:6
+FNH:1
+end_of_record
+SF:/home/runner/work/Utilities.Net/Utilities.Net/StirlingLabs.Utilities.Yaml/Extensions.Deserialize.cs
+FN:11,System.Object StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlStream)
+FNDA:1,System.Object StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlStream)
+DA:12,1
+BRDA:12,1,0,1
+BRDA:12,1,1,0
+FN:13,System.Object StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlDocument)
+FNDA:0,System.Object StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlDocument)
+DA:14,0
+BRDA:14,1,0,0
+BRDA:14,1,1,0
+FN:15,System.Object StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlNode)
+FNDA:0,System.Object StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlNode)
+DA:16,0
+BRDA:16,1,0,0
+BRDA:16,1,1,0
+FN:18,System.Object StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.RepresentationModel.YamlStream)
+FNDA:0,System.Object StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.RepresentationModel.YamlStream)
+DA:19,0
+FN:21,System.Object StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.RepresentationModel.YamlDocument)
+FNDA:0,System.Object StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.RepresentationModel.YamlDocument)
+DA:22,0
+FN:24,System.Object StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.RepresentationModel.YamlNode)
+FNDA:0,System.Object StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.RepresentationModel.YamlNode)
+DA:25,0
+LF:6
+LH:1
+BRF:6
+BRH:1
+FNF:6
+FNH:1
+end_of_record
+SF:/home/runner/work/Utilities.Net/Utilities.Net/StirlingLabs.Utilities.Yaml/Extensions.Deserialize.Generic.cs
+FN:10,T StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlStream)
+FNDA:0,T StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlStream)
+DA:11,0
+BRDA:11,1,0,0
+BRDA:11,1,1,0
+FN:13,T StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlDocument)
+FNDA:0,T StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlDocument)
+DA:14,0
+BRDA:14,1,0,0
+BRDA:14,1,1,0
+FN:16,T StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlNode)
+FNDA:0,T StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlNode)
+DA:17,0
+BRDA:17,1,0,0
+BRDA:17,1,1,0
+FN:19,T StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.RepresentationModel.YamlStream)
+FNDA:0,T StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.RepresentationModel.YamlStream)
+DA:20,0
+FN:22,T StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.RepresentationModel.YamlDocument)
+FNDA:0,T StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.RepresentationModel.YamlDocument)
+DA:23,0
+FN:25,T StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.RepresentationModel.YamlNode)
+FNDA:0,T StirlingLabs.Utilities.Yaml.Extensions::Deserialize(YamlDotNet.RepresentationModel.YamlNode)
+DA:26,0
+LF:6
+LH:0
+BRF:6
+BRH:0
+FNF:6
+FNH:0
+end_of_record
+SF:/home/runner/work/Utilities.Net/Utilities.Net/StirlingLabs.Utilities.Yaml/Extensions.Internal.cs
+FN:13,System.String StirlingLabs.Utilities.Yaml.Extensions::SerializeJson(System.Object)
+FNDA:0,System.String StirlingLabs.Utilities.Yaml.Extensions::SerializeJson(System.Object)
+DA:14,0
+FN:17,System.String StirlingLabs.Utilities.Yaml.Extensions::SerializeYaml(System.Object)
+FNDA:0,System.String StirlingLabs.Utilities.Yaml.Extensions::SerializeYaml(System.Object)
+DA:18,0
+FN:22,System.String StirlingLabs.Utilities.Yaml.Extensions::Serialize(System.Object,YamlDotNet.Serialization.ISerializer)
+FNDA:1,System.String StirlingLabs.Utilities.Yaml.Extensions::Serialize(System.Object,YamlDotNet.Serialization.ISerializer)
+DA:23,1
+DA:24,1
+DA:25,1
+DA:26,1
+DA:27,1
+BRDA:23,1,0,0
+BRDA:23,1,1,1
+LF:7
+LH:5
+BRF:2
+BRH:1
+FNF:3
+FNH:1
+end_of_record
+SF:/home/runner/work/Utilities.Net/Utilities.Net/StirlingLabs.Utilities.Yaml/Extensions.Serialize.cs
+FN:10,System.String StirlingLabs.Utilities.Yaml.Extensions::Serialize(YamlDotNet.RepresentationModel.YamlStream,YamlDotNet.Serialization.ISerializer)
+FNDA:1,System.String StirlingLabs.Utilities.Yaml.Extensions::Serialize(YamlDotNet.RepresentationModel.YamlStream,YamlDotNet.Serialization.ISerializer)
+DA:11,1
+FN:13,System.String StirlingLabs.Utilities.Yaml.Extensions::Serialize(YamlDotNet.RepresentationModel.YamlDocument,YamlDotNet.Serialization.ISerializer)
+FNDA:0,System.String StirlingLabs.Utilities.Yaml.Extensions::Serialize(YamlDotNet.RepresentationModel.YamlDocument,YamlDotNet.Serialization.ISerializer)
+DA:14,0
+FN:16,System.String StirlingLabs.Utilities.Yaml.Extensions::Serialize(YamlDotNet.RepresentationModel.YamlNode,YamlDotNet.Serialization.ISerializer)
+FNDA:0,System.String StirlingLabs.Utilities.Yaml.Extensions::Serialize(YamlDotNet.RepresentationModel.YamlNode,YamlDotNet.Serialization.ISerializer)
+DA:17,0
+FN:18,System.String StirlingLabs.Utilities.Yaml.Extensions::ToYaml(YamlDotNet.RepresentationModel.YamlStream)
+FNDA:0,System.String StirlingLabs.Utilities.Yaml.Extensions::ToYaml(YamlDotNet.RepresentationModel.YamlStream)
+DA:19,0
+FN:21,System.String StirlingLabs.Utilities.Yaml.Extensions::ToYaml(YamlDotNet.RepresentationModel.YamlDocument)
+FNDA:0,System.String StirlingLabs.Utilities.Yaml.Extensions::ToYaml(YamlDotNet.RepresentationModel.YamlDocument)
+DA:22,0
+FN:24,System.String StirlingLabs.Utilities.Yaml.Extensions::ToYaml(YamlDotNet.RepresentationModel.YamlNode)
+FNDA:0,System.String StirlingLabs.Utilities.Yaml.Extensions::ToYaml(YamlDotNet.RepresentationModel.YamlNode)
+DA:25,0
+FN:28,System.String StirlingLabs.Utilities.Yaml.Extensions::ToJson(YamlDotNet.RepresentationModel.YamlStream)
+FNDA:1,System.String StirlingLabs.Utilities.Yaml.Extensions::ToJson(YamlDotNet.RepresentationModel.YamlStream)
+DA:29,1
+DA:30,1
+DA:31,1
+FN:35,System.String StirlingLabs.Utilities.Yaml.Extensions::ToJson(YamlDotNet.RepresentationModel.YamlDocument)
+FNDA:0,System.String StirlingLabs.Utilities.Yaml.Extensions::ToJson(YamlDotNet.RepresentationModel.YamlDocument)
+DA:36,0
+DA:37,0
+DA:38,0
+FN:42,System.String StirlingLabs.Utilities.Yaml.Extensions::ToJson(YamlDotNet.RepresentationModel.YamlNode)
+FNDA:0,System.String StirlingLabs.Utilities.Yaml.Extensions::ToJson(YamlDotNet.RepresentationModel.YamlNode)
+DA:43,0
+DA:44,0
+DA:45,0
+LF:15
+LH:4
+BRF:0
+BRH:0
+FNF:9
+FNH:2
+end_of_record
+SF:/home/runner/work/Utilities.Net/Utilities.Net/StirlingLabs.Utilities.Yaml/OnDemand.cs
+FN:16,YamlDotNet.Serialization.IDeserializer StirlingLabs.Utilities.Yaml.OnDemand::get_Deserializer()
+FNDA:2,YamlDotNet.Serialization.IDeserializer StirlingLabs.Utilities.Yaml.OnDemand::get_Deserializer()
+DA:17,2
+FN:19,YamlDotNet.Serialization.ISerializer StirlingLabs.Utilities.Yaml.OnDemand::get_JsonSerializer()
+FNDA:2,YamlDotNet.Serialization.ISerializer StirlingLabs.Utilities.Yaml.OnDemand::get_JsonSerializer()
+DA:20,2
+FN:22,YamlDotNet.Serialization.ISerializer StirlingLabs.Utilities.Yaml.OnDemand::get_YamlSerializer()
+FNDA:2,YamlDotNet.Serialization.ISerializer StirlingLabs.Utilities.Yaml.OnDemand::get_YamlSerializer()
+DA:23,2
+LF:3
+LH:3
+BRF:0
+BRH:0
+FNF:3
+FNH:3
+end_of_record
+SF:/home/runner/work/Utilities.Net/Utilities.Net/StirlingLabs.Utilities.Yaml/YamlToJsonVisitor.cs
+FN:27,System.String StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::ToString()
+FNDA:1,System.String StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::ToString()
+DA:28,1
+FN:31,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::Visit(YamlDotNet.RepresentationModel.YamlStream)
+FNDA:1,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::Visit(YamlDotNet.RepresentationModel.YamlStream)
+DA:32,1
+DA:34,0
+DA:36,1
+DA:37,1
+DA:39,0
+DA:40,0
+DA:42,0
+DA:43,0
+DA:45,0
+DA:46,0
+BRDA:32,13,0,1
+BRDA:32,13,1,0
+BRDA:32,17,1,1
+BRDA:32,17,0,0
+BRDA:40,101,1,0
+BRDA:40,101,0,0
+FN:48,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::Visit(YamlDotNet.RepresentationModel.YamlDocument)
+FNDA:1,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::Visit(YamlDotNet.RepresentationModel.YamlDocument)
+DA:49,1
+FN:52,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::Visit(YamlDotNet.RepresentationModel.YamlScalarNode)
+FNDA:1251,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::Visit(YamlDotNet.RepresentationModel.YamlScalarNode)
+DA:53,1251
+DA:54,0
+DA:55,1251
+DA:56,514
+DA:58,737
+DA:59,737
+BRDA:53,6,0,1251
+BRDA:53,24,0,1251
+BRDA:53,6,1,0
+BRDA:53,24,1,0
+BRDA:53,42,0,0
+BRDA:53,42,1,1251
+BRDA:55,78,0,514
+BRDA:55,78,1,737
+FN:62,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::Visit(YamlDotNet.RepresentationModel.YamlSequenceNode)
+FNDA:5,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::Visit(YamlDotNet.RepresentationModel.YamlSequenceNode)
+DA:63,5
+DA:64,5
+DA:66,0
+DA:67,0
+DA:69,2414
+DA:71,1202
+DA:72,1202
+DA:74,5
+DA:75,5
+BRDA:64,25,0,0
+BRDA:64,25,1,5
+BRDA:69,83,1,1202
+BRDA:69,83,0,5
+FN:78,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::Visit(YamlDotNet.RepresentationModel.YamlMappingNode)
+FNDA:17,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::Visit(YamlDotNet.RepresentationModel.YamlMappingNode)
+DA:79,17
+DA:80,17
+DA:82,8
+DA:83,8
+DA:85,88
+DA:87,35
+DA:88,35
+DA:89,35
+DA:90,35
+DA:92,9
+DA:93,9
+BRDA:80,25,0,8
+BRDA:80,25,1,9
+BRDA:85,125,1,35
+BRDA:85,125,0,9
+FN:17,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::.ctor()
+FNDA:1,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::.ctor()
+DA:18,1
+DA:19,1
+FN:20,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::.ctor(System.Int32)
+FNDA:0,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::.ctor(System.Int32)
+DA:21,0
+DA:22,0
+FN:23,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::.ctor(System.Text.StringBuilder)
+FNDA:0,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::.ctor(System.Text.StringBuilder)
+DA:24,0
+DA:25,0
+FN:13,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::.cctor()
+FNDA:1,System.Void StirlingLabs.Utilities.Yaml.YamlToJsonVisitor::.cctor()
+DA:14,1
+DA:15,1
+LF:46
+LH:32
+BRF:22
+BRH:14
+FNF:10
+FNH:8
+end_of_record
+SF:/home/runner/work/Utilities.Net/Utilities.Net/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs
+FN:34,System.Collections.Generic.IEnumerable`1<YamlDotNet.Core.Events.ParsingEvent> StirlingLabs.Utilities.Yaml.Events.Extensions::GetEvents(YamlDotNet.RepresentationModel.YamlNode)
+FNDA:1273,System.Collections.Generic.IEnumerable`1<YamlDotNet.Core.Events.ParsingEvent> StirlingLabs.Utilities.Yaml.Events.Extensions::GetEvents(YamlDotNet.RepresentationModel.YamlNode)
+DA:35,1273
+DA:36,1273
+DA:37,1251
+DA:38,5
+DA:39,17
+DA:40,0
+DA:41,1273
+BRDA:35,8,0,22
+BRDA:35,18,0,17
+BRDA:35,8,1,1251
+BRDA:35,18,1,5
+BRDA:35,28,1,17
+BRDA:35,28,0,0
+FN:14,System.Boolean StirlingLabs.Utilities.Yaml.Events.Extensions/<GetEvents>d__0::MoveNext()
+FNDA:1,System.Boolean StirlingLabs.Utilities.Yaml.Events.Extensions/<GetEvents>d__0::MoveNext()
+DA:15,1
+DA:17,4
+DA:19,2596
+DA:20,1297
+DA:23,1
+DA:24,1
+BRDA:17,221,1,1
+BRDA:19,195,1,1297
+BRDA:19,195,0,1
+BRDA:17,221,0,1
+FN:26,System.Boolean StirlingLabs.Utilities.Yaml.Events.Extensions/<GetEvents>d__1::MoveNext()
+FNDA:1,System.Boolean StirlingLabs.Utilities.Yaml.Events.Extensions/<GetEvents>d__1::MoveNext()
+DA:27,1
+DA:29,2592
+DA:30,1295
+DA:32,1
+DA:33,1
+BRDA:29,161,1,1295
+BRDA:29,161,0,1
+FN:43,System.Boolean StirlingLabs.Utilities.Yaml.Events.Extensions/<GetEvents>d__3::MoveNext()
+FNDA:1251,System.Boolean StirlingLabs.Utilities.Yaml.Events.Extensions/<GetEvents>d__3::MoveNext()
+DA:44,1251
+DA:45,1251
+FN:47,System.Boolean StirlingLabs.Utilities.Yaml.Events.Extensions/<GetEvents>d__4::MoveNext()
+FNDA:5,System.Boolean StirlingLabs.Utilities.Yaml.Events.Extensions/<GetEvents>d__4::MoveNext()
+DA:48,5
+DA:50,2414
+DA:52,7384
+DA:53,2490
+DA:56,5
+DA:57,5
+BRDA:50,255,1,1202
+BRDA:52,229,1,2490
+BRDA:52,229,0,1202
+BRDA:50,255,0,5
+FN:59,System.Boolean StirlingLabs.Utilities.Yaml.Events.Extensions/<GetEvents>d__5::MoveNext()
+FNDA:17,System.Boolean StirlingLabs.Utilities.Yaml.Events.Extensions/<GetEvents>d__5::MoveNext()
+DA:60,17
+DA:62,104
+DA:64,140
+DA:65,35
+DA:67,5242
+DA:68,2586
+DA:69,35
+DA:71,17
+DA:72,17
+BRDA:62,394,1,35
+BRDA:64,263,1,35
+BRDA:64,263,0,35
+BRDA:67,361,1,2586
+BRDA:67,361,0,35
+BRDA:62,394,0,17
+LF:35
+LH:34
+BRF:22
+BRH:21
+FNF:6
+FNH:6
+end_of_record
+SF:/home/runner/work/Utilities.Net/Utilities.Net/StirlingLabs.Utilities.Yaml/Events/YamlEventsAdapter.cs
+FN:27,System.Void StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::Reset()
+FNDA:0,System.Void StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::Reset()
+DA:28,0
+FN:30,YamlDotNet.Core.Events.ParsingEvent StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::get_Current()
+FNDA:16506,YamlDotNet.Core.Events.ParsingEvent StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::get_Current()
+DA:31,16506
+FN:33,System.Object StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::System.Collections.IEnumerator.get_Current()
+FNDA:0,System.Object StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::System.Collections.IEnumerator.get_Current()
+DA:34,0
+FN:36,System.Boolean StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::MoveNext()
+FNDA:1300,System.Boolean StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::MoveNext()
+DA:37,1300
+FN:39,System.Void StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::Dispose()
+FNDA:0,System.Void StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::Dispose()
+DA:40,0
+FN:14,System.Void StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::.ctor(System.Collections.Generic.IEnumerable`1<YamlDotNet.Core.Events.ParsingEvent>)
+FNDA:0,System.Void StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::.ctor(System.Collections.Generic.IEnumerable`1<YamlDotNet.Core.Events.ParsingEvent>)
+DA:15,0
+DA:16,0
+FN:17,System.Void StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::.ctor(YamlDotNet.RepresentationModel.YamlStream)
+FNDA:1,System.Void StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::.ctor(YamlDotNet.RepresentationModel.YamlStream)
+DA:18,1
+DA:19,1
+FN:20,System.Void StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::.ctor(YamlDotNet.RepresentationModel.YamlDocument)
+FNDA:0,System.Void StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::.ctor(YamlDotNet.RepresentationModel.YamlDocument)
+DA:21,0
+DA:22,0
+FN:23,System.Void StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::.ctor(YamlDotNet.RepresentationModel.YamlNode)
+FNDA:0,System.Void StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter::.ctor(YamlDotNet.RepresentationModel.YamlNode)
+DA:24,0
+DA:25,0
+LF:13
+LH:4
+BRF:0
+BRH:0
+FNF:9
+FNH:3
+end_of_record
