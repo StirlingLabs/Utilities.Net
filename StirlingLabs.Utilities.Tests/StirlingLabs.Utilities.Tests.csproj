@@ -6,7 +6,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Authors>Stirling Labs</Authors>
         <Nullable>enable</Nullable>
-    
+
         <CollectCoverage>true</CollectCoverage>
         <CoverletOutputFormat>lcov</CoverletOutputFormat>
         <CoverletOutput>../coverage/</CoverletOutput>
@@ -38,7 +38,7 @@
                 OutputFilename="@(CoverletReport)"
                 MatchText="$([System.IO.Path]::GetFullPath('..\StirlingLabs.Utilities\'))"
                 ReplacementText="" />
-    
+
         <!-- remove absolute path using forward slashes for other platforms -->
         <ReplaceFileTextByLines
                 Condition="!$(OS.StartsWith('Windows'))"
@@ -46,14 +46,14 @@
                 OutputFilename="@(CoverletReport)"
                 MatchText="$([System.IO.Path]::GetFullPath('../StirlingLabs.Utilities/'))"
                 ReplacementText="" />
-    
+
         <!-- generate markdown coverage report and badges -->
         <ReportGenerator ReportFiles="@(CoverletReport)"
                          ReportTypes="MarkdownSummary;Badges"
                          SourceDirectories="../StirlingLabs.Utilities"
                          TargetDirectory="../coverage/" />
       </Target>
-    
+
       <!-- task to replace text line for line -->
       <UsingTask TaskName="ReplaceFileTextByLines" TaskFactory="RoslynCodeTaskFactory"
                  AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
