@@ -20,7 +20,7 @@ namespace StirlingLabs.Utilities.Tests
                 }
                 return true;
             });
-        public bool Equals(JsonMe other)
+        public bool Equals(JsonMe? other)
         {
             if (ReferenceEquals(null, other))
                 return false;
@@ -55,7 +55,7 @@ namespace StirlingLabs.Utilities.Tests
                 return false;
             return true;
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(null, obj))
                 return false;

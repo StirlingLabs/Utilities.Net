@@ -18,7 +18,7 @@ namespace StirlingLabs.Utilities
         public DelegatingEqualityComparer(Func<T?, T?, bool> equals)
         {
             _equals = equals ?? throw new ArgumentNullException(nameof(equals));
-            _hasher = Default.GetHashCode;
+            _hasher = Default.GetHashCode!;
         }
         public DelegatingEqualityComparer(Func<T, int> hasher)
         {

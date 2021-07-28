@@ -1,12 +1,14 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 
 namespace StirlingLabs.Utilities
 {
+    [SuppressMessage("Security", "CA5394", Justification = "Intentional")]
     public class InsecureRandomNumberGenerator : RandomNumberGenerator
     {
-        private static readonly Random R = new Random(unchecked((int)Stopwatch.GetTimestamp()));
+        private static readonly Random R = new (unchecked((int)Stopwatch.GetTimestamp()));
 
         public override void GetBytes(Span<byte> data)
             => R.NextBytes(data);
