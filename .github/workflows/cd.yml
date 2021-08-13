@@ -4,8 +4,11 @@ on:
     tags:
       - 'v*'
 jobs:
-  create-release:
+  create_release:
     runs-on: ubuntu-latest
+    env:
+        DOTNET_NOLOGO: true
+        DOTNET_CLI_TELEMETRY_OPTOUT: true
     steps:
       - uses: actions/checkout@v2
         with:
