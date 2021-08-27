@@ -99,10 +99,10 @@ namespace StirlingLabs.Utilities.Collections
 
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ValueTask<T> DequeueAsync(CancellationToken cancellationToken = default)
-            => DequeueAsync(true, cancellationToken);
+        public ValueTask<T> TakeAsync(CancellationToken cancellationToken = default)
+            => TakeAsync(true, cancellationToken);
 
-        public async ValueTask<T> DequeueAsync(bool continueOnCapturedContext, CancellationToken cancellationToken = default)
+        public async ValueTask<T> TakeAsync(bool continueOnCapturedContext, CancellationToken cancellationToken = default)
         {
 
             for (;;)

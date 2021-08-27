@@ -42,7 +42,7 @@ namespace StirlingLabs.Utilities.Collections
                     T item;
                     try
                     {
-                        item = await _producerConsumerCollection.DequeueAsync(cancellationToken)
+                        item = await _producerConsumerCollection.TakeAsync(cancellationToken)
                             .ConfigureAwait(true);
                     }
                     catch (OperationCanceledException)
