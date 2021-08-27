@@ -4,23 +4,24 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
+using FluentAssertions.Common;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using StirlingLabs.Utilities.Collections;
 
 namespace StirlingLabs.Utilities.Tests
 {
-    public class AsyncQueueTests
+    public class AsyncProducerConsumerCollectionTests
     {
         [Test]
         [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
-        public async Task GeneralOperations()
+        public async Task GeneralQueueOperations()
         {
             var objects = new object[8000];
-            
+
             for (var o = 0; o < 1000; ++o) objects[o] = new();
 
-            using var q = new AsyncQueue<object>(objects);
+            using var q = new AsyncProducerConsumerCollection<object>(objects);
 
             q.IsEmpty.Should().BeFalse();
             var initCount = objects.Length;
@@ -31,7 +32,8 @@ namespace StirlingLabs.Utilities.Tests
             var qt1 = Common.RunThread(() => {
                 mre1.Wait();
                 mre1.Dispose();
-                q.EnqueueRange(objects);
+                q.TryAdd(objects.First());
+                q.TryAddRange(objects.Skip(1));
             });
 
             using var mre2 = new ManualResetEventSlim();
@@ -39,18 +41,35 @@ namespace StirlingLabs.Utilities.Tests
             var qt2 = Common.RunThread(() => {
                 mre2.Wait();
                 mre2.Dispose();
-                q.EnqueueRange(objects);
+                q.TryAddRange(objects);
                 q.CompleteAdding();
             });
 
             var i = 0;
-            await foreach (var item in q)
+            var c = q.GetConsumer();
+            c.Should().NotBeNull();
+            c.Should().BeOfType<AsyncProducerConsumerCollection<object>.Consumer>()
+                .IsSameOrEqualTo(c);
+
+            c.Equals(c).Should().BeTrue();
+
+            c.Equals((object)c).Should().BeTrue();
+
+            c.GetHashCode().Should().NotBe(0);
+
+            // ReSharper disable once EqualExpressionComparison
+            (c == c).Should().BeTrue();
+
+            // ReSharper disable once EqualExpressionComparison
+            (c != c).Should().BeFalse();
+
+            foreach (var item in c)
             {
                 item.Should().Be(objects[i++]);
                 q.IsAddingCompleted.Should().BeFalse();
-                q.IsCompleted.Should().BeFalse();
+                c.IsCompleted.Should().BeFalse();
                 if (i >= initCount) break;
-                q.IsEmpty.Should().BeFalse();
+                c.IsEmpty.Should().BeFalse();
                 //q.Count.Should().Be(initCount - i);
             }
             i.Should().Be(initCount);
@@ -59,28 +78,28 @@ namespace StirlingLabs.Utilities.Tests
 
             mre1.Set();
             i = 0;
-            
-            await foreach (var item in q)
+
+            await foreach (var item in c)
             {
                 item.Should().Be(objects[i++]);
                 q.IsAddingCompleted.Should().BeFalse();
-                q.IsCompleted.Should().BeFalse();
+                c.IsCompleted.Should().BeFalse();
                 if (i >= initCount) break;
-                q.IsEmpty.Should().BeFalse();
+                c.IsEmpty.Should().BeFalse();
                 //q.Count.Should().Be(initCount - i);
             }
             i.Should().Be(initCount);
-            q.IsEmpty.Should().BeTrue();
+            c.IsEmpty.Should().BeTrue();
             q.Count.Should().Be(0);
 
             mre2.Set();
             i = 0;
-            await foreach (var item in q)
+            await foreach (var item in c)
             {
                 item.Should().Be(objects[i++]);
                 if (i >= initCount) break;
-                q.IsCompleted.Should().BeFalse();
-                q.IsEmpty.Should().BeFalse();
+                c.IsCompleted.Should().BeFalse();
+                c.IsEmpty.Should().BeFalse();
                 //q.Count.Should().Be(initCount - i);
             }
 
@@ -88,7 +107,7 @@ namespace StirlingLabs.Utilities.Tests
             q.IsCompleted.Should().BeTrue();
 
             i.Should().Be(initCount);
-            
+
             q.IsEmpty.Should().BeTrue();
             q.Count.Should().Be(0);
 

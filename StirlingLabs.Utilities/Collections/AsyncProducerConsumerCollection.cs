@@ -13,11 +13,11 @@ using JetBrains.Annotations;
 namespace StirlingLabs.Utilities.Collections
 {
     [PublicAPI]
-    public sealed class AsyncQueue<T>
-        : IProducerConsumerCollection<T>, IAsyncEnumerable<T>, IReadOnlyCollection<T>, IDisposable, INotifyCompletion
+    public sealed partial class AsyncProducerConsumerCollection<T>
+        : IProducerConsumerCollection<T>, IReadOnlyCollection<T>, IDisposable, INotifyCompletion
     {
         private readonly SemaphoreSlim _semaphore = new(0);
-        private readonly ConcurrentQueue<T> _queue = new();
+        private readonly IProducerConsumerCollection<T> _collection = null!;
 
         private readonly CancellationTokenSource _complete = new();
         private readonly CancellationTokenSource _addingComplete = new();
@@ -28,11 +28,14 @@ namespace StirlingLabs.Utilities.Collections
 
         private int _isDisposed;
 
-        public AsyncQueue()
+        private AsyncProducerConsumerCollection()
             => _complete.Token.Register(Completed);
 
-        public AsyncQueue(IEnumerable<T> items) : this()
-            => EnqueueRange(items);
+        public AsyncProducerConsumerCollection(IProducerConsumerCollection<T> collection) : this()
+            => _collection = collection ?? throw new ArgumentNullException(nameof(collection));
+
+        public AsyncProducerConsumerCollection(IEnumerable<T> items) : this(new ConcurrentQueue<T>())
+            => TryAddRange(items);
 
 
         public bool IsAddingCompleted
@@ -66,27 +69,32 @@ namespace StirlingLabs.Utilities.Collections
             => Interlocked.Exchange(ref _isDisposed, 1) == 0;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Enqueue(T item)
+        public bool TryAdd(T item)
         {
             if (IsAddingCompleted)
                 throw new InvalidOperationException("The AsyncQueue has already completed adding.");
 
-            _queue.Enqueue(item);
+            var success = _collection.TryAdd(item);
             _semaphore.Release();
+            return success;
         }
 
-        public void EnqueueRange(IEnumerable<T> source)
+        public int TryAddRange(IEnumerable<T> source)
         {
+            if (source is null) throw new ArgumentNullException(nameof(source));
+
             if (IsAddingCompleted)
                 throw new InvalidOperationException("The AsyncQueue has already completed adding.");
 
             var count = 0;
             foreach (var item in source)
             {
-                _queue.Enqueue(item);
+                if (!_collection.TryAdd(item))
+                    return count;
                 count++;
             }
             _semaphore.Release(count);
+            return count;
         }
 
         [DebuggerStepThrough]
@@ -102,7 +110,7 @@ namespace StirlingLabs.Utilities.Collections
                 await WaitForAvailableAsync(continueOnCapturedContext, cancellationToken)
                     .ConfigureAwait(continueOnCapturedContext);
 
-                if (_queue.TryDequeue(out var item))
+                if (_collection.TryTake(out var item))
                 {
                     TryToComplete();
                     return item;
@@ -135,11 +143,20 @@ namespace StirlingLabs.Utilities.Collections
             await _semaphore.WaitAsync(cancellationToken).ConfigureAwait(continueOnCapturedContext);
         }
 
+        private bool IsEmptyInternal()
+            => _collection switch
+            {
+                ConcurrentQueue<T> q => q.IsEmpty,
+                ConcurrentStack<T> s => s.IsEmpty,
+                ConcurrentBag<T> b => b.IsEmpty,
+                _ => _collection.Count == 0
+            };
+
         private bool TryToComplete()
         {
-            lock (_queue)
+            lock (_collection)
             {
-                if (!_queue.IsEmpty || !_addingComplete.IsCancellationRequested)
+                if (!IsEmptyInternal() || !_addingComplete.IsCancellationRequested)
                     return false;
 
                 _complete.Cancel();
@@ -151,7 +168,7 @@ namespace StirlingLabs.Utilities.Collections
         {
             CheckDisposed();
 
-            foreach (var item in _queue)
+            foreach (var item in _collection)
                 yield return item;
         }
 
@@ -160,17 +177,6 @@ namespace StirlingLabs.Utilities.Collections
         IEnumerator IEnumerable.GetEnumerator()
             => GetEnumerator();
 
-        public void CopyTo(Array array, int index)
-        {
-            CheckDisposed();
-            if (array is null) throw new ArgumentNullException(nameof(array));
-            if (index < 0 || index > array.Length) throw new ArgumentOutOfRangeException(nameof(index));
-
-            var i = 0;
-            foreach (var item in _queue)
-                array.SetValue(item, index + i++);
-        }
-
         public int Count
         {
             [DebuggerStepThrough]
@@ -178,7 +184,7 @@ namespace StirlingLabs.Utilities.Collections
             get {
                 CheckDisposed();
 
-                return _queue.Count;
+                return _collection.Count;
             }
         }
 
@@ -188,7 +194,7 @@ namespace StirlingLabs.Utilities.Collections
             get {
                 CheckDisposed();
 
-                return ((ICollection)_queue).IsSynchronized;
+                return _collection.IsSynchronized;
             }
         }
 
@@ -198,7 +204,7 @@ namespace StirlingLabs.Utilities.Collections
             get {
                 CheckDisposed();
 
-                return ((ICollection)_queue).SyncRoot;
+                return _collection.SyncRoot;
             }
         }
 
@@ -209,17 +215,30 @@ namespace StirlingLabs.Utilities.Collections
             get {
                 CheckDisposed();
 
-                return _queue.IsEmpty;
+                return IsEmptyInternal();
             }
         }
 
         public void CopyTo(T[] array, int index)
         {
             CheckDisposed();
+            if (array is null) throw new ArgumentNullException(nameof(array));
+            if (index < 0 || index > array.Length) throw new ArgumentOutOfRangeException(nameof(index));
 
             var i = 0;
-            foreach (var item in _queue)
+            foreach (var item in _collection)
                 array[index + i++] = item;
+        }
+
+        public void CopyTo(Array array, int index)
+        {
+            CheckDisposed();
+            if (array is null) throw new ArgumentNullException(nameof(array));
+            if (index < 0 || index > array.Length) throw new ArgumentOutOfRangeException(nameof(index));
+
+            var i = 0;
+            foreach (var item in _collection)
+                array.SetValue(item, index + i++);
         }
 
         [DebuggerStepThrough]
@@ -228,55 +247,17 @@ namespace StirlingLabs.Utilities.Collections
         {
             CheckDisposed();
 
-            return _queue.ToArray();
+            return _collection.ToArray();
         }
 
-        [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        bool IProducerConsumerCollection<T>.TryAdd(T item)
-        {
-            Enqueue(item);
-            return true;
-        }
-
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        bool IProducerConsumerCollection<T>.TryTake(out T item)
-            => TryDequeue(out item!);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryDequeue(out T? item)
+        public bool TryTake(out T item)
         {
             CheckDisposed();
 
-            var success = _queue.TryDequeue(out item);
+            var success = _collection.TryTake(out item!);
             TryToComplete();
             return success;
-        }
-
-        public async IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
-        {
-            CheckDisposed();
-
-            do
-            {
-                T item;
-                try
-                {
-                    item = await DequeueAsync(cancellationToken)
-                        .ConfigureAwait(true);
-                }
-                catch (OperationCanceledException)
-                {
-                    yield break;
-                }
-
-                yield return item;
-            } while (!cancellationToken.IsCancellationRequested && !IsCompleted);
-
-            TryToComplete();
-
-            CheckDisposed();
         }
 
         public void CompleteAdding()
@@ -284,6 +265,33 @@ namespace StirlingLabs.Utilities.Collections
             _addingComplete.Cancel();
 
             TryToComplete();
+        }
+
+
+        private void ClearInternal()
+        {
+            switch (_collection)
+            {
+                case ConcurrentQueue<T> q:
+                    q.Clear();
+                    break;
+                case ConcurrentStack<T> s:
+                    s.Clear();
+                    break;
+                case ConcurrentBag<T> b:
+                    b.Clear();
+                    break;
+                default:
+                    while (_collection.TryTake(out _)) { }
+                    break;
+            }
+        }
+
+        public void Clear()
+        {
+            CheckDisposed();
+
+            ClearInternal();
         }
 
         public void Dispose()
@@ -294,7 +302,7 @@ namespace StirlingLabs.Utilities.Collections
             _addingComplete.Cancel();
             _complete.Cancel();
 
-            _queue.Clear();
+            ClearInternal();
 
             _addingComplete.Dispose();
             _complete.Dispose();
@@ -320,8 +328,13 @@ namespace StirlingLabs.Utilities.Collections
 
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressMessage("Microsoft.Design", "CA1024", Justification = "Should not be a property")]
+        public Consumer GetConsumer() => new(this);
+
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [SuppressMessage("Microsoft.Design", "CA1024", Justification = "Awaitable implementation")]
-        public AsyncQueue<T> GetAwaiter()
+        public AsyncProducerConsumerCollection<T> GetAwaiter()
             => this;
     }
 }
