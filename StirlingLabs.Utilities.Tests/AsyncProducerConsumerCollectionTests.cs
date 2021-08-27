@@ -55,7 +55,7 @@ namespace StirlingLabs.Utilities.Tests
 
             c.Equals((object)c).Should().BeTrue();
 
-            c.GetHashCode().Should().NotBe(0);
+            c.GetHashCode().Should().Be(q.GetHashCode());
 
             // ReSharper disable once EqualExpressionComparison
             (c == c).Should().BeTrue();

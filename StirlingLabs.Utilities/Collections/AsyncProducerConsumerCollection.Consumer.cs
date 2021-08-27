@@ -13,17 +13,16 @@ namespace StirlingLabs.Utilities.Collections
         [SuppressMessage("Microsoft.Design", "CA1034", Justification = "Nested class has private member access")]
         public readonly struct Consumer : IAsyncConsumer<T>, IEquatable<Consumer>
         {
-            private readonly AsyncProducerConsumerCollection<T> _producerConsumerCollection;
-
+            public readonly AsyncProducerConsumerCollection<T> Collection;
 
             [DebuggerStepThrough]
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            internal Consumer(AsyncProducerConsumerCollection<T> producerConsumerCollection)
-                => _producerConsumerCollection = producerConsumerCollection;
+            internal Consumer(AsyncProducerConsumerCollection<T> collection)
+                => Collection = collection;
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public bool Equals(Consumer other)
-                => _producerConsumerCollection.Equals(other._producerConsumerCollection);
+                => Collection.Equals(other.Collection);
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public override bool Equals(object? obj)
@@ -31,18 +30,18 @@ namespace StirlingLabs.Utilities.Collections
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public override int GetHashCode()
-                => _producerConsumerCollection.GetHashCode();
+                => Collection.GetHashCode();
 
             public async IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
             {
-                _producerConsumerCollection.CheckDisposed();
+                Collection.CheckDisposed();
 
                 do
                 {
                     T item;
                     try
                     {
-                        item = await _producerConsumerCollection.TakeAsync(cancellationToken)
+                        item = await Collection.TakeAsync(cancellationToken)
                             .ConfigureAwait(true);
                     }
                     catch (OperationCanceledException)
@@ -51,23 +50,23 @@ namespace StirlingLabs.Utilities.Collections
                     }
 
                     yield return item;
-                } while (!cancellationToken.IsCancellationRequested && !_producerConsumerCollection.IsCompleted);
+                } while (!cancellationToken.IsCancellationRequested && !Collection.IsCompleted);
 
-                _producerConsumerCollection.TryToComplete();
+                Collection.TryToComplete();
 
-                _producerConsumerCollection.CheckDisposed();
+                Collection.CheckDisposed();
             }
 
             public IEnumerator<T> GetEnumerator()
             {
-                _producerConsumerCollection.CheckDisposed();
+                Collection.CheckDisposed();
 
                 do
                 {
                     T item;
                     try
                     {
-                        if (!_producerConsumerCollection.TryTake(out item!))
+                        if (!Collection.TryTake(out item!))
                         {
                             break;
                         }
@@ -78,11 +77,11 @@ namespace StirlingLabs.Utilities.Collections
                     }
 
                     yield return item;
-                } while (!_producerConsumerCollection.IsCompleted);
+                } while (!Collection.IsCompleted);
 
-                _producerConsumerCollection.TryToComplete();
+                Collection.TryToComplete();
 
-                _producerConsumerCollection.CheckDisposed();
+                Collection.CheckDisposed();
             }
 
             [DebuggerStepThrough]
@@ -101,13 +100,13 @@ namespace StirlingLabs.Utilities.Collections
             public bool IsEmpty
             {
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                get => _producerConsumerCollection.IsEmpty;
+                get => Collection.IsEmpty;
             }
 
             public bool IsCompleted
             {
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                get => _producerConsumerCollection.IsCompleted;
+                get => Collection.IsCompleted;
             }
         }
     }
