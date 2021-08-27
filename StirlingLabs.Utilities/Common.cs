@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using JetBrains.Annotations;
 
 
@@ -129,5 +130,29 @@ namespace StirlingLabs.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static nuint GetLength<T>(this T[] array)
             => Is64Bit ? (nuint)array.LongLength : (nuint)array.Length;
+
+
+        public static Thread RunThread(Action a)
+        {
+            static void Exec(object? o)
+                => ((Action)o!)();
+
+            var thread = new Thread(Exec);
+            thread.Start(a);
+            return thread;
+        }
+
+        public static Thread RunThread<T>(Action<T> a, T state)
+        {
+            static void Exec(object? o)
+            {
+                var (f, s) = (ValueTuple<Action<T>, T>)o!;
+                f(s);
+            }
+
+            var thread = new Thread(Exec);
+            thread.Start((a, state));
+            return thread;
+        }
     }
 }
