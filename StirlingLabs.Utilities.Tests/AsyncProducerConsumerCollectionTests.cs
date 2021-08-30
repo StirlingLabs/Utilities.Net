@@ -48,8 +48,6 @@ namespace StirlingLabs.Utilities.Tests
             var i = 0;
             var c = q.GetConsumer();
             c.Should().NotBeNull();
-            c.Should().BeOfType<AsyncProducerConsumerCollection<object>.Consumer>()
-                .IsSameOrEqualTo(c);
 
             c.Equals(c).Should().BeTrue();
 
