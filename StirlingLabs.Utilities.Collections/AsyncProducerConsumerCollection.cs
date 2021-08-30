@@ -28,13 +28,17 @@ namespace StirlingLabs.Utilities.Collections
 
         private int _isDisposed;
 
-        private AsyncProducerConsumerCollection()
-            => _complete.Token.Register(Completed);
+        public AsyncProducerConsumerCollection(IProducerConsumerCollection<T> collection)
+        {
+            _collection = collection ?? throw new ArgumentNullException(nameof(collection));
+            _complete.Token.Register(Completed);
+        }
 
-        public AsyncProducerConsumerCollection(IProducerConsumerCollection<T> collection) : this()
-            => _collection = collection ?? throw new ArgumentNullException(nameof(collection));
+        public AsyncProducerConsumerCollection()
+            : this(new ConcurrentQueue<T>()) { }
 
-        public AsyncProducerConsumerCollection(IEnumerable<T> items) : this(new ConcurrentQueue<T>())
+        public AsyncProducerConsumerCollection(IEnumerable<T> items)
+            : this(items is IProducerConsumerCollection<T> pcc ? pcc : new ConcurrentQueue<T>())
             => TryAddRange(items);
 
 
@@ -272,15 +276,17 @@ namespace StirlingLabs.Utilities.Collections
         {
             switch (_collection)
             {
-                case ConcurrentQueue<T> q:
-                    q.Clear();
-                    break;
                 case ConcurrentStack<T> s:
                     s.Clear();
+                    break;
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+                case ConcurrentQueue<T> q:
+                    q.Clear();
                     break;
                 case ConcurrentBag<T> b:
                     b.Clear();
                     break;
+#endif
                 default:
                     while (_collection.TryTake(out _)) { }
                     break;

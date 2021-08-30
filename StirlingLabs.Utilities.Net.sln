@@ -19,6 +19,8 @@ ProjectSection(SolutionItems) = preProject
 	Version.proj = Version.proj
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Collections", "StirlingLabs.Utilities.Collections\StirlingLabs.Utilities.Collections.csproj", "{76F3E835-545D-4657-8968-AF30F088626C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,5 +39,9 @@ Global
 		{9203218D-533B-4F43-A3AB-4FD7BB45BB70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9203218D-533B-4F43-A3AB-4FD7BB45BB70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9203218D-533B-4F43-A3AB-4FD7BB45BB70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76F3E835-545D-4657-8968-AF30F088626C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76F3E835-545D-4657-8968-AF30F088626C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76F3E835-545D-4657-8968-AF30F088626C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76F3E835-545D-4657-8968-AF30F088626C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
