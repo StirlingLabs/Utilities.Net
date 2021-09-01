@@ -76,7 +76,7 @@ namespace StirlingLabs.Utilities.Collections
         public bool TryAdd(T item)
         {
             if (IsAddingCompleted)
-                throw new InvalidOperationException("The AsyncQueue has already completed adding.");
+                return false;
 
             var success = _collection.TryAdd(item);
             _semaphore.Release();
@@ -88,7 +88,7 @@ namespace StirlingLabs.Utilities.Collections
             if (source is null) throw new ArgumentNullException(nameof(source));
 
             if (IsAddingCompleted)
-                throw new InvalidOperationException("The AsyncQueue has already completed adding.");
+                return 0;
 
             var count = 0;
             foreach (var item in source)
