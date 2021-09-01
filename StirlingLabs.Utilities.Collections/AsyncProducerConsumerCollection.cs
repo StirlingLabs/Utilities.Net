@@ -158,14 +158,11 @@ namespace StirlingLabs.Utilities.Collections
 
         private bool TryToComplete()
         {
-            lock (_collection)
-            {
-                if (!IsEmptyInternal() || !_addingComplete.IsCancellationRequested)
-                    return false;
+            if (!IsEmptyInternal() || !_addingComplete.IsCancellationRequested)
+                return false;
 
-                _complete.Cancel();
-                return true;
-            }
+            _complete.Cancel();
+            return true;
         }
 
         public IEnumerator<T> GetEnumerator()
