@@ -9,6 +9,8 @@ namespace StirlingLabs.Utilities
     [PublicAPI]
     public static class Security
     {
+        
+#if NET5_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
         public static unsafe void FillWithRandomData(this BigSpan<byte> span)
         {
             nuint index = 0;
@@ -42,7 +44,7 @@ namespace StirlingLabs.Utilities
             Debug.Assert(bufferRemaining < maxBuffer);
             Debug.Assert(bufferRemaining < int.MaxValue);
             if (bufferRemaining > 0)
-                rng.GetBytes(span.Slice(index,(int)bufferRemaining));
+                rng.GetBytes(span.Slice(index, (int)bufferRemaining));
         }
         public static unsafe void FillWithNonZeroRandomData(this BigSpan<byte> span, RandomNumberGenerator? rng = null)
         {
@@ -62,6 +64,10 @@ namespace StirlingLabs.Utilities
             if (bufferRemaining > 0)
                 rng.GetNonZeroBytes(span.Slice(index, (int)bufferRemaining));
         }
+#endif
+        
+        // TODO: have XKCP.NET support .NET Standard
+#if !NETSTANDARD
 
         public static byte[] GetHash(byte[] data)
             => Xkcp.Sha3_256(data);
@@ -80,5 +86,6 @@ namespace StirlingLabs.Utilities
                 return numArray;
             }
         }
+#endif
     }
 }

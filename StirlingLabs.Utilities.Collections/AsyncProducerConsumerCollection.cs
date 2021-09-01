@@ -19,8 +19,8 @@ namespace StirlingLabs.Utilities.Collections
         private readonly SemaphoreSlim _semaphore = new(0);
         private readonly IProducerConsumerCollection<T> _collection = null!;
 
-        private readonly CancellationTokenSource _complete = new();
-        private readonly CancellationTokenSource _addingComplete = new();
+        private readonly CancellationTokenSource _complete;
+        private readonly CancellationTokenSource _addingComplete;
 
         private int _isCompleted;
 
@@ -31,7 +31,9 @@ namespace StirlingLabs.Utilities.Collections
         public AsyncProducerConsumerCollection(IProducerConsumerCollection<T> collection)
         {
             _collection = collection ?? throw new ArgumentNullException(nameof(collection));
+            _complete = new();
             _complete.Token.Register(Completed);
+            _addingComplete = CancellationTokenSource.CreateLinkedTokenSource(_complete.Token);
         }
 
         public AsyncProducerConsumerCollection()
@@ -144,7 +146,13 @@ namespace StirlingLabs.Utilities.Collections
             if (IsAddingCompleted)
                 throw new OperationCanceledException("The AsyncQueue completed adding, therefore there will not be any more available items.");
 
-            await _semaphore.WaitAsync(cancellationToken).ConfigureAwait(continueOnCapturedContext);
+            if (cancellationToken == default)
+                await _semaphore.WaitAsync(_addingComplete.Token).ConfigureAwait(continueOnCapturedContext);
+            else
+            {
+                using var cts = CancellationTokenSource.CreateLinkedTokenSource(_addingComplete.Token, cancellationToken);
+                await _semaphore.WaitAsync(cts.Token).ConfigureAwait(continueOnCapturedContext);
+            }
         }
 
         private bool IsEmptyInternal()

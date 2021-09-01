@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Authors>Stirling Labs</Authors>
         <PackageOutputPath>../artifacts</PackageOutputPath>
         <Nullable>enable</Nullable>
+        <TargetFrameworks>net5.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ImportGroup>
@@ -18,7 +19,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj" />
+      <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj">
+        <SetTargetFramework>TargetFramework=$(TargetFramework)</SetTargetFramework>
+      </ProjectReference>
     </ItemGroup>
 
 </Project>
