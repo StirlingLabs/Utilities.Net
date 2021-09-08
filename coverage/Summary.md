@@ -1,19 +1,19 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 09/01/2021 - 17:05:21 |
+| Generated on: | 09/08/2021 - 13:32:32 |
 | Parser: | CoberturaParser |
 | Assemblies: | 3 |
 | Classes: | 14 |
 | Files: | 17 |
-| Covered lines: | 207 |
-| Uncovered lines: | 249 |
-| Coverable lines: | 456 |
+| Covered lines: | 212 |
+| Uncovered lines: | 248 |
+| Coverable lines: | 460 |
 | Total lines: | 562 |
-| Line coverage: | 45.3% (207 of 456) |
-| Covered branches: | 82 |
-| Total branches: | 204 |
-| Branch coverage: | 40.1% (82 of 204) |
+| Line coverage: | 46% (212 of 460) |
+| Covered branches: | 85 |
+| Total branches: | 206 |
+| Branch coverage: | 41.2% (85 of 206) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -26,8 +26,8 @@
 |StirlingLabs.Utilities.Security|1|38|39|91|2.5%|0|20|0%|
 |StirlingLabs.Utilities.Type`1|2|14|16|116|12.5%|0|0||
 |StirlingLabs.Utilities.TypeExtensions|6|0|6|116|100%|2|4|50%|
-|**StirlingLabs.Utilities.Collections**|**102**|**65**|**167**|**0**|**61%**|**40**|**88**|**45.4%**|
-|StirlingLabs.Utilities.Collections.AsyncProducerConsumerCollection`1|102|65|167|0|61%|40|88|45.4%|
+|**StirlingLabs.Utilities.Collections**|**107**|**64**|**171**|**0**|**62.5%**|**43**|**90**|**47.7%**|
+|StirlingLabs.Utilities.Collections.AsyncProducerConsumerCollection`1|107|64|171|0|62.5%|43|90|47.7%|
 |**StirlingLabs.Utilities.Yaml**|**83**|**48**|**131**|**0**|**63.3%**|**37**|**58**|**63.7%**|
 |StirlingLabs.Utilities.Yaml.Events.Extensions|34|1|35|0|97.1%|21|22|95.4%|
 |StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter|4|9|13|0|30.7%|0|0||
