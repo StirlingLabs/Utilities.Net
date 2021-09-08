@@ -50,6 +50,12 @@ namespace StirlingLabs.Utilities.Collections
         public bool IsCompleted
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => TryToComplete();
+        }
+
+        private bool IsCompletedInternal
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => Interlocked.CompareExchange(ref _isCompleted, 0, 0) != 0;
         }
 
@@ -138,7 +144,7 @@ namespace StirlingLabs.Utilities.Collections
         {
             CheckDisposed();
 
-            if (IsCompleted)
+            if (IsCompletedInternal)
                 throw new InvalidOperationException("The AsyncQueue has already fully completed.");
 
             if (!IsEmpty) return;
@@ -155,6 +161,7 @@ namespace StirlingLabs.Utilities.Collections
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool IsEmptyInternal()
             => _collection switch
             {
@@ -164,8 +171,13 @@ namespace StirlingLabs.Utilities.Collections
                 _ => _collection.Count == 0
             };
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool TryToComplete()
         {
+            if (IsCompletedInternal)
+                return true;
+
             if (!IsEmptyInternal() || !_addingComplete.IsCancellationRequested)
                 return false;
 
@@ -296,6 +308,8 @@ namespace StirlingLabs.Utilities.Collections
                     while (_collection.TryTake(out _)) { }
                     break;
             }
+
+            TryToComplete();
         }
 
         public void Clear()
@@ -328,7 +342,7 @@ namespace StirlingLabs.Utilities.Collections
 
         private void Completed()
         {
-            Debug.Assert(!IsCompleted);
+            Debug.Assert(!IsCompletedInternal);
             lock (_complete)
             {
                 _completedDispatch?.Invoke();

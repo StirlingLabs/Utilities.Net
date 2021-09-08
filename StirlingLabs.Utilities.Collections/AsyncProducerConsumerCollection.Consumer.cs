@@ -50,7 +50,7 @@ namespace StirlingLabs.Utilities.Collections
                     }
 
                     yield return item;
-                } while (!cancellationToken.IsCancellationRequested && !Collection.IsCompleted);
+                } while (!cancellationToken.IsCancellationRequested && !Collection.IsCompletedInternal);
 
                 Collection.TryToComplete();
 
@@ -77,7 +77,7 @@ namespace StirlingLabs.Utilities.Collections
                     }
 
                     yield return item;
-                } while (!Collection.IsCompleted);
+                } while (!Collection.IsCompletedInternal);
 
                 Collection.TryToComplete();
 
@@ -106,7 +106,7 @@ namespace StirlingLabs.Utilities.Collections
             public bool IsCompleted
             {
                 [MethodImpl(MethodImplOptions.AggressiveInlining)]
-                get => Collection.IsCompleted;
+                get => Collection.IsCompletedInternal;
             }
         }
     }
