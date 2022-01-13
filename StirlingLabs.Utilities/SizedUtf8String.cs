@@ -186,7 +186,31 @@ namespace StirlingLabs.Utilities
         [DebuggerStepThrough]
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SizedUtf8String ToSizedUtf8String()
-            => this;
+        public static SizedUtf8String ToSizedUtf8String(string s)
+            => Create(s);
+
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override bool Equals(object obj)
+        {
+            if (obj is SizedUtf8String s) return Equals(s);
+            return false;
+        }
+
+        [DebuggerStepThrough]
+        [System.Diagnostics.Contracts.Pure]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override int GetHashCode()
+            => (int)Crc32C.Calculate(this);
+
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator ==(SizedUtf8String left, SizedUtf8String right)
+            => left.Equals(right);
+
+        [DebuggerStepThrough]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator !=(SizedUtf8String left, SizedUtf8String right)
+            => !(left == right);
     }
 }
