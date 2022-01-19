@@ -71,7 +71,7 @@ namespace StirlingLabs.Utilities
             get => InternedUtf8Strings.ContainsKey(this);
         }
 
-        public static Utf8String Create(nuint size, SpanAction<sbyte> writer)
+        public static Utf8String Create(nuint size, [InstantHandle] SpanAction<sbyte> writer)
         {
             if (size is 0) return new(null);
             if (writer is null) throw new ArgumentNullException(nameof(writer));
