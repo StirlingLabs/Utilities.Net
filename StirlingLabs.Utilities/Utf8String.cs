@@ -71,6 +71,17 @@ namespace StirlingLabs.Utilities
             get => InternedUtf8Strings.ContainsKey(this);
         }
 
+        public static Utf8String Create(nuint size, SpanAction<sbyte> writer)
+        {
+            if (size is 0) return new(null);
+            if (writer is null) throw new ArgumentNullException(nameof(writer));
+
+            // loose string
+            var start = NativeMemory.New<sbyte>(size + 1);
+            writer(new(start, (int)size));
+            return new(start);
+        }
+
         public static Utf8String Create(string? str)
         {
             if (str is null) return new(null);

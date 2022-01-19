@@ -150,6 +150,12 @@ namespace StirlingLabs.Utilities
         public static SizedUtf8String Create(string str)
             => new((nuint)Encoding.UTF8.GetByteCount(str), Utf8String.Create(str));
 
+        public static SizedUtf8String Create(nuint size, SpanAction<sbyte> factory)
+        {
+            if (size is 0) return default;
+            if (factory is null) throw new ArgumentNullException(nameof(factory));
+            return new(size, Utf8String.Create(size, factory));
+        }
 
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
