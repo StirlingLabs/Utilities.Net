@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<coverage line-rate="0.1841" branch-rate="0.19920000000000002" version="1.9" timestamp="1642605105" lines-covered="121" lines-valid="657" branches-covered="53" branches-valid="266">
+<coverage line-rate="0.1841" branch-rate="0.19920000000000002" version="1.9" timestamp="1642606299" lines-covered="121" lines-valid="657" branches-covered="53" branches-valid="266">
   <sources />
   <packages>
     <package name="StirlingLabs.Utilities.Yaml" line-rate="0.6335000000000001" branch-rate="0.6379" complexity="94">
@@ -322,9 +322,9 @@
                     <condition number="78" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="56" hits="519" branch="False" />
-                <line number="58" hits="732" branch="False" />
-                <line number="59" hits="732" branch="False" />
+                <line number="56" hits="500" branch="False" />
+                <line number="58" hits="751" branch="False" />
+                <line number="59" hits="751" branch="False" />
               </lines>
             </method>
             <method name="Visit" signature="(YamlDotNet.RepresentationModel.YamlSequenceNode)" line-rate="0.7777" branch-rate="0.75" complexity="4">
@@ -431,9 +431,9 @@
                 <condition number="78" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="56" hits="519" branch="False" />
-            <line number="58" hits="732" branch="False" />
-            <line number="59" hits="732" branch="False" />
+            <line number="56" hits="500" branch="False" />
+            <line number="58" hits="751" branch="False" />
+            <line number="59" hits="751" branch="False" />
             <line number="63" hits="5" branch="False" />
             <line number="64" hits="5" branch="True" condition-coverage="50% (1/2)">
               <conditions>
