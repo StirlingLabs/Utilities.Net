@@ -1,4 +1,4 @@
-![Utilities.Net](utilities-dotnet.png)
+![Utilities.Net](utilities-dotnet.jpg)
 ![coverage badge](https://github.com/StirlingLabs/Utilities.Net/blob/coverage/coverage/badge_combined.svg) [![CodeFactor](https://www.codefactor.io/repository/github/stirlinglabs/utilities.net/badge?s=016763d52aea57b89a59fe809f85552eb1f08055)](https://www.codefactor.io/repository/github/stirlinglabs/utilities.net)
 
 ### Common utilities used throughout the Stirling Labs C# codebase
