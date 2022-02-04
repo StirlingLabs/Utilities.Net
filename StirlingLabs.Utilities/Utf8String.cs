@@ -8,7 +8,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using JetBrains.Annotations;
-using StirlingLabs.Native;
 using NativeMemory = StirlingLabs.Native.NativeMemory;
 #if NET5_0_OR_GREATER
 #endif

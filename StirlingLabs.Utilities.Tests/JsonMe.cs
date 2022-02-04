@@ -1,23 +1,22 @@
 using System.Collections.Generic;
 
-namespace StirlingLabs.Utilities.Tests
+namespace StirlingLabs.Utilities.Tests;
+
+public partial class JsonMe
 {
-    public partial class JsonMe
-    {
-        public object arbitrary;
+    public object arbitrary;
 
-        public string text;
+    public string text;
 
-        public double number;
+    public double number;
 
-        public string[] texts;
+    public string[] texts;
 
-        public double[] numbers;
+    public double[] numbers;
 
-        public Dictionary<string, string> stringDict;
+    public Dictionary<string, string> stringDict;
 
-        public Dictionary<string, double> numberDict;
+    public Dictionary<string, double> numberDict;
 
-        public Dictionary<string, object> arbitraryDict;
-    }
+    public Dictionary<string, object> arbitraryDict;
 }

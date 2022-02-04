@@ -6,8 +6,8 @@
         <Authors>Stirling Labs</Authors>
         <PackageOutputPath>../artifacts</PackageOutputPath>
         <Nullable>enable</Nullable>
-        <TargetFrameworks>net5.0;netstandard2.0;netstandard2.1</TargetFrameworks>
-        <LangVersion>9</LangVersion>
+        <TargetFrameworks>net5.0;net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <LangVersion>10</LangVersion>
     </PropertyGroup>
 
     <ImportGroup>
@@ -15,15 +15,18 @@
     </ImportGroup>
 
     <ItemGroup>
-        <PackageReference Include="Fody" Version="6.5.2">
+        <PackageReference Include="Fody" Version="6.6.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="InlineIL.Fody" Version="1.7.1" PrivateAssets="all" />
-        <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" PrivateAssets="all" />
+        <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="all" />
         <PackageReference Include="StirlingLabs.BigSpans" Version="21.8.1" />
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
+        <PackageReference Include="XKCP.NET" Version="21.7.2" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
         <PackageReference Include="XKCP.NET" Version="21.7.2" />
     </ItemGroup>
 

@@ -12,56 +12,55 @@ using StirlingLabs.Utilities.Yaml;
 using YamlDotNet.RepresentationModel;
 using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
-namespace StirlingLabs.Utilities.Tests
+namespace StirlingLabs.Utilities.Tests;
+
+public class YamlTests
 {
-    public class YamlTests
+    private static readonly JsonSerializer JsonNetSerializer = JsonSerializer.CreateDefault();
+    private static readonly Faker<JsonMe> JsonMeFaker = new AutoFaker<JsonMe>()
+        .RuleFor(f => f.number, GetActuallyRandomNumber)
+        .RuleFor(f => f.texts, f => f.Make(100, _ => f.Hacker.Phrase()).ToArray())
+        .RuleFor(f => f.numbers, f => f.Make(500, _ => GetActuallyRandomNumber()).ToArray());
+
+    public static double GetActuallyRandomNumber()
     {
-        private static readonly JsonSerializer JsonNetSerializer = JsonSerializer.CreateDefault();
-        private static readonly Faker<JsonMe> JsonMeFaker = new AutoFaker<JsonMe>()
-            .RuleFor(f => f.number, GetActuallyRandomNumber)
-            .RuleFor(f => f.texts, f => f.Make(100, _ => f.Hacker.Phrase()).ToArray())
-            .RuleFor(f => f.numbers, f => f.Make(500, _ => GetActuallyRandomNumber()).ToArray());
-
-        public static double GetActuallyRandomNumber()
+        double number = 0;
+        do
         {
-            double number = 0;
-            do
-            {
-                RandomNumberGenerator.Fill(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref number, 1)));
-            } while (!double.IsFinite(number));
-            return number;
-        }
+            RandomNumberGenerator.Fill(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref number, 1)));
+        } while (!double.IsFinite(number));
+        return number;
+    }
 
-        [Test]
-        public void Test1()
-        {
-            JsonMeFaker.AssertConfigurationIsValid();
+    [Test]
+    public void Test1()
+    {
+        JsonMeFaker.AssertConfigurationIsValid();
 
-            var k = new { a = JsonMeFaker.Generate(2) };
+        var k = new { a = JsonMeFaker.Generate(2) };
 
-            var yml = OnDemand.YamlSerializer.Serialize(k);
-            var ys = new YamlStream();
-            ys.Load(new StringReader(yml));
+        var yml = OnDemand.YamlSerializer.Serialize(k);
+        var ys = new YamlStream();
+        ys.Load(new StringReader(yml));
 
-            var sw = Stopwatch.StartNew();
-            var expectedJson = ys.Serialize(OnDemand.JsonSerializer);
-            var json1 = sw.ElapsedTicks;
+        var sw = Stopwatch.StartNew();
+        var expectedJson = ys.Serialize(OnDemand.JsonSerializer);
+        var json1 = sw.ElapsedTicks;
 
-            Assert.IsNotNull(expectedJson);
+        Assert.IsNotNull(expectedJson);
 
-            sw.Restart();
-            var actualJson = ys.ToJson();
-            var json2 = sw.ElapsedTicks;
+        sw.Restart();
+        var actualJson = ys.ToJson();
+        var json2 = sw.ElapsedTicks;
 
-            Assert.IsNotNull(actualJson);
+        Assert.IsNotNull(actualJson);
 
-            dynamic expected = JsonNetSerializer.Deserialize(new StringReader(expectedJson), k.GetType());
+        dynamic expected = JsonNetSerializer.Deserialize(new StringReader(expectedJson), k.GetType());
 
-            dynamic actual = JsonNetSerializer.Deserialize(new StringReader(actualJson), k.GetType());
+        dynamic actual = JsonNetSerializer.Deserialize(new StringReader(actualJson), k.GetType());
 
-            Assert.AreEqual((IList<JsonMe>)expected.a, (IList<JsonMe>)actual.a);
+        Assert.AreEqual((IList<JsonMe>)expected.a, (IList<JsonMe>)actual.a);
             
-            Console.WriteLine($"ToJson w/ Serializer: {json1}, ToJson w/ YamlToJsonVisitor: {json2}");
-        }
+        Console.WriteLine($"ToJson w/ Serializer: {json1}, ToJson w/ YamlToJsonVisitor: {json2}");
     }
 }
