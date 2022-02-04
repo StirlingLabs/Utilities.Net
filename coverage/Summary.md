@@ -1,27 +1,27 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 02/04/2022 - 18:04:26 |
+| Generated on: | 02/04/2022 - 19:03:22 |
 | Parser: | CoberturaParser |
 | Assemblies: | 2 |
 | Classes: | 25 |
 | Files: | 32 |
-| Covered lines: | 259 |
-| Uncovered lines: | 777 |
-| Coverable lines: | 1036 |
-| Total lines: | 3092 |
-| Line coverage: | 25% (259 of 1036) |
-| Covered branches: | 120 |
-| Total branches: | 526 |
-| Branch coverage: | 22.8% (120 of 526) |
+| Covered lines: | 281 |
+| Uncovered lines: | 771 |
+| Coverable lines: | 1052 |
+| Total lines: | 3137 |
+| Line coverage: | 26.7% (281 of 1052) |
+| Covered branches: | 124 |
+| Total branches: | 534 |
+| Branch coverage: | 23.2% (124 of 534) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**StirlingLabs.Utilities**|**176**|**729**|**905**|**3328**|**19.4%**|**83**|**468**|**17.7%**|
-|StirlingLabs.Native.NativeMemory|0|24|24|121|0%|0|2|0%|
-|StirlingLabs.Native.NativeMemory`1|0|11|11|121|0%|0|4|0%|
+|**StirlingLabs.Utilities**|**198**|**723**|**921**|**3391**|**21.4%**|**87**|**476**|**18.2%**|
+|StirlingLabs.Native.NativeMemory|16|16|32|139|50%|2|6|33.3%|
+|StirlingLabs.Native.NativeMemory`1|0|11|11|139|0%|0|4|0%|
 |StirlingLabs.Utilities.BinaryPrimitives|15|241|256|1067|5.8%|11|196|5.6%|
-|StirlingLabs.Utilities.Common|3|21|24|157|12.5%|2|6|33.3%|
+|StirlingLabs.Utilities.Common|9|23|32|184|28.1%|4|10|40%|
 |StirlingLabs.Utilities.Crc32C|20|73|93|213|21.5%|11|44|25%|
 |StirlingLabs.Utilities.DelegatingEqualityComparer`1|6|8|14|34|42.8%|1|8|12.5%|
 |StirlingLabs.Utilities.GarbageCollectedNotifier|0|8|8|29|0%|0|6|0%|

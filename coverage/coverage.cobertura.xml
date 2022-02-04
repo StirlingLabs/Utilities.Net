@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<coverage line-rate="0.25" branch-rate="0.2281" version="1.9" timestamp="1643997864" lines-covered="259" lines-valid="1036" branches-covered="120" branches-valid="526">
+<coverage line-rate="0.2671" branch-rate="0.2322" version="1.9" timestamp="1644001399" lines-covered="281" lines-valid="1052" branches-covered="124" branches-valid="534">
   <sources />
   <packages>
     <package name="StirlingLabs.Utilities.Yaml" line-rate="0.6335000000000001" branch-rate="0.6379" complexity="94">
@@ -322,9 +322,9 @@
                     <condition number="78" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="56" hits="496" branch="False" />
-                <line number="58" hits="755" branch="False" />
-                <line number="59" hits="755" branch="False" />
+                <line number="56" hits="474" branch="False" />
+                <line number="58" hits="777" branch="False" />
+                <line number="59" hits="777" branch="False" />
               </lines>
             </method>
             <method name="Visit" signature="(YamlDotNet.RepresentationModel.YamlSequenceNode)" line-rate="0.7777" branch-rate="0.75" complexity="4">
@@ -431,9 +431,9 @@
                 <condition number="78" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="56" hits="496" branch="False" />
-            <line number="58" hits="755" branch="False" />
-            <line number="59" hits="755" branch="False" />
+            <line number="56" hits="474" branch="False" />
+            <line number="58" hits="777" branch="False" />
+            <line number="59" hits="777" branch="False" />
             <line number="63" hits="5" branch="False" />
             <line number="64" hits="5" branch="True" condition-coverage="50% (1/2)">
               <conditions>
@@ -756,9 +756,9 @@
         </class>
       </classes>
     </package>
-    <package name="StirlingLabs.Utilities" line-rate="0.19440000000000002" branch-rate="0.1773" complexity="635">
+    <package name="StirlingLabs.Utilities" line-rate="0.21489999999999998" branch-rate="0.1827" complexity="643">
       <classes>
-        <class name="StirlingLabs.Native.NativeMemory" filename="/_/StirlingLabs.Utilities/NativeMemory.cs" line-rate="0" branch-rate="0" complexity="14">
+        <class name="StirlingLabs.Native.NativeMemory" filename="/_/StirlingLabs.Utilities/NativeMemory.cs" line-rate="0.5" branch-rate="0.3333" complexity="18">
           <methods>
             <method name="AllocUnsafe" signature="(System.UIntPtr)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -780,51 +780,75 @@
                 <line number="49" hits="0" branch="False" />
               </lines>
             </method>
-            <method name="New" signature="(System.UIntPtr,System.UIntPtr)" line-rate="0" branch-rate="1" complexity="1">
+            <method name="New" signature="(System.UIntPtr,System.UIntPtr)" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="51" hits="0" branch="False" />
+                <line number="51" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="New" signature="(System.UIntPtr)" line-rate="0" branch-rate="1" complexity="1">
+            <method name="New" signature="(System.UIntPtr)" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="55" hits="0" branch="False" />
+                <line number="55" hits="2" branch="False" />
               </lines>
             </method>
-            <method name="New" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="New" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="59" hits="0" branch="False" />
+                <line number="59" hits="2" branch="False" />
+              </lines>
+            </method>
+            <method name="New" signature="(StirlingLabs.Utilities.Common/InitPointerDelegate`1&lt;T&gt;)" line-rate="1" branch-rate="0.5" complexity="2">
+              <lines>
+                <line number="64" hits="1" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="65" hits="1" branch="False" />
+                <line number="66" hits="1" branch="False" />
+                <line number="67" hits="1" branch="False" />
               </lines>
             </method>
             <method name="NewUnsafe" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="63" hits="0" branch="False" />
+                <line number="72" hits="0" branch="False" />
               </lines>
             </method>
-            <method name="Free" signature="(T*)" line-rate="0" branch-rate="1" complexity="1">
+            <method name="NewUnsafe" signature="(StirlingLabs.Utilities.Common/InitPointerDelegate`1&lt;T&gt;)" line-rate="0" branch-rate="0" complexity="2">
               <lines>
-                <line number="67" hits="0" branch="False" />
+                <line number="77" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="78" hits="0" branch="False" />
+                <line number="79" hits="0" branch="False" />
+                <line number="80" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="Free" signature="(T*)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="85" hits="2" branch="False" />
               </lines>
             </method>
             <method name="New" signature="(System.UIntPtr)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="71" hits="0" branch="False" />
+                <line number="89" hits="0" branch="False" />
               </lines>
             </method>
-            <method name="SizeOf" signature="()" line-rate="0" branch-rate="1" complexity="1">
+            <method name="SizeOf" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="75" hits="0" branch="False" />
+                <line number="93" hits="2" branch="False" />
               </lines>
             </method>
             <method name="Copy" signature="(System.Void*,System.Void*,System.UIntPtr)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="78" hits="0" branch="False" />
+                <line number="96" hits="0" branch="False" />
               </lines>
             </method>
-            <method name=".cctor" signature="()" line-rate="0" branch-rate="0" complexity="2">
+            <method name=".cctor" signature="()" line-rate="0.5832999999999999" branch-rate="0.5" complexity="2">
               <lines>
-                <line number="19" hits="0" branch="True" condition-coverage="0% (0/2)">
+                <line number="19" hits="1" branch="True" condition-coverage="50% (1/2)">
                   <conditions>
-                    <condition number="10" type="jump" coverage="0%" />
+                    <condition number="10" type="jump" coverage="50%" />
                   </conditions>
                 </line>
                 <line number="21" hits="0" branch="False" />
@@ -832,12 +856,12 @@
                 <line number="23" hits="0" branch="False" />
                 <line number="24" hits="0" branch="False" />
                 <line number="25" hits="0" branch="False" />
-                <line number="30" hits="0" branch="False" />
-                <line number="31" hits="0" branch="False" />
-                <line number="32" hits="0" branch="False" />
-                <line number="33" hits="0" branch="False" />
-                <line number="34" hits="0" branch="False" />
-                <line number="36" hits="0" branch="False" />
+                <line number="30" hits="1" branch="False" />
+                <line number="31" hits="1" branch="False" />
+                <line number="32" hits="1" branch="False" />
+                <line number="33" hits="1" branch="False" />
+                <line number="34" hits="1" branch="False" />
+                <line number="36" hits="1" branch="False" />
               </lines>
             </method>
           </methods>
@@ -846,17 +870,33 @@
             <line number="42" hits="0" branch="False" />
             <line number="46" hits="0" branch="False" />
             <line number="49" hits="0" branch="False" />
-            <line number="51" hits="0" branch="False" />
-            <line number="55" hits="0" branch="False" />
-            <line number="59" hits="0" branch="False" />
-            <line number="63" hits="0" branch="False" />
-            <line number="67" hits="0" branch="False" />
-            <line number="71" hits="0" branch="False" />
-            <line number="75" hits="0" branch="False" />
-            <line number="78" hits="0" branch="False" />
-            <line number="19" hits="0" branch="True" condition-coverage="0% (0/2)">
+            <line number="51" hits="2" branch="False" />
+            <line number="55" hits="2" branch="False" />
+            <line number="59" hits="2" branch="False" />
+            <line number="64" hits="1" branch="True" condition-coverage="50% (1/2)">
               <conditions>
-                <condition number="10" type="jump" coverage="0%" />
+                <condition number="1" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="65" hits="1" branch="False" />
+            <line number="66" hits="1" branch="False" />
+            <line number="67" hits="1" branch="False" />
+            <line number="72" hits="0" branch="False" />
+            <line number="77" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="78" hits="0" branch="False" />
+            <line number="79" hits="0" branch="False" />
+            <line number="80" hits="0" branch="False" />
+            <line number="85" hits="2" branch="False" />
+            <line number="89" hits="0" branch="False" />
+            <line number="93" hits="2" branch="False" />
+            <line number="96" hits="0" branch="False" />
+            <line number="19" hits="1" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="10" type="jump" coverage="50%" />
               </conditions>
             </line>
             <line number="21" hits="0" branch="False" />
@@ -864,34 +904,34 @@
             <line number="23" hits="0" branch="False" />
             <line number="24" hits="0" branch="False" />
             <line number="25" hits="0" branch="False" />
-            <line number="30" hits="0" branch="False" />
-            <line number="31" hits="0" branch="False" />
-            <line number="32" hits="0" branch="False" />
-            <line number="33" hits="0" branch="False" />
-            <line number="34" hits="0" branch="False" />
-            <line number="36" hits="0" branch="False" />
+            <line number="30" hits="1" branch="False" />
+            <line number="31" hits="1" branch="False" />
+            <line number="32" hits="1" branch="False" />
+            <line number="33" hits="1" branch="False" />
+            <line number="34" hits="1" branch="False" />
+            <line number="36" hits="1" branch="False" />
           </lines>
         </class>
         <class name="StirlingLabs.Native.NativeMemory`1" filename="/_/StirlingLabs.Utilities/NativeMemory.cs" line-rate="0" branch-rate="0" complexity="11">
           <methods>
             <method name="New" signature="(System.UIntPtr)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="86" hits="0" branch="False" />
+                <line number="104" hits="0" branch="False" />
               </lines>
             </method>
             <method name="NewUnsafe" signature="(System.UIntPtr)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="90" hits="0" branch="False" />
+                <line number="108" hits="0" branch="False" />
               </lines>
             </method>
             <method name="SizeOf" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="94" hits="0" branch="False" />
+                <line number="112" hits="0" branch="False" />
               </lines>
             </method>
             <method name="MaxSizeOf" signature="()" line-rate="0" branch-rate="0" complexity="2">
               <lines>
-                <line number="98" hits="0" branch="True" condition-coverage="0% (0/2)">
+                <line number="116" hits="0" branch="True" condition-coverage="0% (0/2)">
                   <conditions>
                     <condition number="12" type="jump" coverage="0%" />
                   </conditions>
@@ -900,7 +940,7 @@
             </method>
             <method name="MinSizeOf" signature="()" line-rate="0" branch-rate="0" complexity="2">
               <lines>
-                <line number="102" hits="0" branch="True" condition-coverage="0% (0/2)">
+                <line number="120" hits="0" branch="True" condition-coverage="0% (0/2)">
                   <conditions>
                     <condition number="12" type="jump" coverage="0%" />
                   </conditions>
@@ -909,47 +949,47 @@
             </method>
             <method name="ReAlloc" signature="(T*)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="105" hits="0" branch="False" />
+                <line number="123" hits="0" branch="False" />
               </lines>
             </method>
             <method name="ReAlloc" signature="(System.Span`1&lt;T&gt;,System.UIntPtr)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="109" hits="0" branch="False" />
-                <line number="110" hits="0" branch="False" />
+                <line number="127" hits="0" branch="False" />
+                <line number="128" hits="0" branch="False" />
               </lines>
             </method>
             <method name="Resize" signature="(System.Span`1&lt;T&gt;,System.UIntPtr)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="115" hits="0" branch="False" />
-                <line number="116" hits="0" branch="False" />
+                <line number="133" hits="0" branch="False" />
+                <line number="134" hits="0" branch="False" />
               </lines>
             </method>
             <method name="Copy" signature="(T*,TNew*)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="120" hits="0" branch="False" />
+                <line number="138" hits="0" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="86" hits="0" branch="False" />
-            <line number="90" hits="0" branch="False" />
-            <line number="94" hits="0" branch="False" />
-            <line number="98" hits="0" branch="True" condition-coverage="0% (0/2)">
+            <line number="104" hits="0" branch="False" />
+            <line number="108" hits="0" branch="False" />
+            <line number="112" hits="0" branch="False" />
+            <line number="116" hits="0" branch="True" condition-coverage="0% (0/2)">
               <conditions>
                 <condition number="12" type="jump" coverage="0%" />
               </conditions>
             </line>
-            <line number="102" hits="0" branch="True" condition-coverage="0% (0/2)">
+            <line number="120" hits="0" branch="True" condition-coverage="0% (0/2)">
               <conditions>
                 <condition number="12" type="jump" coverage="0%" />
               </conditions>
             </line>
-            <line number="105" hits="0" branch="False" />
-            <line number="109" hits="0" branch="False" />
-            <line number="110" hits="0" branch="False" />
-            <line number="115" hits="0" branch="False" />
-            <line number="116" hits="0" branch="False" />
-            <line number="120" hits="0" branch="False" />
+            <line number="123" hits="0" branch="False" />
+            <line number="127" hits="0" branch="False" />
+            <line number="128" hits="0" branch="False" />
+            <line number="133" hits="0" branch="False" />
+            <line number="134" hits="0" branch="False" />
+            <line number="138" hits="0" branch="False" />
           </lines>
         </class>
         <class name="StirlingLabs.Utilities.BinaryPrimitives" filename="/_/StirlingLabs.Utilities/BinaryPrimitives.cs" line-rate="0.1875" branch-rate="0.0625" complexity="32">
@@ -2648,63 +2688,87 @@
             </line>
           </lines>
         </class>
-        <class name="StirlingLabs.Utilities.Common" filename="/_/StirlingLabs.Utilities/Common.cs" line-rate="0.125" branch-rate="0.3333" complexity="18">
+        <class name="StirlingLabs.Utilities.Common" filename="/_/StirlingLabs.Utilities/Common.cs" line-rate="0.2812" branch-rate="0.4" complexity="22">
           <methods>
+            <method name="Init" signature="(T,StirlingLabs.Utilities.Common/InitDelegate`1&lt;T&gt;)" line-rate="0.75" branch-rate="0.5" complexity="2">
+              <lines>
+                <line number="22" hits="1" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="23" hits="0" branch="False" />
+                <line number="24" hits="1" branch="False" />
+                <line number="25" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method name="Init" signature="(T*,StirlingLabs.Utilities.Common/InitPointerDelegate`1&lt;T&gt;)" line-rate="0.75" branch-rate="0.5" complexity="2">
+              <lines>
+                <line number="34" hits="1" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="35" hits="0" branch="False" />
+                <line number="36" hits="1" branch="False" />
+                <line number="37" hits="1" branch="False" />
+              </lines>
+            </method>
             <method name="OnDemand" signature="(System.WeakReference`1&lt;T&gt;&amp;,System.Func`1&lt;T&gt;)" line-rate="0.6" branch-rate="0.5" complexity="4">
               <lines>
-                <line number="19" hits="3" branch="True" condition-coverage="50% (1/2)">
+                <line number="45" hits="3" branch="True" condition-coverage="50% (1/2)">
                   <conditions>
                     <condition number="2" type="jump" coverage="50%" />
                   </conditions>
                 </line>
-                <line number="20" hits="3" branch="False" />
-                <line number="21" hits="0" branch="True" condition-coverage="50% (1/2)">
+                <line number="46" hits="3" branch="False" />
+                <line number="47" hits="0" branch="True" condition-coverage="50% (1/2)">
                   <conditions>
                     <condition number="30" type="jump" coverage="50%" />
                   </conditions>
                 </line>
-                <line number="22" hits="0" branch="False" />
-                <line number="23" hits="3" branch="False" />
+                <line number="48" hits="0" branch="False" />
+                <line number="49" hits="3" branch="False" />
               </lines>
             </method>
             <method name="CreateEqualityComparer" signature="(System.Func`3&lt;T,T,System.Boolean&gt;,System.Func`2&lt;T,System.Int32&gt;)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="28" hits="0" branch="False" />
+                <line number="54" hits="0" branch="False" />
               </lines>
             </method>
             <method name="CreateEqualityComparer" signature="(System.Func`3&lt;T,T,System.Boolean&gt;)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="32" hits="0" branch="False" />
+                <line number="58" hits="0" branch="False" />
               </lines>
             </method>
             <method name="CreateEqualityComparer" signature="(System.Func`2&lt;T,System.Int32&gt;)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="36" hits="0" branch="False" />
+                <line number="62" hits="0" branch="False" />
               </lines>
             </method>
             <method name="Discard" signature="(System.Span`1&lt;T&gt;&amp;)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="59" hits="0" branch="False" />
+                <line number="85" hits="0" branch="False" />
               </lines>
             </method>
             <method name="Discard" signature="(System.ReadOnlySpan`1&lt;T&gt;&amp;)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="82" hits="0" branch="False" />
+                <line number="108" hits="0" branch="False" />
               </lines>
             </method>
             <method name="Discard" signature="(StirlingLabs.Utilities.BigSpan`1&lt;T&gt;&amp;)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="105" hits="0" branch="False" />
+                <line number="131" hits="0" branch="False" />
               </lines>
             </method>
             <method name="Discard" signature="(StirlingLabs.Utilities.ReadOnlyBigSpan`1&lt;T&gt;&amp;)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="128" hits="0" branch="False" />
+                <line number="154" hits="0" branch="False" />
               </lines>
             </method>
             <method name="GetLength" signature="(T[])" line-rate="0" branch-rate="0" complexity="2">
               <lines>
-                <line number="132" hits="0" branch="True" condition-coverage="0% (0/2)">
+                <line number="159" hits="0" branch="True" condition-coverage="0% (0/2)">
                   <conditions>
                     <condition number="5" type="jump" coverage="0%" />
                   </conditions>
@@ -2713,73 +2777,89 @@
             </method>
             <method name="RunThread" signature="(System.Action)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="140" hits="0" branch="False" />
-                <line number="141" hits="0" branch="False" />
-                <line number="142" hits="0" branch="False" />
+                <line number="167" hits="0" branch="False" />
+                <line number="168" hits="0" branch="False" />
+                <line number="169" hits="0" branch="False" />
               </lines>
             </method>
             <method name="RunThread" signature="(System.Action`1&lt;T&gt;,T)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="153" hits="0" branch="False" />
-                <line number="154" hits="0" branch="False" />
-                <line number="155" hits="0" branch="False" />
+                <line number="180" hits="0" branch="False" />
+                <line number="181" hits="0" branch="False" />
+                <line number="182" hits="0" branch="False" />
               </lines>
             </method>
-            <method name="&lt;RunThread&gt;g__Exec|10_0" signature="(System.Object)" line-rate="0" branch-rate="1" complexity="1">
+            <method name="&lt;RunThread&gt;g__Exec|14_0" signature="(System.Object)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="138" hits="0" branch="False" />
+                <line number="165" hits="0" branch="False" />
               </lines>
             </method>
-            <method name="&lt;RunThread&gt;g__Exec|11_0" signature="(System.Object)" line-rate="0" branch-rate="1" complexity="1">
+            <method name="&lt;RunThread&gt;g__Exec|15_0" signature="(System.Object)" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="149" hits="0" branch="False" />
-                <line number="150" hits="0" branch="False" />
-                <line number="151" hits="0" branch="False" />
+                <line number="176" hits="0" branch="False" />
+                <line number="177" hits="0" branch="False" />
+                <line number="178" hits="0" branch="False" />
               </lines>
             </method>
             <method name=".cctor" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
-                <line number="13" hits="0" branch="False" />
+                <line number="14" hits="0" branch="False" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="19" hits="3" branch="True" condition-coverage="50% (1/2)">
+            <line number="22" hits="1" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="23" hits="0" branch="False" />
+            <line number="24" hits="1" branch="False" />
+            <line number="25" hits="1" branch="False" />
+            <line number="34" hits="1" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="35" hits="0" branch="False" />
+            <line number="36" hits="1" branch="False" />
+            <line number="37" hits="1" branch="False" />
+            <line number="45" hits="3" branch="True" condition-coverage="50% (1/2)">
               <conditions>
                 <condition number="2" type="jump" coverage="50%" />
               </conditions>
             </line>
-            <line number="20" hits="3" branch="False" />
-            <line number="21" hits="0" branch="True" condition-coverage="50% (1/2)">
+            <line number="46" hits="3" branch="False" />
+            <line number="47" hits="0" branch="True" condition-coverage="50% (1/2)">
               <conditions>
                 <condition number="30" type="jump" coverage="50%" />
               </conditions>
             </line>
-            <line number="22" hits="0" branch="False" />
-            <line number="23" hits="3" branch="False" />
-            <line number="28" hits="0" branch="False" />
-            <line number="32" hits="0" branch="False" />
-            <line number="36" hits="0" branch="False" />
-            <line number="59" hits="0" branch="False" />
-            <line number="82" hits="0" branch="False" />
-            <line number="105" hits="0" branch="False" />
-            <line number="128" hits="0" branch="False" />
-            <line number="132" hits="0" branch="True" condition-coverage="0% (0/2)">
+            <line number="48" hits="0" branch="False" />
+            <line number="49" hits="3" branch="False" />
+            <line number="54" hits="0" branch="False" />
+            <line number="58" hits="0" branch="False" />
+            <line number="62" hits="0" branch="False" />
+            <line number="85" hits="0" branch="False" />
+            <line number="108" hits="0" branch="False" />
+            <line number="131" hits="0" branch="False" />
+            <line number="154" hits="0" branch="False" />
+            <line number="159" hits="0" branch="True" condition-coverage="0% (0/2)">
               <conditions>
                 <condition number="5" type="jump" coverage="0%" />
               </conditions>
             </line>
-            <line number="140" hits="0" branch="False" />
-            <line number="141" hits="0" branch="False" />
-            <line number="142" hits="0" branch="False" />
-            <line number="153" hits="0" branch="False" />
-            <line number="154" hits="0" branch="False" />
-            <line number="155" hits="0" branch="False" />
-            <line number="138" hits="0" branch="False" />
-            <line number="149" hits="0" branch="False" />
-            <line number="150" hits="0" branch="False" />
-            <line number="151" hits="0" branch="False" />
-            <line number="13" hits="0" branch="False" />
+            <line number="167" hits="0" branch="False" />
+            <line number="168" hits="0" branch="False" />
+            <line number="169" hits="0" branch="False" />
+            <line number="180" hits="0" branch="False" />
+            <line number="181" hits="0" branch="False" />
+            <line number="182" hits="0" branch="False" />
+            <line number="165" hits="0" branch="False" />
+            <line number="176" hits="0" branch="False" />
+            <line number="177" hits="0" branch="False" />
+            <line number="178" hits="0" branch="False" />
+            <line number="14" hits="0" branch="False" />
           </lines>
         </class>
         <class name="StirlingLabs.Utilities.Crc32C" filename="/_/StirlingLabs.Utilities/Crc32C.cs" line-rate="0.215" branch-rate="0.25" complexity="48">
