@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using JetBrains.Annotations;
@@ -12,6 +13,31 @@ public static class Common
 {
     public static readonly unsafe bool Is64Bit = sizeof(nint) == 8;
 
+    public delegate void InitDelegate<in T>(T item) where T: class;
+
+    [SuppressMessage("Design", "CA1045", Justification = "Intentional")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static T Init<T>(T item, InitDelegate<T> initializer) where T: class
+    {
+        if (initializer is null)
+            throw new ArgumentNullException(nameof(initializer));
+        initializer(item);
+        return item;
+    }
+
+    public unsafe delegate void InitPointerDelegate<T>(T * item) where T: unmanaged;
+
+    [SuppressMessage("Design", "CA1045", Justification = "Intentional")]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe T* Init<T>(T* item, InitPointerDelegate<T> initializer) where T: unmanaged
+    {
+        if (initializer is null)
+            throw new ArgumentNullException(nameof(initializer));
+        initializer(item);
+        return item;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static T OnDemand<T>(ref WeakReference<T>? cache, Func<T> factory)
         where T : class
     {
@@ -128,6 +154,7 @@ public static class Common
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("Design", "CA1062", Justification = "Allow null reference exception")]
     public static nuint GetLength<T>(this T[] array)
         => Is64Bit ? (nuint)array.LongLength : (nuint)array.Length;
 

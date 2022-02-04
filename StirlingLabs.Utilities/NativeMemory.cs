@@ -59,8 +59,26 @@ public static class NativeMemory
         => (T*)New(SizeOf<T>());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe T* New<T>(Common.InitPointerDelegate<T> initializer) where T : unmanaged
+    {
+        if (initializer is null) throw new ArgumentNullException(nameof(initializer));
+        var p = New<T>();
+        initializer(p);
+        return p;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe T* NewUnsafe<T>() where T : unmanaged
         => (T*)NewUnsafe(SizeOf<T>());
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe T* NewUnsafe<T>(Common.InitPointerDelegate<T> initializer) where T : unmanaged
+    {
+        if (initializer is null) throw new ArgumentNullException(nameof(initializer));
+        var p = NewUnsafe<T>();
+        initializer(p);
+        return p;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe void Free<T>(T* ptr) where T : unmanaged

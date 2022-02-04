@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using FluentAssertions;
 using NUnit.Framework;
+using StirlingLabs.Native;
 using StirlingLabs.Utilities;
 
 namespace StirlingLabs.Utilities.Tests;
@@ -50,5 +51,45 @@ public class UtilitiesTests
         var p = (*(nint**)Unsafe.AsPointer(ref info))[3];
         mt.Should().Be(p);
         x.Should().Be(mt);
+    }
+
+    [Test]
+    public void InitClassTest()
+    {
+        var called = false;
+        var x = Common.Init(new Nothing(), item => {
+            Assert.NotNull(item);
+            called = true;
+        });
+        Assert.True(called);
+        Assert.NotNull(x);
+    }
+
+    [Test]
+    public unsafe void NewInitTest()
+    {
+
+        var called = false;
+        var pX = NativeMemory.New<NothingStruct>(pItem => {
+            Assert.NotZero((nint)pItem);
+            called = true;
+        });
+        Assert.True(called);
+        Assert.NotZero((nint)pX);
+        NativeMemory.Free(pX);
+    }
+
+    [Test]
+    public unsafe void InitNewTest()
+    {
+
+        var called = false;
+        var pX = Common.Init(NativeMemory.New<NothingStruct>(), pItem => {
+            Assert.NotZero((nint)pItem);
+            called = true;
+        });
+        Assert.True(called);
+        Assert.NotZero((nint)pX);
+        NativeMemory.Free(pX);
     }
 }
