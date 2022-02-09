@@ -1,8 +1,8 @@
 #nullable enable
 using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 #if NET5_0_OR_GREATER
+using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.X86;
 using ArmCrc32 = System.Runtime.Intrinsics.Arm.Crc32;
 #endif

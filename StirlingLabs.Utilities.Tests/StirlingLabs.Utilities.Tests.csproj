@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
         <IsPackable>false</IsPackable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Authors>Stirling Labs</Authors>
@@ -13,6 +12,8 @@
         <CoverletOutput>../coverage/</CoverletOutput>
         <DeterministicReport>true</DeterministicReport>
         <DeterministicSourcePaths>true</DeterministicSourcePaths>
+        <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+        <OutputType>Library</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
@@ -30,6 +31,11 @@
         <PackageReference Include="ReportGenerator" Version="4.8.12" PrivateAssets="all" />
     </ItemGroup>
 
+    <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard'))">
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    </ItemGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\StirlingLabs.Utilities.Collections\StirlingLabs.Utilities.Collections.csproj" />
         <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj" />
@@ -38,6 +44,6 @@
     <Target Name="GenerateHtmlCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
         <!-- generate markdown coverage report and badges -->
         <ReportGenerator ReportFiles="@(CoverletReport)" ReportTypes="MarkdownSummary;Badges" SourceDirectories="../StirlingLabs.Utilities" TargetDirectory="../coverage/" />
-      </Target>
+    </Target>
 
 </Project>

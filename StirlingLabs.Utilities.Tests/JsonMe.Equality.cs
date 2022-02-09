@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
 
 namespace StirlingLabs.Utilities.Tests;
 
 public partial class JsonMe : IEquatable<JsonMe>
 {
-    public static DelegatingEqualityComparer<KeyValuePair<string, object>> arbitraryDictComparer
+    public static readonly DelegatingEqualityComparer<KeyValuePair<string, object>> ArbitraryDictComparer
         = new((x, y) => {
             if (x.Key != y.Key)
                 return false;
@@ -20,6 +22,7 @@ public partial class JsonMe : IEquatable<JsonMe>
             }
             return true;
         });
+    // ReSharper disable once CognitiveComplexity
     public bool Equals(JsonMe? other)
     {
         if (ReferenceEquals(null, other))
@@ -51,7 +54,7 @@ public partial class JsonMe : IEquatable<JsonMe>
             return false;
         if (numberDict.Count != other.numberDict.Count)
             return false;
-        if (arbitraryDict.Except(other.arbitraryDict, arbitraryDictComparer).Any())
+        if (arbitraryDict.Except(other.arbitraryDict, ArbitraryDictComparer).Any())
             return false;
         return true;
     }
@@ -65,9 +68,28 @@ public partial class JsonMe : IEquatable<JsonMe>
             return false;
         return Equals((JsonMe)obj);
     }
-    public override int GetHashCode()
-        => HashCode.Combine(arbitrary is not null, text, number, numbers, stringDict, numberDict,
-            arbitraryDict.Select(kv => (kv.Key, kv.Value is not null)));
+    [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
+    [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
+    public override unsafe int GetHashCode()
+    {
+        Span<int> ints = stackalloc int[]
+        {
+            (arbitrary is not null).GetHashCode(),
+#if NETSTANDARD2_0
+            text.GetHashCode(),
+#else
+            text.GetHashCode(StringComparison.Ordinal),
+#endif
+            number.GetHashCode(),
+            numbers.GetHashCode(),
+            stringDict.GetHashCode(),
+            numberDict.GetHashCode(),
+            arbitraryDict.Select(kv => (kv.Key, kv.Value is not null)).GetHashCode()
+        };
+        var bytes = MemoryMarshal.AsBytes(ints);
+        return unchecked((int)Crc32C.Calculate(bytes));
+    }
+
     public static bool operator ==(JsonMe left, JsonMe right)
         => Equals(left, right);
     public static bool operator !=(JsonMe left, JsonMe right)

@@ -97,6 +97,8 @@ public static class SecurityTests
         }
     }
 
+#if !NETSTANDARD
+
     [TestCaseSource(nameof(GetHashSource))]
     public static void GetHash(byte[] message, byte[] digest)
     {
@@ -112,4 +114,5 @@ public static class SecurityTests
 
         Assert.IsTrue(expected.SequenceEqual((Span<byte>)actual));
     }
+#endif
 }

@@ -21,6 +21,7 @@
         </PackageReference>
         <PackageReference Include="InlineIL.Fody" Version="1.7.1" PrivateAssets="all" />
         <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" PrivateAssets="all" />
+        <PackageReference Include="MedallionPriorityQueue" Version="1.1.0" />
         <PackageReference Include="StirlingLabs.BigSpans" Version="21.8.1" />
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">

@@ -9,9 +9,8 @@ namespace StirlingLabs.Utilities;
 [PublicAPI]
 public static class Security
 {
-        
 #if NET5_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
-    public static unsafe void FillWithRandomData(this BigSpan<byte> span)
+    public static void FillWithRandomData(this BigSpan<byte> span)
     {
         nuint index = 0;
         var bufferRemaining = span.Length;
@@ -29,8 +28,9 @@ public static class Security
             RandomNumberGenerator.Fill(span.Slice(index, (int)bufferRemaining));
     }
 
-    public static unsafe void FillWithRandomData(this BigSpan<byte> span, RandomNumberGenerator rng)
+    public static void FillWithRandomData(this BigSpan<byte> span, RandomNumberGenerator rng)
     {
+        if (rng is null) throw new ArgumentNullException(nameof(rng));
         nuint index = 0;
         var bufferRemaining = span.Length;
         var maxBuffer = (uint)int.MaxValue;
@@ -46,9 +46,16 @@ public static class Security
         if (bufferRemaining > 0)
             rng.GetBytes(span.Slice(index, (int)bufferRemaining));
     }
-    public static unsafe void FillWithNonZeroRandomData(this BigSpan<byte> span, RandomNumberGenerator? rng = null)
+    public static void FillWithNonZeroRandomData(this BigSpan<byte> span)
     {
-        rng ??= RandomNumberGenerator.Create();
+        using var rng = RandomNumberGenerator.Create();
+
+        FillWithNonZeroRandomData(span, rng);
+    }
+    public static void FillWithNonZeroRandomData(this BigSpan<byte> span, RandomNumberGenerator rng)
+    {
+        if (rng is null) throw new ArgumentNullException(nameof(rng));
+
         nuint index = 0;
         var bufferRemaining = span.Length;
         var maxBuffer = (uint)int.MaxValue;
@@ -63,9 +70,10 @@ public static class Security
         Debug.Assert(bufferRemaining < int.MaxValue);
         if (bufferRemaining > 0)
             rng.GetNonZeroBytes(span.Slice(index, (int)bufferRemaining));
+
     }
 #endif
-        
+
     // TODO: have XKCP.NET support .NET Standard
 #if !NETSTANDARD
 

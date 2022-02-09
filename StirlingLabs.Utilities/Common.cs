@@ -13,11 +13,19 @@ public static class Common
 {
     public static readonly unsafe bool Is64Bit = sizeof(nint) == 8;
 
-    public delegate void InitDelegate<in T>(T item) where T: class;
+    public delegate void InitDelegate<in T>(T item) where T : class;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static T Init<T>(Func<T> initializer)
+    {
+        if (initializer is null)
+            throw new ArgumentNullException(nameof(initializer));
+        return initializer();
+    }
 
     [SuppressMessage("Design", "CA1045", Justification = "Intentional")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static T Init<T>(T item, InitDelegate<T> initializer) where T: class
+    public static T Init<T>(T item, InitDelegate<T> initializer) where T : class
     {
         if (initializer is null)
             throw new ArgumentNullException(nameof(initializer));
@@ -25,11 +33,11 @@ public static class Common
         return item;
     }
 
-    public unsafe delegate void InitPointerDelegate<T>(T * item) where T: unmanaged;
+    public unsafe delegate void InitPointerDelegate<T>(T* item) where T : unmanaged;
 
     [SuppressMessage("Design", "CA1045", Justification = "Intentional")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static unsafe T* Init<T>(T* item, InitPointerDelegate<T> initializer) where T: unmanaged
+    public static unsafe T* Init<T>(T* item, InitPointerDelegate<T> initializer) where T : unmanaged
     {
         if (initializer is null)
             throw new ArgumentNullException(nameof(initializer));

@@ -22,13 +22,29 @@ public class YamlTests
         .RuleFor(f => f.texts, f => f.Make(100, _ => f.Hacker.Phrase()).ToArray())
         .RuleFor(f => f.numbers, f => f.Make(500, _ => GetActuallyRandomNumber()).ToArray());
 
-    public static double GetActuallyRandomNumber()
+#if NETSTANDARD2_0
+    private static readonly RandomNumberGenerator Rng = RandomNumberGenerator.Create();
+#endif
+
+    public static unsafe double GetActuallyRandomNumber()
     {
         double number = 0;
+#if !NETSTANDARD2_0
+        var doubleSpan = MemoryMarshal.CreateSpan(ref number, 1);
+        var bytesSpan = MemoryMarshal.AsBytes(doubleSpan);
+        do RandomNumberGenerator.Fill(bytesSpan);
+        while (!double.IsFinite(number));
+#else
+        var pNumber = &number;
+        var buf = new byte[8];
+        var bytesSpan = new Span<byte>(pNumber, 8);
+        var longSpan = new Span<long>(pNumber, 1);
         do
         {
-            RandomNumberGenerator.Fill(MemoryMarshal.AsBytes(MemoryMarshal.CreateSpan(ref number, 1)));
-        } while (!double.IsFinite(number));
+            Rng.GetBytes(buf);
+            buf.CopyTo(bytesSpan);
+        } while ((longSpan[0] & 0x7FFFFFFFFFFFFFFF) < 0x7FF0000000000000);
+#endif
         return number;
     }
 
@@ -60,7 +76,7 @@ public class YamlTests
         dynamic actual = JsonNetSerializer.Deserialize(new StringReader(actualJson), k.GetType());
 
         Assert.AreEqual((IList<JsonMe>)expected.a, (IList<JsonMe>)actual.a);
-            
+
         Console.WriteLine($"ToJson w/ Serializer: {json1}, ToJson w/ YamlToJsonVisitor: {json2}");
     }
 }
