@@ -12,8 +12,8 @@
         <CoverletOutput>../coverage/</CoverletOutput>
         <DeterministicReport>true</DeterministicReport>
         <DeterministicSourcePaths>true</DeterministicSourcePaths>
-        <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
         <OutputType>Library</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
