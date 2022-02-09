@@ -1,38 +1,42 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 02/04/2022 - 19:03:22 |
+| Generated on: | 02/09/2022 - 20:06:42 |
 | Parser: | CoberturaParser |
 | Assemblies: | 2 |
-| Classes: | 25 |
-| Files: | 32 |
-| Covered lines: | 281 |
-| Uncovered lines: | 771 |
-| Coverable lines: | 1052 |
-| Total lines: | 3137 |
-| Line coverage: | 26.7% (281 of 1052) |
-| Covered branches: | 124 |
-| Total branches: | 534 |
-| Branch coverage: | 23.2% (124 of 534) |
+| Classes: | 29 |
+| Files: | 36 |
+| Covered lines: | 393 |
+| Uncovered lines: | 808 |
+| Coverable lines: | 1201 |
+| Total lines: | 3568 |
+| Line coverage: | 32.7% (393 of 1201) |
+| Covered branches: | 161 |
+| Total branches: | 590 |
+| Branch coverage: | 27.2% (161 of 590) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**StirlingLabs.Utilities**|**198**|**723**|**921**|**3391**|**21.4%**|**87**|**476**|**18.2%**|
+|**StirlingLabs.Utilities**|**310**|**760**|**1070**|**3822**|**28.9%**|**124**|**532**|**23.3%**|
 |StirlingLabs.Native.NativeMemory|16|16|32|139|50%|2|6|33.3%|
 |StirlingLabs.Native.NativeMemory`1|0|11|11|139|0%|0|4|0%|
 |StirlingLabs.Utilities.BinaryPrimitives|15|241|256|1067|5.8%|11|196|5.6%|
-|StirlingLabs.Utilities.Common|9|23|32|184|28.1%|4|10|40%|
-|StirlingLabs.Utilities.Crc32C|20|73|93|213|21.5%|11|44|25%|
+|StirlingLabs.Utilities.Common|11|24|35|192|31.4%|5|12|41.6%|
+|StirlingLabs.Utilities.Crc32C|23|70|93|213|24.7%|12|44|27.2%|
 |StirlingLabs.Utilities.DelegatingEqualityComparer`1|6|8|14|34|42.8%|1|8|12.5%|
 |StirlingLabs.Utilities.GarbageCollectedNotifier|0|8|8|29|0%|0|6|0%|
 |StirlingLabs.Utilities.GcHandle`1|0|17|17|72|0%|0|4|0%|
 |StirlingLabs.Utilities.HexEncoding|20|20|40|93|50%|2|10|20%|
 |StirlingLabs.Utilities.InsecureRandomNumberGenerator|0|11|11|38|0%|0|4|0%|
+|StirlingLabs.Utilities.Interval|2|3|5|30|40%|0|0||
 |StirlingLabs.Utilities.MemoryReader`1|0|8|8|23|0%|0|2|0%|
 |StirlingLabs.Utilities.MemoryWriter`1|0|7|7|20|0%|0|2|0%|
 |StirlingLabs.Utilities.Ptr`1|0|17|17|93|0%|0|2|0%|
-|StirlingLabs.Utilities.Security|1|38|39|90|2.5%|0|20|0%|
+|StirlingLabs.Utilities.ScheduledAction|79|7|86|201|91.8%|28|34|82.3%|
+|StirlingLabs.Utilities.Security|1|42|43|98|2.3%|0|22|0%|
 |StirlingLabs.Utilities.SizedUtf8String|0|57|57|221|0%|0|28|0%|
+|StirlingLabs.Utilities.Timeout|2|3|5|30|40%|0|0||
+|StirlingLabs.Utilities.Timestamp|24|22|46|154|52.1%|7|18|38.8%|
 |StirlingLabs.Utilities.Type`1|2|14|16|115|12.5%|0|0||
 |StirlingLabs.Utilities.TypeExtensions|6|0|6|115|100%|2|4|50%|
 |StirlingLabs.Utilities.Utf8RuneEnumerator|0|17|17|60|0%|0|6|0%|
