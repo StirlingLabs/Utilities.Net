@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace StirlingLabs.Utilities.Tests;
 
+[Parallelizable(ParallelScope.All)]
 public static class SecurityTests
 {
     public static IEnumerable<object[]> GetHashSource

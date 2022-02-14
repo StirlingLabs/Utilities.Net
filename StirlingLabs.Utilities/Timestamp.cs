@@ -54,10 +54,12 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
     {
         var realFin = Stopwatch.GetTimestamp() + ticks;
 
+        /*
         if (ticks > OneSecond)
             GC.Collect(2, GCCollectionMode.Forced, true, true);
         else if (ticks > OneSecond / 8 && GCSettings.LatencyMode >= GCLatencyMode.Interactive)
             GC.Collect(0, GCCollectionMode.Forced, true, false);
+        */
 
         var fin = realFin - PreemptionBiasTicks;
 
@@ -84,10 +86,12 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
     {
         var realFin = Stopwatch.GetTimestamp() + ticks;
 
+        /*
         if (ticks > OneSecond)
             GC.Collect(2, GCCollectionMode.Forced, true, true);
         else if (ticks > OneSecond / 8 && GCSettings.LatencyMode >= GCLatencyMode.Interactive)
             GC.Collect(0, GCCollectionMode.Forced, true, false);
+        */
         ct.ThrowIfCancellationRequested();
 
         var fin = realFin - PreemptionBiasTicks;

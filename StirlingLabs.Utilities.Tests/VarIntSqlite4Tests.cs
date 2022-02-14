@@ -8,26 +8,11 @@ using StirlingLabs.Utilities.Assertions;
 
 namespace StirlingLabs.Utilities.Tests;
 
-public struct VarIntSqlite4TestCase
-{
-    public readonly ulong Decoded;
-    public readonly byte[] Encoded;
-
-    public VarIntSqlite4TestCase(ulong decoded, byte[] encoded)
-    {
-        Decoded = decoded;
-        Encoded = encoded;
-    }
-
-    public int Length => Encoded.Length;
-
-    public override string ToString()
-        => $"{{{Decoded} => ({Length}) 0x{Encoded.ToHexString()}}}";
-}
-
+[Parallelizable(ParallelScope.All)]
 public class VarIntSqlite4Tests
 {
     [DatapointSource]
+    [UsedImplicitly]
     public static VarIntSqlite4TestCase[] WellKnownTestCases =
     {
         new(0, new byte[] { 0 }),
@@ -52,6 +37,7 @@ public class VarIntSqlite4Tests
     };
 
     [DatapointSource]
+    [UsedImplicitly]
     public static IEnumerable<ulong> SomeFuzz
     {
         // ReSharper disable once CognitiveComplexity

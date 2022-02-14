@@ -14,6 +14,7 @@ using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace StirlingLabs.Utilities.Tests;
 
+[Parallelizable(ParallelScope.All)]
 public class YamlTests
 {
     private static readonly JsonSerializer JsonNetSerializer = JsonSerializer.CreateDefault();

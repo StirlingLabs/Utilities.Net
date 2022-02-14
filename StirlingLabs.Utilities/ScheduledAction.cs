@@ -188,16 +188,12 @@ public abstract class ScheduledAction : IDisposable
         if (IsDisposed) return false;
 
         Base += Ticks;
-        switch (Callback)
-        {
-            case Action act:
-                act();
-                return true;
-            case Func<bool> fn:
-                return fn();
-        }
 
-        throw new NotImplementedException();
+        if (Callback is not Action act)
+            return ((Func<bool>)Callback)();
+
+        act();
+        return true;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

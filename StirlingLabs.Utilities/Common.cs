@@ -189,4 +189,46 @@ public static class Common
         thread.Start((a, state));
         return thread;
     }
+
+    [SuppressMessage("Design", "CA1031", Justification = "Exception as result")]
+    public static Exception? Try(Action act)
+    {
+        if (act is null)
+            throw new ArgumentNullException(nameof(act));
+
+        try
+        {
+            act();
+        }
+        catch (Exception? ex)
+        {
+            return ex;
+        }
+
+        return null;
+    }
+
+    [SuppressMessage("Design", "CA1031", Justification = "Exception as result")]
+#if !NETSTANDARD2_0
+    public static bool Try(Action act, [NotNullWhen(false)] out Exception? exception)
+#else
+    public static bool Try(Action act, out Exception? exception)
+#endif
+    {
+        if (act is null)
+            throw new ArgumentNullException(nameof(act));
+
+        try
+        {
+            act();
+        }
+        catch (Exception? ex)
+        {
+            exception = ex;
+            return false;
+        }
+
+        exception = null;
+        return true;
+    }
 }

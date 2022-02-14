@@ -6,6 +6,7 @@ using StirlingLabs.Utilities;
 
 namespace StirlingLabs.Utilities.Tests;
 
+[Parallelizable(ParallelScope.All)]
 public class UtilitiesTests
 {
     [Test]
