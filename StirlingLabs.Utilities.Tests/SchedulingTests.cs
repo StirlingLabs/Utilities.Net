@@ -101,7 +101,8 @@ public class TimestampTests
     public void CancellableWait([Values(1, 2, 3)] int _)
     {
         var halfSustain = Sustain / 2;
-        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(halfSustain));
+        using var cts = new CancellationTokenSource();
+        using var cto = new Timeout(halfSustain, () => cts.Cancel());
         var start = DateTime.Now;
         var ts = Timestamp.Now;
         Assert.Throws<OperationCanceledException>(() => {
