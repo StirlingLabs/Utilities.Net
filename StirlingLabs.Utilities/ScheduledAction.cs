@@ -37,7 +37,7 @@ public abstract class ScheduledAction : IDisposable
 
     protected static readonly long MaxWaitTicks = (long)(Stopwatch.Frequency * .001);
 
-    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
+    [MethodImpl(MethodImplOptions.NoInlining)]
     [SuppressMessage("Design", "CA1031", Justification = "Exception is handed off, execution critical")]
     [SuppressMessage("ReSharper", "CognitiveComplexity")]
     private static void TimerThread()
@@ -65,7 +65,7 @@ public abstract class ScheduledAction : IDisposable
                 // ReSharper disable once InconsistentlySynchronizedField
                 NotEmptyEvent.Wait(1, ct);
 
-                ct.ThrowIfCancellationRequested();
+                //if (ct.IsCancellationRequested) return;
 
                 var nextSchedulerWake = Stopwatch.GetTimestamp() + MaxWaitTicks;
                 lock (Schedule)
@@ -76,6 +76,8 @@ public abstract class ScheduledAction : IDisposable
                     else
                         for (var i = 0; i < c; ++i)
                         {
+                            //if (ct.IsCancellationRequested) return;
+
                             var act = Schedule.Dequeue();
                             if (act is Interval)
                             {
@@ -94,7 +96,7 @@ public abstract class ScheduledAction : IDisposable
                                             throw;
                                     }
 
-                                    ct.ThrowIfCancellationRequested();
+                                    //if (ct.IsCancellationRequested) return;
 
                                     if (!willRepeat)
                                         break;
@@ -130,12 +132,14 @@ public abstract class ScheduledAction : IDisposable
                                         nextSchedulerWake = actNext;
                                 }
                             }
-
-                            ct.ThrowIfCancellationRequested();
                         }
-
-                    Timestamp.WaitTicks(nextSchedulerWake - Stopwatch.GetTimestamp(), ct);
                 }
+
+                //if (ct.IsCancellationRequested) return;
+
+                Timestamp.WaitTicks(nextSchedulerWake - Stopwatch.GetTimestamp(), ct);
+
+                //if (ct.IsCancellationRequested) return;
             }
         }
         catch (ThreadAbortException)
