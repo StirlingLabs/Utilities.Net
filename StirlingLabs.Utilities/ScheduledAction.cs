@@ -8,6 +8,10 @@ using System.Threading;
 using JetBrains.Annotations;
 using Medallion.Collections;
 
+#if !NETSTANDARD
+using System.Runtime.Loader;
+#endif
+
 namespace StirlingLabs.Utilities;
 
 [PublicAPI]
@@ -32,18 +36,36 @@ public abstract class ScheduledAction : IDisposable
     };
 
     protected static readonly long MaxWaitTicks = (long)(Stopwatch.Frequency * .001);
-    
+
     [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
     [SuppressMessage("Design", "CA1031", Justification = "Exception is handed off, execution critical")]
     [SuppressMessage("ReSharper", "CognitiveComplexity")]
     private static void TimerThread()
     {
+
+        static void AppDomainExitCanceller(object? o, EventArgs _)
+            => TimerThreadCancellationTokenSource.Cancel();
+
+        AppDomain.CurrentDomain.DomainUnload += AppDomainExitCanceller;
+        AppDomain.CurrentDomain.ProcessExit += AppDomainExitCanceller;
+#if !NETSTANDARD
+        static void AlcUnloadCanceller(AssemblyLoadContext _)
+            => TimerThreadCancellationTokenSource.Cancel();
+
+        AssemblyLoadContext.GetLoadContext(typeof(ScheduledAction).Assembly)!
+            .Unloading += AlcUnloadCanceller;
+#endif
+
+        var ct = TimerThreadCancellationTokenSource.Token;
+
         try
         {
             for (;;)
             {
                 // ReSharper disable once InconsistentlySynchronizedField
-                NotEmptyEvent.Wait(1);
+                NotEmptyEvent.Wait(1, ct);
+
+                ct.ThrowIfCancellationRequested();
 
                 var nextSchedulerWake = Stopwatch.GetTimestamp() + MaxWaitTicks;
                 lock (Schedule)
@@ -71,6 +93,8 @@ public abstract class ScheduledAction : IDisposable
                                         if (ex is ThreadAbortException)
                                             throw;
                                     }
+
+                                    ct.ThrowIfCancellationRequested();
 
                                     if (!willRepeat)
                                         break;
@@ -106,13 +130,19 @@ public abstract class ScheduledAction : IDisposable
                                         nextSchedulerWake = actNext;
                                 }
                             }
+
+                            ct.ThrowIfCancellationRequested();
                         }
 
-                    Timestamp.WaitTicks(nextSchedulerWake - Stopwatch.GetTimestamp());
+                    Timestamp.WaitTicks(nextSchedulerWake - Stopwatch.GetTimestamp(), ct);
                 }
             }
         }
         catch (ThreadAbortException)
+        {
+            // ok
+        }
+        catch (OperationCanceledException oce) when (oce.CancellationToken == ct)
         {
             // ok
         }
@@ -137,6 +167,7 @@ public abstract class ScheduledAction : IDisposable
 
     protected readonly Delegate Callback;
     private static readonly long PreemptionBiasTicks = (long)(Timestamp.PreemptionBiasTicks * 1.5);
+    private static readonly CancellationTokenSource TimerThreadCancellationTokenSource = new CancellationTokenSource();
 
     public bool IsDisposed => Base == -1;
 

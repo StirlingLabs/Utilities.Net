@@ -24,6 +24,7 @@ public class TimestampTests
             Timestamp.Wait(.003);
         AccurateTime(0);
         AccurateWait(0);
+        AccurateCancellableWait(0);
         TimeoutTest(0);
         IntervalTest(0);
         try
@@ -66,13 +67,81 @@ public class TimestampTests
         }
     }
 
-
     [Theory]
     public void AccurateWait([Values(1, 2, 3)] int _)
     {
         var start = DateTime.Now;
         var ts = Timestamp.Now;
         Timestamp.Wait(Sustain);
+        var elapsed = Timestamp.Now - ts;
+        var fin = DateTime.Now;
+        var estDiff = fin - start;
+        var estOff = estDiff.TotalSeconds - Sustain;
+        var diff = elapsed - Sustain;
+        TestContext.WriteLine($"Elapsed: {elapsed:G17}");
+        TestContext.WriteLine($"Est. Clock Time: {estDiff}");
+        TestContext.WriteLine($"Est. Difference: {estOff:G2}");
+        TestContext.WriteLine($"Measured Difference: {diff:G17}");
+
+        if (_ == 0) return;
+        try
+        {
+            Math.Abs(diff).Should().BeLessThan(1.5e-5, $"{diff} should be smaller than 1.5e-5");
+        }
+        catch (Exception ex)
+        {
+            if (IsContinuousIntegration)
+                throw new InconclusiveException("This test is sensitive to environmental conditions.", ex);
+            throw;
+        }
+    }
+
+
+    [Theory]
+    public void CancellableWait([Values(1, 2, 3)] int _)
+    {
+        var halfSustain = Sustain / 2;
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(halfSustain));
+        var start = DateTime.Now;
+        var ts = Timestamp.Now;
+        Assert.Throws<OperationCanceledException>(() => {
+            Timestamp.Wait(Sustain, cts.Token);
+        });
+        var elapsed = Timestamp.Now - ts;
+        var fin = DateTime.Now;
+        var estDiff = fin - start;
+        var estOff = estDiff.TotalSeconds - halfSustain;
+        var diff = elapsed - halfSustain;
+
+        TestContext.WriteLine($"Elapsed: {elapsed:G17}");
+        TestContext.WriteLine($"Est. Clock Time: {estDiff}");
+        TestContext.WriteLine($"Est. Difference: {estOff:G2}");
+        TestContext.WriteLine($"Measured Difference: {diff:G17}");
+
+        var threshold = 1.5e-5 + Timestamp.SleepBiasThresholdTimeSpan.TotalSeconds;
+        TestContext.WriteLine($"Threshold: {threshold:G17}");
+
+        if (_ == 0) return;
+        try
+        {
+            Math.Abs(diff).Should().BeLessThan(threshold,
+                $"{diff:g3} should be smaller than {threshold:g3}");
+        }
+        catch (Exception ex)
+        {
+            if (IsContinuousIntegration)
+                throw new InconclusiveException("This test is sensitive to environmental conditions.", ex);
+            throw;
+        }
+    }
+
+    [Theory]
+    public void AccurateCancellableWait([Values(1, 2, 3)] int _)
+    {
+        using var cts = new CancellationTokenSource();
+        var start = DateTime.Now;
+        var ts = Timestamp.Now;
+        Timestamp.Wait(Sustain, cts.Token);
         var elapsed = Timestamp.Now - ts;
         var fin = DateTime.Now;
         var estDiff = fin - start;

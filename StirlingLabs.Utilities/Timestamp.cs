@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using InlineIL;
 using JetBrains.Annotations;
 
 namespace StirlingLabs.Utilities;
@@ -12,15 +13,17 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
 {
     private readonly long _ticks;
 
-    private static readonly long OneSecond = Stopwatch.Frequency;
+    internal static readonly long OneSecond = Stopwatch.Frequency;
 
-    private static readonly double DoublePrecisionOneSecondReciprocal = 1.0 / OneSecond;
+    internal static readonly double DoublePrecisionOneSecondReciprocal = 1.0 / OneSecond;
 
     internal static readonly long PreemptionBiasTicks = (long)(6e-6 * OneSecond);
 
-    private static readonly long SleepBiasThreshold = (long)(0.1 * OneSecond);
+    internal static readonly long SleepBiasThreshold = (long)(0.1 * OneSecond);
 
-    private static readonly long YieldBiasThreshold = (long)(0.005 * OneSecond);
+    internal static readonly TimeSpan SleepBiasThresholdTimeSpan = new(SleepBiasThreshold);
+
+    internal static readonly long YieldBiasThreshold = (long)(0.005 * OneSecond);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Wait(double seconds)
@@ -33,6 +36,18 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void WaitTicks(long ticks)
         => WaitTicksInternal(ticks);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Wait(double seconds, CancellationToken ct)
+        => WaitTicksInternal(TimeSpan.FromSeconds(seconds).Ticks, ct);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void Wait(TimeSpan timeSpan, CancellationToken ct)
+        => WaitTicksInternal(timeSpan.Ticks, ct);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void WaitTicks(long ticks, CancellationToken ct)
+        => WaitTicksInternal(ticks, ct);
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void WaitTicksInternal(long ticks)
@@ -58,12 +73,48 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static unsafe void SpinWaitUntil(long fin)
+    private static void SpinWaitUntil(long fin)
     {
         while (Stopwatch.GetTimestamp() < fin)
+            IL.Emit.Nop();
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void WaitTicksInternal(long ticks, CancellationToken ct)
+    {
+        var realFin = Stopwatch.GetTimestamp() + ticks;
+
+        if (ticks > OneSecond)
+            GC.Collect(2, GCCollectionMode.Forced, true, true);
+        else if (ticks > OneSecond / 8 && GCSettings.LatencyMode >= GCLatencyMode.Interactive)
+            GC.Collect(0, GCCollectionMode.Forced, true, false);
+        ct.ThrowIfCancellationRequested();
+
+        var fin = realFin - PreemptionBiasTicks;
+
+        if (ticks > SleepBiasThreshold)
+            do
+            {
+                Thread.Sleep(SleepBiasThresholdTimeSpan);
+                ct.ThrowIfCancellationRequested();
+            } while (realFin - SleepBiasThreshold - GetCurrentTicks() > 0);
+
+        var beforeFin = fin - YieldBiasThreshold;
+
+        while (Stopwatch.GetTimestamp() < beforeFin)
         {
-            // spin
+            Thread.Yield();
+            ct.ThrowIfCancellationRequested();
         }
+
+        SpinWaitUntil(fin, ct);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void SpinWaitUntil(long fin, CancellationToken ct)
+    {
+        while (Stopwatch.GetTimestamp() < fin)
+            ct.ThrowIfCancellationRequested();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -75,7 +126,7 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
         => _ticks == other._ticks;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
         => obj is Timestamp other && Equals(other);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -104,7 +155,7 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    public int CompareTo(object obj)
+    public int CompareTo(object? obj)
     {
         if (ReferenceEquals(null, obj))
             return 1;
