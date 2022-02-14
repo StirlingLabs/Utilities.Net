@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime;
@@ -26,6 +27,9 @@ public class SchedulingTests
     public void OneTimeSetUp()
     {
         _inSetUp = true;
+
+        if (IsContinuousIntegration)
+            Trace.Listeners.Add(new ConsoleTraceListener());
 
         // spin-up
         for (var i = 0; i < 10; ++i)
