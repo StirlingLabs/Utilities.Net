@@ -36,7 +36,7 @@ public class SchedulingTests
         // spin-up
         for (var i = 0; i < 10; ++i)
             Timestamp.Wait(.003);
-        
+
         for (var j = 0; j < 3; ++j)
         for (var i = 1; i <= 3; ++i)
         {
@@ -62,7 +62,7 @@ public class SchedulingTests
         Thread.Sleep(TimeSpan.FromSeconds(Sustain));
 
         _inSetUp = false;
-        
+
         TestContext.Progress.WriteLine("=== END ONE TIME SETUP ===");
     }
 
@@ -70,12 +70,18 @@ public class SchedulingTests
     public void OneTimeTearDown()
         => Trace.Flush();
 
+    [SetUp]
+    public void SetUp()
+        => TestContext.Progress.WriteLine($"=== BEGIN {TestContext.CurrentContext.Test.FullName} ===");
+
     [TearDown]
     public void TearDown()
     {
         if (GCSettings.LatencyMode != GCLatencyMode.NoGCRegion)
             return;
 
+        TestContext.Progress.WriteLine($"=== END {TestContext.CurrentContext.Test.FullName} ===");
+        
         try
         {
             GC.EndNoGCRegion();
