@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
 using NUnit.Framework;
+using StirlingLabs.Utilities.Assertions;
 
 namespace StirlingLabs.Utilities.Tests;
 
@@ -106,14 +107,11 @@ public static class SecurityTests
 
         var actual = Security.GetHash(message);
 
-        var expected = (ReadOnlySpan<byte>)digest;
-
-        /*
-        var expectedHex = Convert.ToHexString(expected);
-        var actualHex = Convert.ToHexString(actual);
-        */
-
-        Assert.IsTrue(expected.SequenceEqual((Span<byte>)actual));
+        BigSpanAssert.AreEqual(
+            (ReadOnlyBigSpan<byte>)digest,
+            (ReadOnlyBigSpan<byte>)actual,
+            $"0x{Convert.ToHexString(digest)} vs. 0x{Convert.ToHexString(actual)}"
+        );
     }
 #endif
 }
