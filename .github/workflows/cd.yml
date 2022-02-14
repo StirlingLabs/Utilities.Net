@@ -25,7 +25,7 @@ jobs:
       - name: Build
         run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
       - name: Test
-        run: dotnet test StirlingLabs.Utilities.Net.sln --no-build -c Release --logger GitHubActions
+        run: dotnet test StirlingLabs.Utilities.Net.sln --no-build -c Release --logger GitHubActions -v n -- NUnit.Verbosity=2 NUnit.ConsoleOut=2
       - name: Push NuPkg
         run: dotnet nuget push artifacts/*.nupkg -k ${{github.token}} -s https://nuget.pkg.github.com/${{github.repository_owner}}/index.json -n 1
       - name: Save coverage to storage branch

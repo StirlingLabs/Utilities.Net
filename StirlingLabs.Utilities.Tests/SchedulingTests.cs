@@ -62,6 +62,10 @@ public class SchedulingTests
         _inSetUp = false;
     }
 
+    [OneTimeTearDown]
+    public void OneTimeTearDown()
+        => Trace.Flush();
+
     [TearDown]
     public void TearDown()
     {
