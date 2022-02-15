@@ -30,6 +30,8 @@ public class SchedulingTests
 
         TestContext.Progress.WriteLine("=== BEGIN ONE TIME SETUP ===");
 
+        TestContext.Progress.WriteLine($"Stopwatch.IsHighResolution={Stopwatch.IsHighResolution}");
+
         if (IsContinuousIntegration)
             Trace.Listeners.Add(new ConsoleTraceListener());
 
@@ -81,7 +83,7 @@ public class SchedulingTests
             return;
 
         TestContext.Progress.WriteLine($"=== END {TestContext.CurrentContext.Test.FullName} ===");
-        
+
         try
         {
             GC.EndNoGCRegion();
