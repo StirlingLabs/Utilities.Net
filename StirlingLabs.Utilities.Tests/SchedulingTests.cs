@@ -41,24 +41,26 @@ public class SchedulingTests
         for (var i = 0; i < 10; ++i)
             Timestamp.Wait(.003);
 
+        Common.Try(() => AccurateTime(1));
+        TearDown();
+
+        Common.Try(() => AccurateCancellableWait(1));
+        TearDown();
+
         for (var j = 0; j < 3; ++j)
-        for (var i = 1; i <= 3; ++i)
         {
 
-            Common.Try(() => AccurateTime(i));
+            Common.Try(() => AccurateWait(j));
             TearDown();
 
-            Common.Try(() => AccurateWait(i));
+            Common.Try(() => TimeoutTest(j));
             TearDown();
 
-            Common.Try(() => AccurateCancellableWait(i));
-            TearDown();
-
-            Common.Try(() => TimeoutTest(i));
-            TearDown();
-
-            Common.Try(() => IntervalTest(i));
-            TearDown();
+            for (var i = 1; i <= 3; ++i)
+            {
+                Common.Try(() => IntervalTest(j));
+                TearDown();
+            }
         }
 
         //Common.Try(() => IntervalTest(1));
@@ -103,7 +105,6 @@ public class SchedulingTests
     public void AccurateTime([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
         Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
         ulong count = 0;
         var start = DateTime.Now;
@@ -144,7 +145,6 @@ public class SchedulingTests
     public void AccurateWait([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
         Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
         var start = DateTime.Now;
         var ts = Timestamp.Now;
@@ -181,7 +181,6 @@ public class SchedulingTests
     public void CancellableWait1([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
         Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
         var halfSustain = Sustain / 2;
         using var cts = new CancellationTokenSource();
@@ -228,7 +227,6 @@ public class SchedulingTests
     public void CancellableWait2([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
         Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
         var halfSustain = Sustain / 2;
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(halfSustain));
@@ -274,7 +272,6 @@ public class SchedulingTests
     public void AccurateCancellableWait([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
         using var cts = new CancellationTokenSource();
         Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
         var start = DateTime.Now;
@@ -312,7 +309,6 @@ public class SchedulingTests
     public void TimeoutTest([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
         Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
         var start = DateTime.Now;
         var ts = Timestamp.Now;
@@ -358,7 +354,6 @@ public class SchedulingTests
     public void IntervalTest([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
         Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
         var start = DateTime.Now;
         var ts = Timestamp.Now;

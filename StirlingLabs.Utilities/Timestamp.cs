@@ -65,8 +65,10 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
 
         var fin = realFin - PreemptionBiasTicks;
 
-        if (ticks > SleepBiasThreshold)
-            Thread.Sleep(new TimeSpan(ticks - SleepBiasThreshold));
+        var tsTicks = (long)(ticks / TimeSpanTicksScale);
+
+        if (tsTicks > SleepBiasThreshold)
+            Thread.Sleep(new TimeSpan(tsTicks - SleepBiasThreshold));
 
         var beforeFin = fin - YieldBiasThreshold;
 
