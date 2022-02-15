@@ -1,27 +1,27 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 02/09/2022 - 20:06:42 |
+| Generated on: | 02/15/2022 - 16:40:30 |
 | Parser: | CoberturaParser |
 | Assemblies: | 2 |
 | Classes: | 29 |
 | Files: | 36 |
-| Covered lines: | 393 |
-| Uncovered lines: | 808 |
-| Coverable lines: | 1201 |
-| Total lines: | 3568 |
-| Line coverage: | 32.7% (393 of 1201) |
-| Covered branches: | 161 |
-| Total branches: | 590 |
-| Branch coverage: | 27.2% (161 of 590) |
+| Covered lines: | 412 |
+| Uncovered lines: | 836 |
+| Coverable lines: | 1248 |
+| Total lines: | 3709 |
+| Line coverage: | 33% (412 of 1248) |
+| Covered branches: | 163 |
+| Total branches: | 594 |
+| Branch coverage: | 27.4% (163 of 594) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**StirlingLabs.Utilities**|**310**|**760**|**1070**|**3822**|**28.9%**|**124**|**532**|**23.3%**|
+|**StirlingLabs.Utilities**|**329**|**788**|**1117**|**3963**|**29.4%**|**126**|**536**|**23.5%**|
 |StirlingLabs.Native.NativeMemory|16|16|32|139|50%|2|6|33.3%|
 |StirlingLabs.Native.NativeMemory`1|0|11|11|139|0%|0|4|0%|
 |StirlingLabs.Utilities.BinaryPrimitives|15|241|256|1067|5.8%|11|196|5.6%|
-|StirlingLabs.Utilities.Common|11|24|35|192|31.4%|5|12|41.6%|
+|StirlingLabs.Utilities.Common|15|37|52|234|28.8%|6|16|37.5%|
 |StirlingLabs.Utilities.Crc32C|23|70|93|213|24.7%|12|44|27.2%|
 |StirlingLabs.Utilities.DelegatingEqualityComparer`1|6|8|14|34|42.8%|1|8|12.5%|
 |StirlingLabs.Utilities.GarbageCollectedNotifier|0|8|8|29|0%|0|6|0%|
@@ -32,11 +32,11 @@
 |StirlingLabs.Utilities.MemoryReader`1|0|8|8|23|0%|0|2|0%|
 |StirlingLabs.Utilities.MemoryWriter`1|0|7|7|20|0%|0|2|0%|
 |StirlingLabs.Utilities.Ptr`1|0|17|17|93|0%|0|2|0%|
-|StirlingLabs.Utilities.ScheduledAction|79|7|86|201|91.8%|28|34|82.3%|
+|StirlingLabs.Utilities.ScheduledAction|75|20|95|232|78.9%|23|32|71.8%|
 |StirlingLabs.Utilities.Security|1|42|43|98|2.3%|0|22|0%|
 |StirlingLabs.Utilities.SizedUtf8String|0|57|57|221|0%|0|28|0%|
 |StirlingLabs.Utilities.Timeout|2|3|5|30|40%|0|0||
-|StirlingLabs.Utilities.Timestamp|24|22|46|154|52.1%|7|18|38.8%|
+|StirlingLabs.Utilities.Timestamp|43|24|67|222|64.1%|13|20|65%|
 |StirlingLabs.Utilities.Type`1|2|14|16|115|12.5%|0|0||
 |StirlingLabs.Utilities.TypeExtensions|6|0|6|115|100%|2|4|50%|
 |StirlingLabs.Utilities.Utf8RuneEnumerator|0|17|17|60|0%|0|6|0%|
