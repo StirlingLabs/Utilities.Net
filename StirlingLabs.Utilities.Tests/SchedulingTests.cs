@@ -15,6 +15,7 @@ namespace StirlingLabs.Utilities.Tests;
 public class SchedulingTests
 {
     private const int NoGcRegionSize = 2 * 1024 * 1024;
+
     private double Sustain = 1 / 3d;
 
     private static bool IsContinuousIntegration = Common.Init
@@ -28,11 +29,13 @@ public class SchedulingTests
     {
         _inSetUp = true;
 
-        TestContext.Progress.WriteLine("=== BEGIN ONE TIME SETUP ===");
+        var tw = TestContext.Progress;
 
-        TestContext.Progress.WriteLine($"Stopwatch.IsHighResolution={Stopwatch.IsHighResolution}");
+        tw.WriteLine("=== BEGIN ONE TIME SETUP ===");
 
-        TestContext.Progress.WriteLine($"Stopwatch.Frequency={Stopwatch.Frequency}");
+        tw.WriteLine($"Stopwatch.IsHighResolution={Stopwatch.IsHighResolution}");
+
+        tw.WriteLine($"Stopwatch.Frequency={Stopwatch.Frequency}");
 
         if (IsContinuousIntegration)
             Trace.Listeners.Add(new ConsoleTraceListener());
@@ -69,7 +72,7 @@ public class SchedulingTests
 
         _inSetUp = false;
 
-        TestContext.Progress.WriteLine("=== END ONE TIME SETUP ===");
+        tw.WriteLine("=== END ONE TIME SETUP ===");
     }
 
     [OneTimeTearDown]
@@ -83,10 +86,10 @@ public class SchedulingTests
     [TearDown]
     public void TearDown()
     {
+        TestContext.Progress.WriteLine($"=== END {TestContext.CurrentContext.Test.FullName} ===");
+
         if (GCSettings.LatencyMode != GCLatencyMode.NoGCRegion)
             return;
-
-        TestContext.Progress.WriteLine($"=== END {TestContext.CurrentContext.Test.FullName} ===");
 
         try
         {
@@ -118,11 +121,13 @@ public class SchedulingTests
         var estDiff = fin - start;
         var estOff = estDiff.TotalSeconds - Sustain;
         var diff = elapsed - Sustain;
-        TestContext.Progress.WriteLine($"Elapsed: {elapsed:G17}");
-        TestContext.Progress.WriteLine($"Spin Count: {count}");
-        TestContext.Progress.WriteLine($"Est. Clock Time: {estDiff}");
-        TestContext.Progress.WriteLine($"Est. Difference: {estOff:G2}");
-        TestContext.Progress.WriteLine($"Measured Difference: {diff:G17}");
+        
+        var tw = TestContext.Progress;
+        tw.WriteLine($"Elapsed: {elapsed:G17}");
+        tw.WriteLine($"Spin Count: {count}");
+        tw.WriteLine($"Est. Clock Time: {estDiff}");
+        tw.WriteLine($"Est. Difference: {estOff:G2}");
+        tw.WriteLine($"Measured Difference: {diff:G17}");
 
         try
         {
@@ -155,10 +160,12 @@ public class SchedulingTests
         var estDiff = fin - start;
         var estOff = estDiff.TotalSeconds - Sustain;
         var diff = elapsed - Sustain;
-        TestContext.Progress.WriteLine($"Elapsed: {elapsed:G17}");
-        TestContext.Progress.WriteLine($"Est. Clock Time: {estDiff}");
-        TestContext.Progress.WriteLine($"Est. Difference: {estOff:G2}");
-        TestContext.Progress.WriteLine($"Measured Difference: {diff:G17}");
+        
+        var tw = TestContext.Progress;
+        tw.WriteLine($"Elapsed: {elapsed:G17}");
+        tw.WriteLine($"Est. Clock Time: {estDiff}");
+        tw.WriteLine($"Est. Difference: {estOff:G2}");
+        tw.WriteLine($"Measured Difference: {diff:G17}");
 
         try
         {
@@ -197,13 +204,14 @@ public class SchedulingTests
         var estOff = estDiff.TotalSeconds - halfSustain;
         var diff = elapsed - halfSustain;
 
-        TestContext.Progress.WriteLine($"Elapsed: {elapsed:G17}");
-        TestContext.Progress.WriteLine($"Est. Clock Time: {estDiff}");
-        TestContext.Progress.WriteLine($"Est. Difference: {estOff:G2}");
-        TestContext.Progress.WriteLine($"Measured Difference: {diff:G17}");
+        var tw = TestContext.Progress;
+        tw.WriteLine($"Elapsed: {elapsed:G17}");
+        tw.WriteLine($"Est. Clock Time: {estDiff}");
+        tw.WriteLine($"Est. Difference: {estOff:G2}");
+        tw.WriteLine($"Measured Difference: {diff:G17}");
 
         var threshold = 2e-5 + Timestamp.SleepBiasThresholdTimeSpan.TotalSeconds;
-        TestContext.Progress.WriteLine($"Threshold: {threshold:G17}");
+        tw.WriteLine($"Threshold: {threshold:G17}");
 
         try
         {
@@ -242,13 +250,14 @@ public class SchedulingTests
         var estOff = estDiff.TotalSeconds - halfSustain;
         var diff = elapsed - halfSustain;
 
-        TestContext.Progress.WriteLine($"Elapsed: {elapsed:G17}");
-        TestContext.Progress.WriteLine($"Est. Clock Time: {estDiff}");
-        TestContext.Progress.WriteLine($"Est. Difference: {estOff:G2}");
-        TestContext.Progress.WriteLine($"Measured Difference: {diff:G17}");
+        var tw = TestContext.Progress;
+        tw.WriteLine($"Elapsed: {elapsed:G17}");
+        tw.WriteLine($"Est. Clock Time: {estDiff}");
+        tw.WriteLine($"Est. Difference: {estOff:G2}");
+        tw.WriteLine($"Measured Difference: {diff:G17}");
 
         var threshold = 2e-5 + Timestamp.SleepBiasThresholdTimeSpan.TotalSeconds;
-        TestContext.Progress.WriteLine($"Threshold: {threshold:G17}");
+        tw.WriteLine($"Threshold: {threshold:G17}");
 
         try
         {
@@ -283,10 +292,11 @@ public class SchedulingTests
         var estDiff = fin - start;
         var estOff = estDiff.TotalSeconds - Sustain;
         var diff = elapsed - Sustain;
-        TestContext.Progress.WriteLine($"Elapsed: {elapsed:G17}");
-        TestContext.Progress.WriteLine($"Est. Clock Time: {estDiff}");
-        TestContext.Progress.WriteLine($"Est. Difference: {estOff:G2}");
-        TestContext.Progress.WriteLine($"Measured Difference: {diff:G17}");
+        var tw = TestContext.Progress;
+        tw.WriteLine($"Elapsed: {elapsed:G17}");
+        tw.WriteLine($"Est. Clock Time: {estDiff}");
+        tw.WriteLine($"Est. Difference: {estOff:G2}");
+        tw.WriteLine($"Measured Difference: {diff:G17}");
 
         try
         {
@@ -313,7 +323,7 @@ public class SchedulingTests
         var start = DateTime.Now;
         var ts = Timestamp.Now;
         using var mre = new ManualResetEventSlim();
-        var tw = TestContext.Out;
+        var tw = TestContext.Progress;
         using var to = new Timeout(Sustain, () => {
             var elapsed = Timestamp.Now - ts;
             var fin = DateTime.Now;
@@ -358,7 +368,7 @@ public class SchedulingTests
         var start = DateTime.Now;
         var ts = Timestamp.Now;
         using var cd = new CountdownEvent(3);
-        var tw = TestContext.Out;
+        var tw = TestContext.Progress;
         var exceptions = new ConcurrentQueue<Exception>();
         ScheduledAction.UnobservedException += (_, info) => {
             exceptions.Enqueue(info.SourceException);
