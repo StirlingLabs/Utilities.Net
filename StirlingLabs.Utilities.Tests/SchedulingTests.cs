@@ -125,7 +125,7 @@ public class SchedulingTests
 
         try
         {
-            Math.Abs(diff).Should().BeLessThan(1.56e-5, $"{diff} should be smaller than 1.56e-5");
+            Math.Abs(diff).Should().BeLessThan(2e-5, $"{diff} should be smaller than 2e-5");
         }
         catch (Exception ex)
         {
@@ -162,7 +162,7 @@ public class SchedulingTests
 
         try
         {
-            Math.Abs(diff).Should().BeLessThan(1.56e-5, $"{diff} should be smaller than 1.56e-5");
+            Math.Abs(diff).Should().BeLessThan(2e-5, $"{diff} should be smaller than 2e-5");
         }
         catch (Exception ex)
         {
@@ -203,7 +203,7 @@ public class SchedulingTests
         TestContext.Progress.WriteLine($"Est. Difference: {estOff:G2}");
         TestContext.Progress.WriteLine($"Measured Difference: {diff:G17}");
 
-        var threshold = 1.56e-5 + Timestamp.SleepBiasThresholdTimeSpan.TotalSeconds;
+        var threshold = 2e-5 + Timestamp.SleepBiasThresholdTimeSpan.TotalSeconds;
         TestContext.Progress.WriteLine($"Threshold: {threshold:G17}");
 
         try
@@ -249,7 +249,7 @@ public class SchedulingTests
         TestContext.Progress.WriteLine($"Est. Difference: {estOff:G2}");
         TestContext.Progress.WriteLine($"Measured Difference: {diff:G17}");
 
-        var threshold = 1.56e-5 + Timestamp.SleepBiasThresholdTimeSpan.TotalSeconds;
+        var threshold = 2e-5 + Timestamp.SleepBiasThresholdTimeSpan.TotalSeconds;
         TestContext.Progress.WriteLine($"Threshold: {threshold:G17}");
 
         try
@@ -293,7 +293,7 @@ public class SchedulingTests
 
         try
         {
-            Math.Abs(diff).Should().BeLessThan(1.56e-5, $"{diff} should be smaller than 1.56e-5");
+            Math.Abs(diff).Should().BeLessThan(2e-5, $"{diff} should be smaller than 2e-5");
         }
         catch (Exception ex)
         {
@@ -335,7 +335,7 @@ public class SchedulingTests
 
             try
             {
-                Math.Abs(diff).Should().BeLessThan(1.56e-5, $"{diff} should be smaller than 1.56e-5");
+                Math.Abs(diff).Should().BeLessThan(2e-5, $"{diff} should be smaller than 2e-5");
             }
             catch (Exception ex)
             {
@@ -386,7 +386,7 @@ public class SchedulingTests
 
             try
             {
-                Math.Abs(diff).Should().BeLessThan(1.56e-5, $"{diff} should be smaller than 1.56e-5");
+                Math.Abs(diff).Should().BeLessThan(2e-5, $"{diff} should be smaller than 2e-5");
             }
             catch (Exception ex)
             {

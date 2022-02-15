@@ -15,6 +15,8 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
 
     internal static readonly long OneSecond = Stopwatch.Frequency;
 
+    internal static readonly double TimeSpanTicksScale = OneSecond / (double)TimeSpan.TicksPerSecond;
+
     internal static readonly double DoublePrecisionOneSecondReciprocal = 1.0 / OneSecond;
 
     internal static readonly long PreemptionBiasTicks = (long)(6e-6 * OneSecond);
@@ -27,11 +29,11 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Wait(double seconds)
-        => WaitTicksInternal(TimeSpan.FromSeconds(seconds).Ticks);
+        => WaitTicksInternal((long)(TimeSpan.FromSeconds(seconds).Ticks * TimeSpanTicksScale));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Wait(TimeSpan timeSpan)
-        => WaitTicksInternal(timeSpan.Ticks);
+        => WaitTicksInternal((long)(timeSpan.Ticks * TimeSpanTicksScale));
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void WaitTicks(long ticks)
@@ -39,11 +41,11 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Wait(double seconds, CancellationToken ct)
-        => WaitTicksInternal(TimeSpan.FromSeconds(seconds).Ticks, ct);
+        => WaitTicksInternal((long)(TimeSpan.FromSeconds(seconds).Ticks * TimeSpanTicksScale), ct);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void Wait(TimeSpan timeSpan, CancellationToken ct)
-        => WaitTicksInternal(timeSpan.Ticks, ct);
+        => WaitTicksInternal((long)(timeSpan.Ticks * TimeSpanTicksScale), ct);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void WaitTicks(long ticks, CancellationToken ct)
