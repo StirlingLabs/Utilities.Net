@@ -23,7 +23,7 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
 
     internal static readonly long SleepBiasThreshold = (long)(0.1 * OneSecond);
 
-    internal static readonly TimeSpan SleepBiasThresholdTimeSpan = new(SleepBiasThreshold);
+    internal static readonly TimeSpan SleepBiasThresholdTimeSpan = TimeSpan.FromSeconds(0.1);
 
     internal static readonly long YieldBiasThreshold = (long)(0.005 * OneSecond);
 
@@ -210,4 +210,13 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static double operator -(Timestamp ts, Timestamp d)
         => (ts._ticks - d._ticks) * DoublePrecisionOneSecondReciprocal;
+
+    public static double Subtract(Timestamp left, Timestamp right)
+        => left - right;
+
+    public static Timestamp Subtract(Timestamp left, double right)
+        => left - right;
+
+    public static Timestamp Add(Timestamp left, double right)
+        => left + right;
 }
