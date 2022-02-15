@@ -18,8 +18,10 @@ public class SchedulingTests
 
     private double Sustain = 1 / 3d;
 
-    private static bool IsContinuousIntegration = Common.Init
+    private static readonly bool IsContinuousIntegration = Common.Init
         (() => (Environment.GetEnvironmentVariable("CI") ?? "").ToUpperInvariant() == "TRUE");
+
+    private static readonly double AcceptableErrorThreshold = IsContinuousIntegration ? 1e-4 : 2e-5;
 
     private static bool _inSetUp;
 
@@ -121,7 +123,7 @@ public class SchedulingTests
         var estDiff = fin - start;
         var estOff = estDiff.TotalSeconds - Sustain;
         var diff = elapsed - Sustain;
-        
+
         var tw = TestContext.Progress;
         tw.WriteLine($"Elapsed: {elapsed:G17}");
         tw.WriteLine($"Spin Count: {count}");
@@ -131,7 +133,7 @@ public class SchedulingTests
 
         try
         {
-            Math.Abs(diff).Should().BeLessThan(2e-5, $"{diff} should be smaller than 2e-5");
+            Math.Abs(diff).Should().BeLessThan(AcceptableErrorThreshold, $"{diff} should be smaller than {AcceptableErrorThreshold}");
         }
         catch (Exception ex)
         {
@@ -160,7 +162,7 @@ public class SchedulingTests
         var estDiff = fin - start;
         var estOff = estDiff.TotalSeconds - Sustain;
         var diff = elapsed - Sustain;
-        
+
         var tw = TestContext.Progress;
         tw.WriteLine($"Elapsed: {elapsed:G17}");
         tw.WriteLine($"Est. Clock Time: {estDiff}");
@@ -169,7 +171,7 @@ public class SchedulingTests
 
         try
         {
-            Math.Abs(diff).Should().BeLessThan(2e-5, $"{diff} should be smaller than 2e-5");
+            Math.Abs(diff).Should().BeLessThan(AcceptableErrorThreshold, $"{diff} should be smaller than {AcceptableErrorThreshold}");
         }
         catch (Exception ex)
         {
@@ -210,7 +212,7 @@ public class SchedulingTests
         tw.WriteLine($"Est. Difference: {estOff:G2}");
         tw.WriteLine($"Measured Difference: {diff:G17}");
 
-        var threshold = 2e-5 + Timestamp.SleepBiasThresholdTimeSpan.TotalSeconds;
+        var threshold = AcceptableErrorThreshold + Timestamp.SleepBiasThresholdTimeSpan.TotalSeconds;
         tw.WriteLine($"Threshold: {threshold:G17}");
 
         try
@@ -256,7 +258,7 @@ public class SchedulingTests
         tw.WriteLine($"Est. Difference: {estOff:G2}");
         tw.WriteLine($"Measured Difference: {diff:G17}");
 
-        var threshold = 2e-5 + Timestamp.SleepBiasThresholdTimeSpan.TotalSeconds;
+        var threshold = AcceptableErrorThreshold + Timestamp.SleepBiasThresholdTimeSpan.TotalSeconds;
         tw.WriteLine($"Threshold: {threshold:G17}");
 
         try
@@ -300,7 +302,7 @@ public class SchedulingTests
 
         try
         {
-            Math.Abs(diff).Should().BeLessThan(2e-5, $"{diff} should be smaller than 2e-5");
+            Math.Abs(diff).Should().BeLessThan(AcceptableErrorThreshold, $"{diff} should be smaller than {AcceptableErrorThreshold}");
         }
         catch (Exception ex)
         {
@@ -341,7 +343,7 @@ public class SchedulingTests
 
             try
             {
-                Math.Abs(diff).Should().BeLessThan(2e-5, $"{diff} should be smaller than 2e-5");
+                Math.Abs(diff).Should().BeLessThan(AcceptableErrorThreshold, $"{diff} should be smaller than {AcceptableErrorThreshold}");
             }
             catch (Exception ex)
             {
@@ -391,7 +393,7 @@ public class SchedulingTests
 
             try
             {
-                Math.Abs(diff).Should().BeLessThan(2e-5, $"{diff} should be smaller than 2e-5");
+                Math.Abs(diff).Should().BeLessThan(AcceptableErrorThreshold, $"{diff} should be smaller than {AcceptableErrorThreshold}");
             }
             catch (Exception ex)
             {
