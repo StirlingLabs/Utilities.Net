@@ -175,29 +175,31 @@ namespace StirlingLabs.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [System.Diagnostics.Contracts.Pure]
         public bool Equals(Utf8String other)
-        {
-            if (Pointer == other.Pointer)
-                return true;
-
-            return CompareTo(other) == 0;
-        }
+            => Pointer == other.Pointer
+                ||
+                Pointer != null && other.Pointer != null
+                &&
+                CompareTo((ReadOnlySpan<byte>)other) == 0;
 
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [System.Diagnostics.Contracts.Pure]
         public int CompareTo(Utf8String other)
-            => CompareTo((ReadOnlySpan<byte>)other);
+            => Pointer == null
+                ? other.Pointer == null
+                    ? 0
+                    : -1
+                : other.Pointer == null
+                    ? 1
+                    : CompareTo((ReadOnlySpan<byte>)other);
 
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         [System.Diagnostics.Contracts.Pure]
         public bool Equals(SizedUtf8String other)
-        {
-            if (Pointer == other.Pointer)
-                return Length == other.Length;
-
-            return CompareTo(other) == 0;
-        }
+            => Pointer == other.Pointer
+                ? Length == other.Length
+                : CompareTo(other) == 0;
 
         [DebuggerStepThrough]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
