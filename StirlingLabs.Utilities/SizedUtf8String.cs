@@ -150,6 +150,9 @@ public readonly unsafe struct SizedUtf8String
     public static SizedUtf8String Create(string str)
         => new((nuint)Encoding.UTF8.GetByteCount(str), Utf8String.Create(str));
 
+    public static SizedUtf8String Create(ReadOnlySpan<sbyte> data)
+        => new((nuint)data.Length, Utf8String.Create(data));
+
     public static SizedUtf8String Create(nuint size, [InstantHandle] SpanAction<sbyte> factory)
     {
         if (size is 0) return default;

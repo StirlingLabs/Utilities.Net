@@ -70,6 +70,17 @@ namespace StirlingLabs.Utilities
             get => InternedUtf8Strings.ContainsKey(this);
         }
 
+        public static Utf8String Create(ReadOnlySpan<sbyte> data)
+        {
+            if (data.IsEmpty) return new(null);
+
+            // loose string
+            var size = (nuint)data.Length;
+            var start = NativeMemory.New<sbyte>(size + 1);
+            data.CopyTo(new(start, (int)size));
+            return new(start);
+        }
+
         public static Utf8String Create(nuint size, [InstantHandle] SpanAction<sbyte> writer)
         {
             if (size is 0) return new(null);
