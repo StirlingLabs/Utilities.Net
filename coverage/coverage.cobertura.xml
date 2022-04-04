@@ -1,762 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<coverage line-rate="0.3264" branch-rate="0.26890000000000003" version="1.9" timestamp="1648057535" lines-covered="412" lines-valid="1262" branches-covered="163" branches-valid="606">
+<coverage line-rate="0.33409999999999995" branch-rate="0.2721" version="1.9" timestamp="1649099802" lines-covered="425" lines-valid="1272" branches-covered="166" branches-valid="610">
   <sources />
   <packages>
-    <package name="StirlingLabs.Utilities.Yaml" line-rate="0.6335000000000001" branch-rate="0.6379" complexity="94">
-      <classes>
-        <class name="StirlingLabs.Utilities.Yaml.Extensions" filename="/_/StirlingLabs.Utilities.Yaml/Extensions.Deserialize.cs" line-rate="0.1666" branch-rate="0.1666" complexity="9">
-          <methods>
-            <method name="Deserialize" signature="(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlStream)" line-rate="1" branch-rate="0.5" complexity="2">
-              <lines>
-                <line number="11" hits="1" branch="True" condition-coverage="50% (1/2)">
-                  <conditions>
-                    <condition number="1" type="jump" coverage="50%" />
-                  </conditions>
-                </line>
-              </lines>
-            </method>
-            <method name="Deserialize" signature="(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="0" complexity="2">
-              <lines>
-                <line number="13" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="1" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-              </lines>
-            </method>
-            <method name="Deserialize" signature="(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="0" complexity="2">
-              <lines>
-                <line number="15" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="1" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-              </lines>
-            </method>
-            <method name="Deserialize" signature="(YamlDotNet.RepresentationModel.YamlStream)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="18" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="Deserialize" signature="(YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="21" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="Deserialize" signature="(YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="24" hits="0" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="11" hits="1" branch="True" condition-coverage="50% (1/2)">
-              <conditions>
-                <condition number="1" type="jump" coverage="50%" />
-              </conditions>
-            </line>
-            <line number="13" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="1" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="15" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="1" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="18" hits="0" branch="False" />
-            <line number="21" hits="0" branch="False" />
-            <line number="24" hits="0" branch="False" />
-          </lines>
-        </class>
-        <class name="StirlingLabs.Utilities.Yaml.Extensions" filename="/_/StirlingLabs.Utilities.Yaml/Extensions.Deserialize.Generic.cs" line-rate="0" branch-rate="0" complexity="9">
-          <methods>
-            <method name="Deserialize" signature="(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlStream)" line-rate="0" branch-rate="0" complexity="2">
-              <lines>
-                <line number="11" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="1" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-              </lines>
-            </method>
-            <method name="Deserialize" signature="(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="0" complexity="2">
-              <lines>
-                <line number="14" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="1" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-              </lines>
-            </method>
-            <method name="Deserialize" signature="(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="0" complexity="2">
-              <lines>
-                <line number="17" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="1" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-              </lines>
-            </method>
-            <method name="Deserialize" signature="(YamlDotNet.RepresentationModel.YamlStream)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="20" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="Deserialize" signature="(YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="23" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="Deserialize" signature="(YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="26" hits="0" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="11" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="1" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="14" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="1" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="17" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="1" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="20" hits="0" branch="False" />
-            <line number="23" hits="0" branch="False" />
-            <line number="26" hits="0" branch="False" />
-          </lines>
-        </class>
-        <class name="StirlingLabs.Utilities.Yaml.Extensions" filename="/_/StirlingLabs.Utilities.Yaml/Extensions.Internal.cs" line-rate="0.7142000000000001" branch-rate="0.5" complexity="4">
-          <methods>
-            <method name="SerializeJson" signature="(System.Object)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="16" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="SerializeYaml" signature="(System.Object)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="22" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="Serialize" signature="(System.Object,YamlDotNet.Serialization.ISerializer)" line-rate="1" branch-rate="0.5" complexity="2">
-              <lines>
-                <line number="29" hits="1" branch="True" condition-coverage="50% (1/2)">
-                  <conditions>
-                    <condition number="1" type="jump" coverage="50%" />
-                  </conditions>
-                </line>
-                <line number="30" hits="1" branch="False" />
-                <line number="31" hits="1" branch="False" />
-                <line number="32" hits="1" branch="False" />
-                <line number="33" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="16" hits="0" branch="False" />
-            <line number="22" hits="0" branch="False" />
-            <line number="29" hits="1" branch="True" condition-coverage="50% (1/2)">
-              <conditions>
-                <condition number="1" type="jump" coverage="50%" />
-              </conditions>
-            </line>
-            <line number="30" hits="1" branch="False" />
-            <line number="31" hits="1" branch="False" />
-            <line number="32" hits="1" branch="False" />
-            <line number="33" hits="1" branch="False" />
-          </lines>
-        </class>
-        <class name="StirlingLabs.Utilities.Yaml.Extensions" filename="/_/StirlingLabs.Utilities.Yaml/Extensions.Serialize.cs" line-rate="0.2666" branch-rate="1" complexity="9">
-          <methods>
-            <method name="Serialize" signature="(YamlDotNet.RepresentationModel.YamlStream,YamlDotNet.Serialization.ISerializer)" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="11" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method name="Serialize" signature="(YamlDotNet.RepresentationModel.YamlDocument,YamlDotNet.Serialization.ISerializer)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="14" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="Serialize" signature="(YamlDotNet.RepresentationModel.YamlNode,YamlDotNet.Serialization.ISerializer)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="17" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="ToYaml" signature="(YamlDotNet.RepresentationModel.YamlStream)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="19" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="ToYaml" signature="(YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="22" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="ToYaml" signature="(YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="25" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="ToJson" signature="(YamlDotNet.RepresentationModel.YamlStream)" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="29" hits="1" branch="False" />
-                <line number="30" hits="1" branch="False" />
-                <line number="31" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method name="ToJson" signature="(YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="36" hits="0" branch="False" />
-                <line number="37" hits="0" branch="False" />
-                <line number="38" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="ToJson" signature="(YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="43" hits="0" branch="False" />
-                <line number="44" hits="0" branch="False" />
-                <line number="45" hits="0" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="11" hits="1" branch="False" />
-            <line number="14" hits="0" branch="False" />
-            <line number="17" hits="0" branch="False" />
-            <line number="19" hits="0" branch="False" />
-            <line number="22" hits="0" branch="False" />
-            <line number="25" hits="0" branch="False" />
-            <line number="29" hits="1" branch="False" />
-            <line number="30" hits="1" branch="False" />
-            <line number="31" hits="1" branch="False" />
-            <line number="36" hits="0" branch="False" />
-            <line number="37" hits="0" branch="False" />
-            <line number="38" hits="0" branch="False" />
-            <line number="43" hits="0" branch="False" />
-            <line number="44" hits="0" branch="False" />
-            <line number="45" hits="0" branch="False" />
-          </lines>
-        </class>
-        <class name="StirlingLabs.Utilities.Yaml.OnDemand" filename="/_/StirlingLabs.Utilities.Yaml/OnDemand.cs" line-rate="1" branch-rate="1" complexity="3">
-          <methods>
-            <method name="get_Deserializer" signature="()" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="17" hits="2" branch="False" />
-              </lines>
-            </method>
-            <method name="get_JsonSerializer" signature="()" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="20" hits="2" branch="False" />
-              </lines>
-            </method>
-            <method name="get_YamlSerializer" signature="()" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="23" hits="2" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="17" hits="2" branch="False" />
-            <line number="20" hits="2" branch="False" />
-            <line number="23" hits="2" branch="False" />
-          </lines>
-        </class>
-        <class name="StirlingLabs.Utilities.Yaml.YamlToJsonVisitor" filename="/_/StirlingLabs.Utilities.Yaml/YamlToJsonVisitor.cs" line-rate="0.6956" branch-rate="0.6363" complexity="28">
-          <methods>
-            <method name="ToString" signature="()" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="28" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method name="Visit" signature="(YamlDotNet.RepresentationModel.YamlStream)" line-rate="0.3" branch-rate="0.3333" complexity="6">
-              <lines>
-                <line number="32" hits="1" branch="True" condition-coverage="50% (2/4)">
-                  <conditions>
-                    <condition number="13" type="jump" coverage="50%" />
-                    <condition number="17" type="jump" coverage="50%" />
-                  </conditions>
-                </line>
-                <line number="34" hits="0" branch="False" />
-                <line number="36" hits="1" branch="False" />
-                <line number="37" hits="1" branch="False" />
-                <line number="39" hits="0" branch="False" />
-                <line number="40" hits="0" branch="True" condition-coverage="0% (0/2)">
-                  <conditions>
-                    <condition number="101" type="jump" coverage="0%" />
-                  </conditions>
-                </line>
-                <line number="42" hits="0" branch="False" />
-                <line number="43" hits="0" branch="False" />
-                <line number="45" hits="0" branch="False" />
-                <line number="46" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="Visit" signature="(YamlDotNet.RepresentationModel.YamlDocument)" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="49" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method name="Visit" signature="(YamlDotNet.RepresentationModel.YamlScalarNode)" line-rate="0.8332999999999999" branch-rate="0.625" complexity="8">
-              <lines>
-                <line number="53" hits="1251" branch="True" condition-coverage="50% (3/6)">
-                  <conditions>
-                    <condition number="6" type="jump" coverage="50%" />
-                    <condition number="24" type="jump" coverage="50%" />
-                    <condition number="42" type="jump" coverage="50%" />
-                  </conditions>
-                </line>
-                <line number="54" hits="0" branch="False" />
-                <line number="55" hits="1251" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="78" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="56" hits="514" branch="False" />
-                <line number="58" hits="737" branch="False" />
-                <line number="59" hits="737" branch="False" />
-              </lines>
-            </method>
-            <method name="Visit" signature="(YamlDotNet.RepresentationModel.YamlSequenceNode)" line-rate="0.7777" branch-rate="0.75" complexity="4">
-              <lines>
-                <line number="63" hits="5" branch="False" />
-                <line number="64" hits="5" branch="True" condition-coverage="50% (1/2)">
-                  <conditions>
-                    <condition number="25" type="jump" coverage="50%" />
-                  </conditions>
-                </line>
-                <line number="66" hits="0" branch="False" />
-                <line number="67" hits="0" branch="False" />
-                <line number="69" hits="2414" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="83" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="71" hits="1202" branch="False" />
-                <line number="72" hits="1202" branch="False" />
-                <line number="74" hits="5" branch="False" />
-                <line number="75" hits="5" branch="False" />
-              </lines>
-            </method>
-            <method name="Visit" signature="(YamlDotNet.RepresentationModel.YamlMappingNode)" line-rate="1" branch-rate="1" complexity="4">
-              <lines>
-                <line number="79" hits="17" branch="False" />
-                <line number="80" hits="17" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="25" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="82" hits="8" branch="False" />
-                <line number="83" hits="8" branch="False" />
-                <line number="85" hits="88" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="125" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="87" hits="35" branch="False" />
-                <line number="88" hits="35" branch="False" />
-                <line number="89" hits="35" branch="False" />
-                <line number="90" hits="35" branch="False" />
-                <line number="92" hits="9" branch="False" />
-                <line number="93" hits="9" branch="False" />
-              </lines>
-            </method>
-            <method name=".ctor" signature="()" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="18" hits="1" branch="False" />
-                <line number="19" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method name=".ctor" signature="(System.Int32)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="21" hits="0" branch="False" />
-                <line number="22" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name=".ctor" signature="(System.Text.StringBuilder)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="24" hits="0" branch="False" />
-                <line number="25" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name=".cctor" signature="()" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="14" hits="1" branch="False" />
-                <line number="15" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="28" hits="1" branch="False" />
-            <line number="32" hits="1" branch="True" condition-coverage="50% (2/4)">
-              <conditions>
-                <condition number="13" type="jump" coverage="50%" />
-                <condition number="17" type="jump" coverage="50%" />
-              </conditions>
-            </line>
-            <line number="34" hits="0" branch="False" />
-            <line number="36" hits="1" branch="False" />
-            <line number="37" hits="1" branch="False" />
-            <line number="39" hits="0" branch="False" />
-            <line number="40" hits="0" branch="True" condition-coverage="0% (0/2)">
-              <conditions>
-                <condition number="101" type="jump" coverage="0%" />
-              </conditions>
-            </line>
-            <line number="42" hits="0" branch="False" />
-            <line number="43" hits="0" branch="False" />
-            <line number="45" hits="0" branch="False" />
-            <line number="46" hits="0" branch="False" />
-            <line number="49" hits="1" branch="False" />
-            <line number="53" hits="1251" branch="True" condition-coverage="50% (3/6)">
-              <conditions>
-                <condition number="6" type="jump" coverage="50%" />
-                <condition number="24" type="jump" coverage="50%" />
-                <condition number="42" type="jump" coverage="50%" />
-              </conditions>
-            </line>
-            <line number="54" hits="0" branch="False" />
-            <line number="55" hits="1251" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="78" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="56" hits="514" branch="False" />
-            <line number="58" hits="737" branch="False" />
-            <line number="59" hits="737" branch="False" />
-            <line number="63" hits="5" branch="False" />
-            <line number="64" hits="5" branch="True" condition-coverage="50% (1/2)">
-              <conditions>
-                <condition number="25" type="jump" coverage="50%" />
-              </conditions>
-            </line>
-            <line number="66" hits="0" branch="False" />
-            <line number="67" hits="0" branch="False" />
-            <line number="69" hits="2414" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="83" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="71" hits="1202" branch="False" />
-            <line number="72" hits="1202" branch="False" />
-            <line number="74" hits="5" branch="False" />
-            <line number="75" hits="5" branch="False" />
-            <line number="79" hits="17" branch="False" />
-            <line number="80" hits="17" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="25" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="82" hits="8" branch="False" />
-            <line number="83" hits="8" branch="False" />
-            <line number="85" hits="88" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="125" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="87" hits="35" branch="False" />
-            <line number="88" hits="35" branch="False" />
-            <line number="89" hits="35" branch="False" />
-            <line number="90" hits="35" branch="False" />
-            <line number="92" hits="9" branch="False" />
-            <line number="93" hits="9" branch="False" />
-            <line number="18" hits="1" branch="False" />
-            <line number="19" hits="1" branch="False" />
-            <line number="21" hits="0" branch="False" />
-            <line number="22" hits="0" branch="False" />
-            <line number="24" hits="0" branch="False" />
-            <line number="25" hits="0" branch="False" />
-            <line number="14" hits="1" branch="False" />
-            <line number="15" hits="1" branch="False" />
-          </lines>
-        </class>
-        <class name="StirlingLabs.Utilities.Yaml.Events.Extensions" filename="/_/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs" line-rate="0.8571" branch-rate="0.8332999999999999" complexity="6">
-          <methods>
-            <method name="GetEvents" signature="(YamlDotNet.RepresentationModel.YamlNode)" line-rate="0.8571" branch-rate="0.8332999999999999" complexity="6">
-              <lines>
-                <line number="35" hits="1273" branch="True" condition-coverage="83.33% (5/6)">
-                  <conditions>
-                    <condition number="8" type="jump" coverage="100%" />
-                    <condition number="18" type="jump" coverage="100%" />
-                    <condition number="28" type="jump" coverage="50%" />
-                  </conditions>
-                </line>
-                <line number="36" hits="1273" branch="False" />
-                <line number="37" hits="1251" branch="False" />
-                <line number="38" hits="5" branch="False" />
-                <line number="39" hits="17" branch="False" />
-                <line number="40" hits="0" branch="False" />
-                <line number="41" hits="1273" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="35" hits="1273" branch="True" condition-coverage="83.33% (5/6)">
-              <conditions>
-                <condition number="8" type="jump" coverage="100%" />
-                <condition number="18" type="jump" coverage="100%" />
-                <condition number="28" type="jump" coverage="50%" />
-              </conditions>
-            </line>
-            <line number="36" hits="1273" branch="False" />
-            <line number="37" hits="1251" branch="False" />
-            <line number="38" hits="5" branch="False" />
-            <line number="39" hits="17" branch="False" />
-            <line number="40" hits="0" branch="False" />
-            <line number="41" hits="1273" branch="False" />
-          </lines>
-        </class>
-        <class name="StirlingLabs.Utilities.Yaml.Events.Extensions/&lt;GetEvents&gt;d__0" filename="/_/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs" line-rate="1" branch-rate="1" complexity="4">
-          <methods>
-            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="4">
-              <lines>
-                <line number="15" hits="1" branch="False" />
-                <line number="17" hits="4" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="221" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="19" hits="2596" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="195" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="20" hits="1297" branch="False" />
-                <line number="23" hits="1" branch="False" />
-                <line number="24" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="15" hits="1" branch="False" />
-            <line number="17" hits="4" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="221" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="19" hits="2596" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="195" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="20" hits="1297" branch="False" />
-            <line number="23" hits="1" branch="False" />
-            <line number="24" hits="1" branch="False" />
-          </lines>
-        </class>
-        <class name="StirlingLabs.Utilities.Yaml.Events.Extensions/&lt;GetEvents&gt;d__1" filename="/_/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs" line-rate="1" branch-rate="1" complexity="2">
-          <methods>
-            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="2">
-              <lines>
-                <line number="27" hits="1" branch="False" />
-                <line number="29" hits="2592" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="161" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="30" hits="1295" branch="False" />
-                <line number="32" hits="1" branch="False" />
-                <line number="33" hits="1" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="27" hits="1" branch="False" />
-            <line number="29" hits="2592" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="161" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="30" hits="1295" branch="False" />
-            <line number="32" hits="1" branch="False" />
-            <line number="33" hits="1" branch="False" />
-          </lines>
-        </class>
-        <class name="StirlingLabs.Utilities.Yaml.Events.Extensions/&lt;GetEvents&gt;d__3" filename="/_/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs" line-rate="1" branch-rate="1" complexity="1">
-          <methods>
-            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="44" hits="1251" branch="False" />
-                <line number="45" hits="1251" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="44" hits="1251" branch="False" />
-            <line number="45" hits="1251" branch="False" />
-          </lines>
-        </class>
-        <class name="StirlingLabs.Utilities.Yaml.Events.Extensions/&lt;GetEvents&gt;d__4" filename="/_/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs" line-rate="1" branch-rate="1" complexity="4">
-          <methods>
-            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="4">
-              <lines>
-                <line number="48" hits="5" branch="False" />
-                <line number="50" hits="2414" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="255" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="52" hits="7384" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="229" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="53" hits="2490" branch="False" />
-                <line number="56" hits="5" branch="False" />
-                <line number="57" hits="5" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="48" hits="5" branch="False" />
-            <line number="50" hits="2414" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="255" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="52" hits="7384" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="229" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="53" hits="2490" branch="False" />
-            <line number="56" hits="5" branch="False" />
-            <line number="57" hits="5" branch="False" />
-          </lines>
-        </class>
-        <class name="StirlingLabs.Utilities.Yaml.Events.Extensions/&lt;GetEvents&gt;d__5" filename="/_/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs" line-rate="1" branch-rate="1" complexity="6">
-          <methods>
-            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="6">
-              <lines>
-                <line number="60" hits="17" branch="False" />
-                <line number="62" hits="104" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="394" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="64" hits="140" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="263" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="65" hits="35" branch="False" />
-                <line number="67" hits="5242" branch="True" condition-coverage="100% (2/2)">
-                  <conditions>
-                    <condition number="361" type="jump" coverage="100%" />
-                  </conditions>
-                </line>
-                <line number="68" hits="2586" branch="False" />
-                <line number="69" hits="35" branch="False" />
-                <line number="71" hits="17" branch="False" />
-                <line number="72" hits="17" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="60" hits="17" branch="False" />
-            <line number="62" hits="104" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="394" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="64" hits="140" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="263" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="65" hits="35" branch="False" />
-            <line number="67" hits="5242" branch="True" condition-coverage="100% (2/2)">
-              <conditions>
-                <condition number="361" type="jump" coverage="100%" />
-              </conditions>
-            </line>
-            <line number="68" hits="2586" branch="False" />
-            <line number="69" hits="35" branch="False" />
-            <line number="71" hits="17" branch="False" />
-            <line number="72" hits="17" branch="False" />
-          </lines>
-        </class>
-        <class name="StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter" filename="/_/StirlingLabs.Utilities.Yaml/Events/YamlEventsAdapter.cs" line-rate="0.30760000000000004" branch-rate="1" complexity="9">
-          <methods>
-            <method name="Reset" signature="()" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="28" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="get_Current" signature="()" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="31" hits="16506" branch="False" />
-              </lines>
-            </method>
-            <method name="System.Collections.IEnumerator.get_Current" signature="()" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="34" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="37" hits="1300" branch="False" />
-              </lines>
-            </method>
-            <method name="Dispose" signature="()" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="40" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name=".ctor" signature="(System.Collections.Generic.IEnumerable`1&lt;YamlDotNet.Core.Events.ParsingEvent&gt;)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="15" hits="0" branch="False" />
-                <line number="16" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name=".ctor" signature="(YamlDotNet.RepresentationModel.YamlStream)" line-rate="1" branch-rate="1" complexity="1">
-              <lines>
-                <line number="18" hits="1" branch="False" />
-                <line number="19" hits="1" branch="False" />
-              </lines>
-            </method>
-            <method name=".ctor" signature="(YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="21" hits="0" branch="False" />
-                <line number="22" hits="0" branch="False" />
-              </lines>
-            </method>
-            <method name=".ctor" signature="(YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="1" complexity="1">
-              <lines>
-                <line number="24" hits="0" branch="False" />
-                <line number="25" hits="0" branch="False" />
-              </lines>
-            </method>
-          </methods>
-          <lines>
-            <line number="28" hits="0" branch="False" />
-            <line number="31" hits="16506" branch="False" />
-            <line number="34" hits="0" branch="False" />
-            <line number="37" hits="1300" branch="False" />
-            <line number="40" hits="0" branch="False" />
-            <line number="15" hits="0" branch="False" />
-            <line number="16" hits="0" branch="False" />
-            <line number="18" hits="1" branch="False" />
-            <line number="19" hits="1" branch="False" />
-            <line number="21" hits="0" branch="False" />
-            <line number="22" hits="0" branch="False" />
-            <line number="24" hits="0" branch="False" />
-            <line number="25" hits="0" branch="False" />
-          </lines>
-        </class>
-      </classes>
-    </package>
-    <package name="StirlingLabs.Utilities" line-rate="0.2908" branch-rate="0.2299" complexity="759">
+    <package name="StirlingLabs.Utilities" line-rate="0.29969999999999997" branch-rate="0.2336" complexity="766">
       <classes>
         <class name="StirlingLabs.Native.NativeMemory" filename="/_/StirlingLabs.Utilities/NativeMemory.cs" line-rate="0.5" branch-rate="0.3333" complexity="18">
           <methods>
@@ -4022,38 +3268,38 @@
             <line number="18" hits="0" branch="False" />
           </lines>
         </class>
-        <class name="StirlingLabs.Utilities.ScheduledAction" filename="/_/StirlingLabs.Utilities/ScheduledAction.cs" line-rate="0.7894" branch-rate="0.7187" complexity="39">
+        <class name="StirlingLabs.Utilities.ScheduledAction" filename="/_/StirlingLabs.Utilities/ScheduledAction.cs" line-rate="0.821" branch-rate="0.7187" complexity="39">
           <methods>
-            <method name="TimerThread" signature="()" line-rate="0.6808" branch-rate="0.8181" complexity="22">
+            <method name="TimerThread" signature="()" line-rate="0.7445999999999999" branch-rate="0.8181" complexity="22">
               <lines>
                 <line number="49" hits="1" branch="False" />
                 <line number="50" hits="1" branch="False" />
                 <line number="55" hits="1" branch="False" />
                 <line number="56" hits="1" branch="False" />
                 <line number="59" hits="1" branch="False" />
-                <line number="66" hits="16846" branch="False" />
-                <line number="70" hits="16845" branch="False" />
-                <line number="71" hits="16845" branch="False" />
-                <line number="73" hits="16845" branch="False" />
-                <line number="74" hits="16845" branch="True" condition-coverage="100% (2/2)">
+                <line number="66" hits="16900" branch="False" />
+                <line number="70" hits="16900" branch="False" />
+                <line number="71" hits="16900" branch="False" />
+                <line number="73" hits="16900" branch="False" />
+                <line number="74" hits="16900" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="148" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="75" hits="1904" branch="False" />
-                <line number="77" hits="59764" branch="True" condition-coverage="100% (2/2)">
+                <line number="75" hits="1958" branch="False" />
+                <line number="77" hits="59768" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="386" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="81" hits="14941" branch="False" />
-                <line number="82" hits="14941" branch="True" condition-coverage="100% (2/2)">
+                <line number="81" hits="14942" branch="False" />
+                <line number="82" hits="14942" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="192" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="84" hits="12341" branch="False" />
-                <line number="86" hits="12365" branch="True" condition-coverage="100% (2/2)">
+                <line number="84" hits="12354" branch="False" />
+                <line number="86" hits="12378" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="265" type="jump" coverage="100%" />
                   </conditions>
@@ -4074,20 +3320,20 @@
                     <condition number="242" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="105" hits="12341" branch="True" condition-coverage="100% (2/2)">
+                <line number="105" hits="12354" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="269" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="108" hits="12329" branch="True" condition-coverage="100% (2/2)">
+                <line number="108" hits="12342" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="274" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="109" hits="381" branch="False" />
-                <line number="111" hits="12329" branch="False" />
-                <line number="115" hits="2600" branch="False" />
-                <line number="116" hits="2600" branch="True" condition-coverage="100% (2/2)">
+                <line number="109" hits="419" branch="False" />
+                <line number="111" hits="12342" branch="False" />
+                <line number="115" hits="2588" branch="False" />
+                <line number="116" hits="2588" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="315" type="jump" coverage="100%" />
                   </conditions>
@@ -4103,25 +3349,25 @@
                 </line>
                 <line number="125" hits="0" branch="False" />
                 <line number="126" hits="0" branch="False" />
-                <line number="129" hits="2591" branch="False" />
-                <line number="131" hits="2591" branch="True" condition-coverage="100% (2/2)">
+                <line number="129" hits="2579" branch="False" />
+                <line number="131" hits="2579" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="371" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="132" hits="100" branch="False" />
-                <line number="136" hits="16845" branch="False" />
-                <line number="140" hits="16845" branch="False" />
+                <line number="132" hits="97" branch="False" />
+                <line number="136" hits="16900" branch="False" />
+                <line number="140" hits="16900" branch="False" />
                 <line number="145" hits="0" branch="False" />
                 <line number="148" hits="0" branch="False" />
-                <line number="149" hits="0" branch="False" />
-                <line number="152" hits="0" branch="False" />
-                <line number="153" hits="0" branch="False" />
+                <line number="149" hits="1" branch="False" />
+                <line number="152" hits="1" branch="False" />
+                <line number="153" hits="1" branch="False" />
               </lines>
             </method>
             <method name="get_Next" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="165" hits="14965" branch="False" />
+                <line number="165" hits="14966" branch="False" />
               </lines>
             </method>
             <method name="get_Seconds" signature="()" line-rate="0" branch-rate="1" complexity="1">
@@ -4238,29 +3484,29 @@
             <line number="55" hits="1" branch="False" />
             <line number="56" hits="1" branch="False" />
             <line number="59" hits="1" branch="False" />
-            <line number="66" hits="16846" branch="False" />
-            <line number="70" hits="16845" branch="False" />
-            <line number="71" hits="16845" branch="False" />
-            <line number="73" hits="16845" branch="False" />
-            <line number="74" hits="16845" branch="True" condition-coverage="100% (2/2)">
+            <line number="66" hits="16900" branch="False" />
+            <line number="70" hits="16900" branch="False" />
+            <line number="71" hits="16900" branch="False" />
+            <line number="73" hits="16900" branch="False" />
+            <line number="74" hits="16900" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="148" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="75" hits="1904" branch="False" />
-            <line number="77" hits="59764" branch="True" condition-coverage="100% (2/2)">
+            <line number="75" hits="1958" branch="False" />
+            <line number="77" hits="59768" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="386" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="81" hits="14941" branch="False" />
-            <line number="82" hits="14941" branch="True" condition-coverage="100% (2/2)">
+            <line number="81" hits="14942" branch="False" />
+            <line number="82" hits="14942" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="192" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="84" hits="12341" branch="False" />
-            <line number="86" hits="12365" branch="True" condition-coverage="100% (2/2)">
+            <line number="84" hits="12354" branch="False" />
+            <line number="86" hits="12378" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="265" type="jump" coverage="100%" />
               </conditions>
@@ -4281,20 +3527,20 @@
                 <condition number="242" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="105" hits="12341" branch="True" condition-coverage="100% (2/2)">
+            <line number="105" hits="12354" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="269" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="108" hits="12329" branch="True" condition-coverage="100% (2/2)">
+            <line number="108" hits="12342" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="274" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="109" hits="381" branch="False" />
-            <line number="111" hits="12329" branch="False" />
-            <line number="115" hits="2600" branch="False" />
-            <line number="116" hits="2600" branch="True" condition-coverage="100% (2/2)">
+            <line number="109" hits="419" branch="False" />
+            <line number="111" hits="12342" branch="False" />
+            <line number="115" hits="2588" branch="False" />
+            <line number="116" hits="2588" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="315" type="jump" coverage="100%" />
               </conditions>
@@ -4310,21 +3556,21 @@
             </line>
             <line number="125" hits="0" branch="False" />
             <line number="126" hits="0" branch="False" />
-            <line number="129" hits="2591" branch="False" />
-            <line number="131" hits="2591" branch="True" condition-coverage="100% (2/2)">
+            <line number="129" hits="2579" branch="False" />
+            <line number="131" hits="2579" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="371" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="132" hits="100" branch="False" />
-            <line number="136" hits="16845" branch="False" />
-            <line number="140" hits="16845" branch="False" />
+            <line number="132" hits="97" branch="False" />
+            <line number="136" hits="16900" branch="False" />
+            <line number="140" hits="16900" branch="False" />
             <line number="145" hits="0" branch="False" />
             <line number="148" hits="0" branch="False" />
-            <line number="149" hits="0" branch="False" />
-            <line number="152" hits="0" branch="False" />
-            <line number="153" hits="0" branch="False" />
-            <line number="165" hits="14965" branch="False" />
+            <line number="149" hits="1" branch="False" />
+            <line number="152" hits="1" branch="False" />
+            <line number="153" hits="1" branch="False" />
+            <line number="165" hits="14966" branch="False" />
             <line number="170" hits="0" branch="False" />
             <line number="176" hits="45" branch="False" />
             <line number="181" hits="42" branch="False" />
@@ -4926,6 +4172,64 @@
             <line number="37" hits="0" branch="False" />
           </lines>
         </class>
+        <class name="StirlingLabs.Utilities.ThreadPoolHelpers" filename="/_/StirlingLabs.Utilities/ThreadPoolHelpers.cs" line-rate="1" branch-rate="0.75" complexity="7">
+          <methods>
+            <method name="QueueUserWorkItemFast" signature="(System.Action)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="23" hits="7000" branch="False" />
+                <line number="25" hits="7000" branch="False" />
+              </lines>
+            </method>
+            <method name="QueueUserWorkItemFast" signature="(System.Action,System.Boolean)" line-rate="1" branch-rate="0.75" complexity="4">
+              <lines>
+                <line number="30" hits="7000" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="31" hits="7000" branch="False" />
+                <line number="32" hits="7000" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="40" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="33" hits="6000" branch="False" />
+                <line number="35" hits="1000" branch="False" />
+                <line number="36" hits="1000" branch="False" />
+              </lines>
+            </method>
+            <method name="ExecWorkItemInstanceFast" signature="(System.ValueTuple`2&lt;System.IntPtr,System.Object&gt;)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="51" hits="6000" branch="False" />
+              </lines>
+            </method>
+            <method name="ExecWorkItemStaticFast" signature="(System.IntPtr)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="54" hits="1000" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="23" hits="7000" branch="False" />
+            <line number="25" hits="7000" branch="False" />
+            <line number="30" hits="7000" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="31" hits="7000" branch="False" />
+            <line number="32" hits="7000" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="40" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="33" hits="6000" branch="False" />
+            <line number="35" hits="1000" branch="False" />
+            <line number="36" hits="1000" branch="False" />
+            <line number="51" hits="6000" branch="False" />
+            <line number="54" hits="1000" branch="False" />
+          </lines>
+        </class>
         <class name="StirlingLabs.Utilities.Timeout" filename="/_/StirlingLabs.Utilities/Timeout.cs" line-rate="0.4" branch-rate="1" complexity="5">
           <methods>
             <method name="CreateFromSeconds" signature="(System.Double,System.Action)" line-rate="0" branch-rate="1" complexity="1">
@@ -4991,7 +4295,7 @@
             </method>
             <method name="WaitTicks" signature="(System.Int64,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="52" hits="16845" branch="False" />
+                <line number="52" hits="16900" branch="False" />
               </lines>
             </method>
             <method name="WaitTicksInternal" signature="(System.Int64)" line-rate="0.9" branch-rate="0.75" complexity="4">
@@ -5006,19 +4310,19 @@
                 </line>
                 <line number="71" hits="0" branch="False" />
                 <line number="73" hits="16" branch="False" />
-                <line number="75" hits="2399132" branch="True" condition-coverage="100% (2/2)">
+                <line number="75" hits="2435448" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="71" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="76" hits="2399116" branch="False" />
+                <line number="76" hits="2435432" branch="False" />
                 <line number="78" hits="16" branch="False" />
                 <line number="79" hits="16" branch="False" />
               </lines>
             </method>
             <method name="SpinWaitUntil" signature="(System.Int64)" line-rate="1" branch-rate="1" complexity="2">
               <lines>
-                <line number="84" hits="1207295" branch="True" condition-coverage="100% (2/2)">
+                <line number="84" hits="1412725" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="9" type="jump" coverage="100%" />
                   </conditions>
@@ -5028,10 +4332,10 @@
             </method>
             <method name="WaitTicksInternal" signature="(System.Int64,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="6">
               <lines>
-                <line number="91" hits="16855" branch="False" />
-                <line number="99" hits="16855" branch="False" />
-                <line number="101" hits="16855" branch="False" />
-                <line number="103" hits="16855" branch="True" condition-coverage="100% (2/2)">
+                <line number="91" hits="16910" branch="False" />
+                <line number="99" hits="16910" branch="False" />
+                <line number="101" hits="16910" branch="False" />
+                <line number="103" hits="16910" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="29" type="jump" coverage="100%" />
                   </conditions>
@@ -5043,27 +4347,27 @@
                     <condition number="63" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="110" hits="16849" branch="False" />
-                <line number="112" hits="137614" branch="True" condition-coverage="100% (2/2)">
+                <line number="110" hits="16904" branch="False" />
+                <line number="112" hits="150655" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="94" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="114" hits="120765" branch="False" />
-                <line number="115" hits="120765" branch="False" />
-                <line number="118" hits="16849" branch="False" />
-                <line number="119" hits="16849" branch="False" />
+                <line number="114" hits="133751" branch="False" />
+                <line number="115" hits="133751" branch="False" />
+                <line number="118" hits="16904" branch="False" />
+                <line number="119" hits="16903" branch="False" />
               </lines>
             </method>
             <method name="SpinWaitUntil" signature="(System.Int64,System.Threading.CancellationToken)" line-rate="1" branch-rate="1" complexity="2">
               <lines>
-                <line number="124" hits="282677680" branch="True" condition-coverage="100% (2/2)">
+                <line number="124" hits="334905541" branch="True" condition-coverage="100% (2/2)">
                   <conditions>
                     <condition number="15" type="jump" coverage="100%" />
                   </conditions>
                 </line>
-                <line number="125" hits="282660831" branch="False" />
-                <line number="126" hits="16849" branch="False" />
+                <line number="125" hits="334888638" branch="False" />
+                <line number="126" hits="16903" branch="False" />
               </lines>
             </method>
             <method name="Equals" signature="(StirlingLabs.Utilities.Timestamp)" line-rate="0" branch-rate="1" complexity="1">
@@ -5125,7 +4429,7 @@
             </method>
             <method name="op_LessThan" signature="(StirlingLabs.Utilities.Timestamp,StirlingLabs.Utilities.Timestamp)" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="178" hits="24070520" branch="False" />
+                <line number="178" hits="24629949" branch="False" />
               </lines>
             </method>
             <method name="op_GreaterThan" signature="(StirlingLabs.Utilities.Timestamp,StirlingLabs.Utilities.Timestamp)" line-rate="0" branch-rate="1" complexity="1">
@@ -5145,12 +4449,12 @@
             </method>
             <method name="get_Now" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="195" hits="24070620" branch="False" />
+                <line number="195" hits="24630049" branch="False" />
               </lines>
             </method>
             <method name="GetCurrentTicks" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="200" hits="24070638" branch="False" />
+                <line number="200" hits="24630067" branch="False" />
               </lines>
             </method>
             <method name="op_Addition" signature="(StirlingLabs.Utilities.Timestamp,System.Double)" line-rate="1" branch-rate="1" complexity="1">
@@ -5206,7 +4510,7 @@
             <line number="40" hits="0" branch="False" />
             <line number="44" hits="10" branch="False" />
             <line number="48" hits="0" branch="False" />
-            <line number="52" hits="16845" branch="False" />
+            <line number="52" hits="16900" branch="False" />
             <line number="57" hits="16" branch="False" />
             <line number="66" hits="16" branch="False" />
             <line number="68" hits="16" branch="False" />
@@ -5217,24 +4521,24 @@
             </line>
             <line number="71" hits="0" branch="False" />
             <line number="73" hits="16" branch="False" />
-            <line number="75" hits="2399132" branch="True" condition-coverage="100% (2/2)">
+            <line number="75" hits="2435448" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="71" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="76" hits="2399116" branch="False" />
+            <line number="76" hits="2435432" branch="False" />
             <line number="78" hits="16" branch="False" />
             <line number="79" hits="16" branch="False" />
-            <line number="84" hits="1207295" branch="True" condition-coverage="100% (2/2)">
+            <line number="84" hits="1412725" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="9" type="jump" coverage="100%" />
               </conditions>
             </line>
             <line number="86" hits="16" branch="False" />
-            <line number="91" hits="16855" branch="False" />
-            <line number="99" hits="16855" branch="False" />
-            <line number="101" hits="16855" branch="False" />
-            <line number="103" hits="16855" branch="True" condition-coverage="100% (2/2)">
+            <line number="91" hits="16910" branch="False" />
+            <line number="99" hits="16910" branch="False" />
+            <line number="101" hits="16910" branch="False" />
+            <line number="103" hits="16910" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="29" type="jump" coverage="100%" />
               </conditions>
@@ -5246,23 +4550,23 @@
                 <condition number="63" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="110" hits="16849" branch="False" />
-            <line number="112" hits="137614" branch="True" condition-coverage="100% (2/2)">
+            <line number="110" hits="16904" branch="False" />
+            <line number="112" hits="150655" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="94" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="114" hits="120765" branch="False" />
-            <line number="115" hits="120765" branch="False" />
-            <line number="118" hits="16849" branch="False" />
-            <line number="119" hits="16849" branch="False" />
-            <line number="124" hits="282677680" branch="True" condition-coverage="100% (2/2)">
+            <line number="114" hits="133751" branch="False" />
+            <line number="115" hits="133751" branch="False" />
+            <line number="118" hits="16904" branch="False" />
+            <line number="119" hits="16903" branch="False" />
+            <line number="124" hits="334905541" branch="True" condition-coverage="100% (2/2)">
               <conditions>
                 <condition number="15" type="jump" coverage="100%" />
               </conditions>
             </line>
-            <line number="125" hits="282660831" branch="False" />
-            <line number="126" hits="16849" branch="False" />
+            <line number="125" hits="334888638" branch="False" />
+            <line number="126" hits="16903" branch="False" />
             <line number="134" hits="0" branch="False" />
             <line number="138" hits="0" branch="True" condition-coverage="0% (0/2)">
               <conditions>
@@ -5288,12 +4592,12 @@
             </line>
             <line number="172" hits="0" branch="False" />
             <line number="173" hits="0" branch="False" />
-            <line number="178" hits="24070520" branch="False" />
+            <line number="178" hits="24629949" branch="False" />
             <line number="182" hits="0" branch="False" />
             <line number="186" hits="0" branch="False" />
             <line number="190" hits="0" branch="False" />
-            <line number="195" hits="24070620" branch="False" />
-            <line number="200" hits="24070638" branch="False" />
+            <line number="195" hits="24630049" branch="False" />
+            <line number="200" hits="24630067" branch="False" />
             <line number="204" hits="40" branch="False" />
             <line number="208" hits="0" branch="False" />
             <line number="212" hits="62" branch="False" />
@@ -6640,6 +5944,760 @@
             <line number="259" hits="8341" branch="False" />
             <line number="226" hits="0" branch="False" />
             <line number="250" hits="0" branch="False" />
+          </lines>
+        </class>
+      </classes>
+    </package>
+    <package name="StirlingLabs.Utilities.Yaml" line-rate="0.6335000000000001" branch-rate="0.6379" complexity="94">
+      <classes>
+        <class name="StirlingLabs.Utilities.Yaml.Extensions" filename="/_/StirlingLabs.Utilities.Yaml/Extensions.Deserialize.cs" line-rate="0.1666" branch-rate="0.1666" complexity="9">
+          <methods>
+            <method name="Deserialize" signature="(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlStream)" line-rate="1" branch-rate="0.5" complexity="2">
+              <lines>
+                <line number="11" hits="1" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+              </lines>
+            </method>
+            <method name="Deserialize" signature="(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="0" complexity="2">
+              <lines>
+                <line number="13" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+              </lines>
+            </method>
+            <method name="Deserialize" signature="(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="0" complexity="2">
+              <lines>
+                <line number="15" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+              </lines>
+            </method>
+            <method name="Deserialize" signature="(YamlDotNet.RepresentationModel.YamlStream)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="18" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="Deserialize" signature="(YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="Deserialize" signature="(YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="24" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="11" hits="1" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="13" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="15" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="18" hits="0" branch="False" />
+            <line number="21" hits="0" branch="False" />
+            <line number="24" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="StirlingLabs.Utilities.Yaml.Extensions" filename="/_/StirlingLabs.Utilities.Yaml/Extensions.Deserialize.Generic.cs" line-rate="0" branch-rate="0" complexity="9">
+          <methods>
+            <method name="Deserialize" signature="(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlStream)" line-rate="0" branch-rate="0" complexity="2">
+              <lines>
+                <line number="11" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+              </lines>
+            </method>
+            <method name="Deserialize" signature="(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="0" complexity="2">
+              <lines>
+                <line number="14" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+              </lines>
+            </method>
+            <method name="Deserialize" signature="(YamlDotNet.Serialization.IDeserializer,YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="0" complexity="2">
+              <lines>
+                <line number="17" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+              </lines>
+            </method>
+            <method name="Deserialize" signature="(YamlDotNet.RepresentationModel.YamlStream)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="20" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="Deserialize" signature="(YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="23" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="Deserialize" signature="(YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="26" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="11" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="14" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="17" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="20" hits="0" branch="False" />
+            <line number="23" hits="0" branch="False" />
+            <line number="26" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="StirlingLabs.Utilities.Yaml.Extensions" filename="/_/StirlingLabs.Utilities.Yaml/Extensions.Internal.cs" line-rate="0.7142000000000001" branch-rate="0.5" complexity="4">
+          <methods>
+            <method name="SerializeJson" signature="(System.Object)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="16" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="SerializeYaml" signature="(System.Object)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="22" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="Serialize" signature="(System.Object,YamlDotNet.Serialization.ISerializer)" line-rate="1" branch-rate="0.5" complexity="2">
+              <lines>
+                <line number="29" hits="1" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="1" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="30" hits="1" branch="False" />
+                <line number="31" hits="1" branch="False" />
+                <line number="32" hits="1" branch="False" />
+                <line number="33" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="16" hits="0" branch="False" />
+            <line number="22" hits="0" branch="False" />
+            <line number="29" hits="1" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="1" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="30" hits="1" branch="False" />
+            <line number="31" hits="1" branch="False" />
+            <line number="32" hits="1" branch="False" />
+            <line number="33" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class name="StirlingLabs.Utilities.Yaml.Extensions" filename="/_/StirlingLabs.Utilities.Yaml/Extensions.Serialize.cs" line-rate="0.2666" branch-rate="1" complexity="9">
+          <methods>
+            <method name="Serialize" signature="(YamlDotNet.RepresentationModel.YamlStream,YamlDotNet.Serialization.ISerializer)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="11" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method name="Serialize" signature="(YamlDotNet.RepresentationModel.YamlDocument,YamlDotNet.Serialization.ISerializer)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="14" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="Serialize" signature="(YamlDotNet.RepresentationModel.YamlNode,YamlDotNet.Serialization.ISerializer)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="17" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="ToYaml" signature="(YamlDotNet.RepresentationModel.YamlStream)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="19" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="ToYaml" signature="(YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="22" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="ToYaml" signature="(YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="25" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="ToJson" signature="(YamlDotNet.RepresentationModel.YamlStream)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="29" hits="1" branch="False" />
+                <line number="30" hits="1" branch="False" />
+                <line number="31" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method name="ToJson" signature="(YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="36" hits="0" branch="False" />
+                <line number="37" hits="0" branch="False" />
+                <line number="38" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="ToJson" signature="(YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="43" hits="0" branch="False" />
+                <line number="44" hits="0" branch="False" />
+                <line number="45" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="11" hits="1" branch="False" />
+            <line number="14" hits="0" branch="False" />
+            <line number="17" hits="0" branch="False" />
+            <line number="19" hits="0" branch="False" />
+            <line number="22" hits="0" branch="False" />
+            <line number="25" hits="0" branch="False" />
+            <line number="29" hits="1" branch="False" />
+            <line number="30" hits="1" branch="False" />
+            <line number="31" hits="1" branch="False" />
+            <line number="36" hits="0" branch="False" />
+            <line number="37" hits="0" branch="False" />
+            <line number="38" hits="0" branch="False" />
+            <line number="43" hits="0" branch="False" />
+            <line number="44" hits="0" branch="False" />
+            <line number="45" hits="0" branch="False" />
+          </lines>
+        </class>
+        <class name="StirlingLabs.Utilities.Yaml.OnDemand" filename="/_/StirlingLabs.Utilities.Yaml/OnDemand.cs" line-rate="1" branch-rate="1" complexity="3">
+          <methods>
+            <method name="get_Deserializer" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="17" hits="2" branch="False" />
+              </lines>
+            </method>
+            <method name="get_JsonSerializer" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="20" hits="2" branch="False" />
+              </lines>
+            </method>
+            <method name="get_YamlSerializer" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="23" hits="2" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="17" hits="2" branch="False" />
+            <line number="20" hits="2" branch="False" />
+            <line number="23" hits="2" branch="False" />
+          </lines>
+        </class>
+        <class name="StirlingLabs.Utilities.Yaml.YamlToJsonVisitor" filename="/_/StirlingLabs.Utilities.Yaml/YamlToJsonVisitor.cs" line-rate="0.6956" branch-rate="0.6363" complexity="28">
+          <methods>
+            <method name="ToString" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="28" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method name="Visit" signature="(YamlDotNet.RepresentationModel.YamlStream)" line-rate="0.3" branch-rate="0.3333" complexity="6">
+              <lines>
+                <line number="32" hits="1" branch="True" condition-coverage="50% (2/4)">
+                  <conditions>
+                    <condition number="13" type="jump" coverage="50%" />
+                    <condition number="17" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="34" hits="0" branch="False" />
+                <line number="36" hits="1" branch="False" />
+                <line number="37" hits="1" branch="False" />
+                <line number="39" hits="0" branch="False" />
+                <line number="40" hits="0" branch="True" condition-coverage="0% (0/2)">
+                  <conditions>
+                    <condition number="101" type="jump" coverage="0%" />
+                  </conditions>
+                </line>
+                <line number="42" hits="0" branch="False" />
+                <line number="43" hits="0" branch="False" />
+                <line number="45" hits="0" branch="False" />
+                <line number="46" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="Visit" signature="(YamlDotNet.RepresentationModel.YamlDocument)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="49" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method name="Visit" signature="(YamlDotNet.RepresentationModel.YamlScalarNode)" line-rate="0.8332999999999999" branch-rate="0.625" complexity="8">
+              <lines>
+                <line number="53" hits="1251" branch="True" condition-coverage="50% (3/6)">
+                  <conditions>
+                    <condition number="6" type="jump" coverage="50%" />
+                    <condition number="24" type="jump" coverage="50%" />
+                    <condition number="42" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="54" hits="0" branch="False" />
+                <line number="55" hits="1251" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="78" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="56" hits="491" branch="False" />
+                <line number="58" hits="760" branch="False" />
+                <line number="59" hits="760" branch="False" />
+              </lines>
+            </method>
+            <method name="Visit" signature="(YamlDotNet.RepresentationModel.YamlSequenceNode)" line-rate="0.7777" branch-rate="0.75" complexity="4">
+              <lines>
+                <line number="63" hits="5" branch="False" />
+                <line number="64" hits="5" branch="True" condition-coverage="50% (1/2)">
+                  <conditions>
+                    <condition number="25" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="66" hits="0" branch="False" />
+                <line number="67" hits="0" branch="False" />
+                <line number="69" hits="2414" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="83" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="71" hits="1202" branch="False" />
+                <line number="72" hits="1202" branch="False" />
+                <line number="74" hits="5" branch="False" />
+                <line number="75" hits="5" branch="False" />
+              </lines>
+            </method>
+            <method name="Visit" signature="(YamlDotNet.RepresentationModel.YamlMappingNode)" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="79" hits="17" branch="False" />
+                <line number="80" hits="17" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="25" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="82" hits="8" branch="False" />
+                <line number="83" hits="8" branch="False" />
+                <line number="85" hits="88" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="125" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="87" hits="35" branch="False" />
+                <line number="88" hits="35" branch="False" />
+                <line number="89" hits="35" branch="False" />
+                <line number="90" hits="35" branch="False" />
+                <line number="92" hits="9" branch="False" />
+                <line number="93" hits="9" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="18" hits="1" branch="False" />
+                <line number="19" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Int32)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="0" branch="False" />
+                <line number="22" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Text.StringBuilder)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="24" hits="0" branch="False" />
+                <line number="25" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".cctor" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="14" hits="1" branch="False" />
+                <line number="15" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="28" hits="1" branch="False" />
+            <line number="32" hits="1" branch="True" condition-coverage="50% (2/4)">
+              <conditions>
+                <condition number="13" type="jump" coverage="50%" />
+                <condition number="17" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="34" hits="0" branch="False" />
+            <line number="36" hits="1" branch="False" />
+            <line number="37" hits="1" branch="False" />
+            <line number="39" hits="0" branch="False" />
+            <line number="40" hits="0" branch="True" condition-coverage="0% (0/2)">
+              <conditions>
+                <condition number="101" type="jump" coverage="0%" />
+              </conditions>
+            </line>
+            <line number="42" hits="0" branch="False" />
+            <line number="43" hits="0" branch="False" />
+            <line number="45" hits="0" branch="False" />
+            <line number="46" hits="0" branch="False" />
+            <line number="49" hits="1" branch="False" />
+            <line number="53" hits="1251" branch="True" condition-coverage="50% (3/6)">
+              <conditions>
+                <condition number="6" type="jump" coverage="50%" />
+                <condition number="24" type="jump" coverage="50%" />
+                <condition number="42" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="54" hits="0" branch="False" />
+            <line number="55" hits="1251" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="78" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="56" hits="491" branch="False" />
+            <line number="58" hits="760" branch="False" />
+            <line number="59" hits="760" branch="False" />
+            <line number="63" hits="5" branch="False" />
+            <line number="64" hits="5" branch="True" condition-coverage="50% (1/2)">
+              <conditions>
+                <condition number="25" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="66" hits="0" branch="False" />
+            <line number="67" hits="0" branch="False" />
+            <line number="69" hits="2414" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="83" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="71" hits="1202" branch="False" />
+            <line number="72" hits="1202" branch="False" />
+            <line number="74" hits="5" branch="False" />
+            <line number="75" hits="5" branch="False" />
+            <line number="79" hits="17" branch="False" />
+            <line number="80" hits="17" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="25" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="82" hits="8" branch="False" />
+            <line number="83" hits="8" branch="False" />
+            <line number="85" hits="88" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="125" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="87" hits="35" branch="False" />
+            <line number="88" hits="35" branch="False" />
+            <line number="89" hits="35" branch="False" />
+            <line number="90" hits="35" branch="False" />
+            <line number="92" hits="9" branch="False" />
+            <line number="93" hits="9" branch="False" />
+            <line number="18" hits="1" branch="False" />
+            <line number="19" hits="1" branch="False" />
+            <line number="21" hits="0" branch="False" />
+            <line number="22" hits="0" branch="False" />
+            <line number="24" hits="0" branch="False" />
+            <line number="25" hits="0" branch="False" />
+            <line number="14" hits="1" branch="False" />
+            <line number="15" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class name="StirlingLabs.Utilities.Yaml.Events.Extensions" filename="/_/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs" line-rate="0.8571" branch-rate="0.8332999999999999" complexity="6">
+          <methods>
+            <method name="GetEvents" signature="(YamlDotNet.RepresentationModel.YamlNode)" line-rate="0.8571" branch-rate="0.8332999999999999" complexity="6">
+              <lines>
+                <line number="35" hits="1273" branch="True" condition-coverage="83.33% (5/6)">
+                  <conditions>
+                    <condition number="8" type="jump" coverage="100%" />
+                    <condition number="18" type="jump" coverage="100%" />
+                    <condition number="28" type="jump" coverage="50%" />
+                  </conditions>
+                </line>
+                <line number="36" hits="1273" branch="False" />
+                <line number="37" hits="1251" branch="False" />
+                <line number="38" hits="5" branch="False" />
+                <line number="39" hits="17" branch="False" />
+                <line number="40" hits="0" branch="False" />
+                <line number="41" hits="1273" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="35" hits="1273" branch="True" condition-coverage="83.33% (5/6)">
+              <conditions>
+                <condition number="8" type="jump" coverage="100%" />
+                <condition number="18" type="jump" coverage="100%" />
+                <condition number="28" type="jump" coverage="50%" />
+              </conditions>
+            </line>
+            <line number="36" hits="1273" branch="False" />
+            <line number="37" hits="1251" branch="False" />
+            <line number="38" hits="5" branch="False" />
+            <line number="39" hits="17" branch="False" />
+            <line number="40" hits="0" branch="False" />
+            <line number="41" hits="1273" branch="False" />
+          </lines>
+        </class>
+        <class name="StirlingLabs.Utilities.Yaml.Events.Extensions/&lt;GetEvents&gt;d__0" filename="/_/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs" line-rate="1" branch-rate="1" complexity="4">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="15" hits="1" branch="False" />
+                <line number="17" hits="4" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="221" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="19" hits="2596" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="195" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="20" hits="1297" branch="False" />
+                <line number="23" hits="1" branch="False" />
+                <line number="24" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="15" hits="1" branch="False" />
+            <line number="17" hits="4" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="221" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="19" hits="2596" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="195" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="20" hits="1297" branch="False" />
+            <line number="23" hits="1" branch="False" />
+            <line number="24" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class name="StirlingLabs.Utilities.Yaml.Events.Extensions/&lt;GetEvents&gt;d__1" filename="/_/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs" line-rate="1" branch-rate="1" complexity="2">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="2">
+              <lines>
+                <line number="27" hits="1" branch="False" />
+                <line number="29" hits="2592" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="161" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="30" hits="1295" branch="False" />
+                <line number="32" hits="1" branch="False" />
+                <line number="33" hits="1" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="27" hits="1" branch="False" />
+            <line number="29" hits="2592" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="161" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="30" hits="1295" branch="False" />
+            <line number="32" hits="1" branch="False" />
+            <line number="33" hits="1" branch="False" />
+          </lines>
+        </class>
+        <class name="StirlingLabs.Utilities.Yaml.Events.Extensions/&lt;GetEvents&gt;d__3" filename="/_/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="44" hits="1251" branch="False" />
+                <line number="45" hits="1251" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="44" hits="1251" branch="False" />
+            <line number="45" hits="1251" branch="False" />
+          </lines>
+        </class>
+        <class name="StirlingLabs.Utilities.Yaml.Events.Extensions/&lt;GetEvents&gt;d__4" filename="/_/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs" line-rate="1" branch-rate="1" complexity="4">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="48" hits="5" branch="False" />
+                <line number="50" hits="2414" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="255" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="52" hits="7384" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="229" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="53" hits="2490" branch="False" />
+                <line number="56" hits="5" branch="False" />
+                <line number="57" hits="5" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="48" hits="5" branch="False" />
+            <line number="50" hits="2414" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="255" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="52" hits="7384" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="229" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="53" hits="2490" branch="False" />
+            <line number="56" hits="5" branch="False" />
+            <line number="57" hits="5" branch="False" />
+          </lines>
+        </class>
+        <class name="StirlingLabs.Utilities.Yaml.Events.Extensions/&lt;GetEvents&gt;d__5" filename="/_/StirlingLabs.Utilities.Yaml/Events/Extensions.GetEvents.cs" line-rate="1" branch-rate="1" complexity="6">
+          <methods>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="6">
+              <lines>
+                <line number="60" hits="17" branch="False" />
+                <line number="62" hits="104" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="394" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="64" hits="140" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="263" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="65" hits="35" branch="False" />
+                <line number="67" hits="5242" branch="True" condition-coverage="100% (2/2)">
+                  <conditions>
+                    <condition number="361" type="jump" coverage="100%" />
+                  </conditions>
+                </line>
+                <line number="68" hits="2586" branch="False" />
+                <line number="69" hits="35" branch="False" />
+                <line number="71" hits="17" branch="False" />
+                <line number="72" hits="17" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="60" hits="17" branch="False" />
+            <line number="62" hits="104" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="394" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="64" hits="140" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="263" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="65" hits="35" branch="False" />
+            <line number="67" hits="5242" branch="True" condition-coverage="100% (2/2)">
+              <conditions>
+                <condition number="361" type="jump" coverage="100%" />
+              </conditions>
+            </line>
+            <line number="68" hits="2586" branch="False" />
+            <line number="69" hits="35" branch="False" />
+            <line number="71" hits="17" branch="False" />
+            <line number="72" hits="17" branch="False" />
+          </lines>
+        </class>
+        <class name="StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter" filename="/_/StirlingLabs.Utilities.Yaml/Events/YamlEventsAdapter.cs" line-rate="0.30760000000000004" branch-rate="1" complexity="9">
+          <methods>
+            <method name="Reset" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="28" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="get_Current" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="31" hits="16506" branch="False" />
+              </lines>
+            </method>
+            <method name="System.Collections.IEnumerator.get_Current" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="34" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name="MoveNext" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="37" hits="1300" branch="False" />
+              </lines>
+            </method>
+            <method name="Dispose" signature="()" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="40" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(System.Collections.Generic.IEnumerable`1&lt;YamlDotNet.Core.Events.ParsingEvent&gt;)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="15" hits="0" branch="False" />
+                <line number="16" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(YamlDotNet.RepresentationModel.YamlStream)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="18" hits="1" branch="False" />
+                <line number="19" hits="1" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(YamlDotNet.RepresentationModel.YamlDocument)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="21" hits="0" branch="False" />
+                <line number="22" hits="0" branch="False" />
+              </lines>
+            </method>
+            <method name=".ctor" signature="(YamlDotNet.RepresentationModel.YamlNode)" line-rate="0" branch-rate="1" complexity="1">
+              <lines>
+                <line number="24" hits="0" branch="False" />
+                <line number="25" hits="0" branch="False" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="28" hits="0" branch="False" />
+            <line number="31" hits="16506" branch="False" />
+            <line number="34" hits="0" branch="False" />
+            <line number="37" hits="1300" branch="False" />
+            <line number="40" hits="0" branch="False" />
+            <line number="15" hits="0" branch="False" />
+            <line number="16" hits="0" branch="False" />
+            <line number="18" hits="1" branch="False" />
+            <line number="19" hits="1" branch="False" />
+            <line number="21" hits="0" branch="False" />
+            <line number="22" hits="0" branch="False" />
+            <line number="24" hits="0" branch="False" />
+            <line number="25" hits="0" branch="False" />
           </lines>
         </class>
       </classes>
