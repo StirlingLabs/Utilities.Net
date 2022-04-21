@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
@@ -7,20 +8,37 @@ using JetBrains.Annotations;
 namespace StirlingLabs.Utilities;
 
 [PublicAPI]
-public readonly struct Ptr<T> : IEquatable<Ptr<T>>, IComparable<Ptr<T>> where T : unmanaged
+[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates")]
+public readonly struct Ptr<T>
+    : IEquatable<Ptr<T>>,
+        IComparable<Ptr<T>>,
+        IEquatable<nuint>,
+        IEquatable<nint>
+    where T : unmanaged
 {
-    public readonly unsafe T* Target;
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    public unsafe string DebugString
+        => Unsafe.IsNullRef(ref Reference)
+            ? "<null reference>"
+            : Type<T>.IsPrimitive()
+                ? Reference.ToString() ?? ""
+                : sizeof(nuint) == 8
+                    ? $"@ 0x{(ulong)(nuint)Value:X16}"
+                    : $"@ 0x{(uint)(nuint)Value:X8}";
 
-    public unsafe ref T Reference => ref Unsafe.AsRef<T>(Target);
+    public readonly unsafe T* Value;
+
+    [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+    public unsafe ref T Reference => ref Unsafe.AsRef<T>(Value);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public unsafe Ptr(T* target)
-        => Target = target;
+    public unsafe Ptr(T* value)
+        => Value = value;
 
     [SuppressMessage("Usage", "CA2225", Justification = "See Target")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe implicit operator T*(Ptr<T> ptr)
-        => ptr.Target;
+        => ptr.Value;
 
     [SuppressMessage("Usage", "CA2225", Justification = "See default constructor")]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -31,7 +49,7 @@ public readonly struct Ptr<T> : IEquatable<Ptr<T>>, IComparable<Ptr<T>> where T 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [EditorBrowsable(EditorBrowsableState.Advanced)]
     public static unsafe T* operator ~(Ptr<T> ptr)
-        => ptr.Target;
+        => ptr.Value;
 
     [SuppressMessage("Design", "CA1043", Justification = "Native integer")]
     public ref T this[nint offset]
@@ -47,13 +65,13 @@ public readonly struct Ptr<T> : IEquatable<Ptr<T>>, IComparable<Ptr<T>> where T 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public unsafe int CompareTo(Ptr<T> other)
 #if NET5_0_OR_GREATER
-        => ((nuint)Target).CompareTo((nuint)other.Target);
+        => ((nuint)Value).CompareTo((nuint)other.Value);
 #else
         {
             return sizeof(T*) switch
             {
-                4 => ((uint)Target).CompareTo((uint)other.Target),
-                8 => ((ulong)Target).CompareTo((ulong)other.Target),
+                4 => ((uint)Value).CompareTo((uint)other.Value),
+                8 => ((ulong)Value).CompareTo((ulong)other.Value),
                 _ => throw new PlatformNotSupportedException()
             };
         }
@@ -61,15 +79,13 @@ public readonly struct Ptr<T> : IEquatable<Ptr<T>>, IComparable<Ptr<T>> where T 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override bool Equals(object? obj)
-    {
-        if (obj is Ptr<T> p)
-            return Equals(p);
-        return false;
-    }
+        => obj is Ptr<T> other && Equals(other)
+            || obj is nint ni && Equals(ni)
+            || obj is nuint nu && Equals(nu);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override unsafe int GetHashCode()
-        => ((nint)Target).GetHashCode();
+        => ((nint)Value).GetHashCode();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator ==(Ptr<T> left, Ptr<T> right)
@@ -78,16 +94,68 @@ public readonly struct Ptr<T> : IEquatable<Ptr<T>>, IComparable<Ptr<T>> where T 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator !=(Ptr<T> left, Ptr<T> right)
         => !(left == right);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator ==(Ptr<T> left, nuint right)
+        => (nuint)left == right;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator !=(Ptr<T> left, nuint right)
+        => (nuint)left != right;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator ==(nuint left, Ptr<T> right)
+        => left == (nuint)right;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator !=(nuint left, Ptr<T> right)
+        => left != (nuint)right;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator ==(Ptr<T> left, nint right)
+        => (nint)left == right;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator !=(Ptr<T> left, nint right)
+        => (nint)left != right;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator ==(nint left, Ptr<T> right)
+        => left == (nint)right;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator !=(nint left, Ptr<T> right)
+        => left != (nint)right;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool operator ==(Ptr<T> left, void* right)
+        => (void*)left == right;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool operator !=(Ptr<T> left, void* right)
+        => (void*)left != right;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool operator ==(void* left, Ptr<T> right)
+        => left == (void*)right;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe bool operator !=(void* left, Ptr<T> right)
+        => left != (void*)right;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe implicit operator void*(Ptr<T> p)
+        => p.Value;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe implicit operator nuint(Ptr<T> p)
+        => (nuint)p.Value;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe implicit operator nint(Ptr<T> p)
+        => (nint)p.Value;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public unsafe bool Equals(Ptr<T> other)
-        => Target == other.Target;
+        => Value == other.Value;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public unsafe bool Equals(IntPtr other)
-        => Target == (T*)other;
+    public unsafe bool Equals(nint other)
+        => (nint)Value == other;
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public unsafe bool Equals(nuint other)
+        => (nuint)Value == other;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public unsafe bool Equals(T* other)
-        => Target == other;
+        => Value == other;
 }

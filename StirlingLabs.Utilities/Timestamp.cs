@@ -219,4 +219,15 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
 
     public static Timestamp Add(Timestamp left, double right)
         => left + right;
+
+    public override string ToString()
+    {
+        var diff = DateTime.UtcNow.Ticks - _ticks;
+
+        var dt = new DateTime(_ticks, DateTimeKind.Utc);
+        var ms = TimeSpan.FromTicks(diff).TotalMilliseconds;
+        return diff >= 0
+            ? $"{dt:s} ({ms:F3}ms ago)"
+            : $"{dt:s} (in {ms:F3}ms)";
+    }
 }

@@ -112,4 +112,26 @@ public static class Type<T1>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsNotAssignableFrom<T2>() => !_IsAssignableFrom<T2>.True;
+
+    private static class _IsValueType
+    {
+        public static readonly bool True = typeof(T1).IsValueType;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsValueType() => _IsValueType.True;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNotValueType() => !_IsValueType.True;
+
+    private static class _IsGcRefType
+    {
+        public static readonly bool True = typeof(T1).IsClass;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsGcRefType() => _IsGcRefType.True;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool IsNotGcRefType() => !_IsGcRefType.True;
 }
