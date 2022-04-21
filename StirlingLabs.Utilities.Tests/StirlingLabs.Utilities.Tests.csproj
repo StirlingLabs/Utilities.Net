@@ -38,6 +38,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\StirlingLabs.Utilities.Collections\StirlingLabs.Utilities.Collections.csproj" />
+        <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.csproj" />
         <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj" />
         <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj" />
     </ItemGroup>

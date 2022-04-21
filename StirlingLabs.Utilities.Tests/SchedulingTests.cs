@@ -7,7 +7,9 @@ using System.Runtime;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using NUnit.Framework;
+using static FluentAssertions.FluentActions;
 
 namespace StirlingLabs.Utilities.Tests;
 
@@ -110,7 +112,8 @@ public class SchedulingTests
     public void AccurateTime([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
+        GC.TryStartNoGCRegion(NoGcRegionSize, true)
+            .Should().BeTrue();
         ulong count = 0;
         var start = DateTime.Now;
         var ts = Timestamp.Now;
@@ -152,7 +155,8 @@ public class SchedulingTests
     public void AccurateWait([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
+        GC.TryStartNoGCRegion(NoGcRegionSize, true)
+            .Should().BeTrue();
         var start = DateTime.Now;
         var ts = Timestamp.Now;
         Timestamp.Wait(Sustain);
@@ -190,15 +194,17 @@ public class SchedulingTests
     public void CancellableWait1([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
+        GC.TryStartNoGCRegion(NoGcRegionSize, true)
+            .Should().BeTrue();
         var halfSustain = Sustain / 2;
         using var cts = new CancellationTokenSource();
+        // ReSharper disable once AccessToDisposedClosure
         using var cto = new Timeout(halfSustain, () => cts.Cancel());
         var start = DateTime.Now;
         var ts = Timestamp.Now;
-        Assert.Throws<OperationCanceledException>(() => {
-            Timestamp.Wait(Sustain, cts.Token);
-        });
+        // ReSharper disable once AccessToDisposedClosure
+        Invoking(() => Timestamp.Wait(Sustain, cts.Token))
+            .Should().Throw<OperationCanceledException>();
         var elapsed = Timestamp.Now - ts;
         var fin = DateTime.Now;
         GC.EndNoGCRegion();
@@ -237,14 +243,15 @@ public class SchedulingTests
     public void CancellableWait2([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
+        GC.TryStartNoGCRegion(NoGcRegionSize, true)
+            .Should().BeTrue();
         var halfSustain = Sustain / 2;
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(halfSustain));
         var start = DateTime.Now;
         var ts = Timestamp.Now;
-        Assert.Throws<OperationCanceledException>(() => {
-            Timestamp.Wait(Sustain, cts.Token);
-        });
+        // ReSharper disable once AccessToDisposedClosure
+        Invoking(() => Timestamp.Wait(Sustain, cts.Token))
+            .Should().Throw<OperationCanceledException>();
         var elapsed = Timestamp.Now - ts;
         var fin = DateTime.Now;
         GC.EndNoGCRegion();
@@ -284,7 +291,8 @@ public class SchedulingTests
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
         using var cts = new CancellationTokenSource();
-        Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
+        GC.TryStartNoGCRegion(NoGcRegionSize, true)
+            .Should().BeTrue();
         var start = DateTime.Now;
         var ts = Timestamp.Now;
         Timestamp.Wait(Sustain, cts.Token);
@@ -321,7 +329,8 @@ public class SchedulingTests
     public void TimeoutTest([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
+        GC.TryStartNoGCRegion(NoGcRegionSize, true)
+            .Should().BeTrue();
         var start = DateTime.Now;
         var ts = Timestamp.Now;
         using var mre = new ManualResetEventSlim();
@@ -358,7 +367,8 @@ public class SchedulingTests
         mre.Wait(TimeSpan.FromSeconds(Sustain * 2));
 
         if (!_inSetUp)
-            Assert.True(mre.IsSet, "Event was not set (TimeoutTest)");
+            mre.IsSet
+                .Should().BeTrue();
     }
 
     [Order(7)]
@@ -366,7 +376,8 @@ public class SchedulingTests
     public void IntervalTest([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
-        Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
+        GC.TryStartNoGCRegion(NoGcRegionSize, true)
+            .Should().BeTrue();
         var start = DateTime.Now;
         var ts = Timestamp.Now;
         using var cd = new CountdownEvent(3);
@@ -410,7 +421,8 @@ public class SchedulingTests
             }
 
             if (cd.IsSet) return false;
-            Assert.True(GC.TryStartNoGCRegion(NoGcRegionSize, true));
+            GC.TryStartNoGCRegion(NoGcRegionSize, true)
+                .Should().BeTrue();
             return true;
         });
 
@@ -418,11 +430,12 @@ public class SchedulingTests
 
         if (_inSetUp) return;
 
-        Assert.Multiple(() => {
+        using (new AssertionScope())
+        {
             while (exceptions.TryDequeue(out var ex))
-                throw ex;
-        });
+                ex.Should().BeNull();
+        }
 
-        Assert.AreEqual(0, cd.CurrentCount, $"Signalled {cd.InitialCount - cd.CurrentCount}/{cd.InitialCount} times");
+        cd.CurrentCount.Should().Be(0, $"Signalled {cd.InitialCount - cd.CurrentCount}/{cd.InitialCount} times");
     }
 }
