@@ -11,16 +11,16 @@ namespace StirlingLabs.Utilities;
 // ReSharper disable UseNameofExpression, NotResolvedInText
 [DebuggerDisplay("Pointer = {Pointer,X}, Length = {Length}", Type = "{Type}")]
 // ReSharper restore UseNameofExpression, NotResolvedInText
-internal readonly unsafe struct UnsafeMemoryView<T> : IEnumerable<UnsafePtr<T>>
+public readonly unsafe struct UnsafeMemoryView<T> : IEnumerable<UnsafePtr<T>>
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
     public Type Type => typeof(T);
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    internal readonly void* Pointer;
+    public readonly void* Pointer;
 
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-    internal readonly nuint Length;
+    public readonly nuint Length;
 
     public UnsafeMemoryView(void* pointer, nuint length)
     {
@@ -37,5 +37,6 @@ internal readonly unsafe struct UnsafeMemoryView<T> : IEnumerable<UnsafePtr<T>>
     IEnumerator IEnumerable.GetEnumerator()
         => GetEnumerator();
 
-    private UnsafePtr<T> this[nint index] => new((void*)((nuint)Pointer + (nuint)Unsafe.SizeOf<T>() * (nuint)index));
+    public UnsafePtr<T> this[nint index]
+        => new((void*)((nuint)Pointer + (nuint)Unsafe.SizeOf<T>() * (nuint)index));
 }
