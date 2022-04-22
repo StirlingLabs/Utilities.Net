@@ -1,23 +1,23 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 04/22/2022 - 13:34:10 |
+| Generated on: | 04/22/2022 - 14:30:28 |
 | Parser: | CoberturaParser |
 | Assemblies: | 3 |
 | Classes: | 33 |
 | Files: | 40 |
-| Covered lines: | 432 |
-| Uncovered lines: | 937 |
+| Covered lines: | 439 |
+| Uncovered lines: | 930 |
 | Coverable lines: | 1369 |
 | Total lines: | 3617 |
-| Line coverage: | 31.5% (432 of 1369) |
-| Covered branches: | 168 |
+| Line coverage: | 32% (439 of 1369) |
+| Covered branches: | 170 |
 | Total branches: | 652 |
-| Branch coverage: | 25.7% (168 of 652) |
+| Branch coverage: | 26% (170 of 652) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**StirlingLabs.Utilities**|**341**|**777**|**1118**|**3756**|**30.5%**|**129**|**552**|**23.3%**|
+|**StirlingLabs.Utilities**|**348**|**770**|**1118**|**3756**|**31.1%**|**131**|**552**|**23.7%**|
 |StirlingLabs.Native.NativeMemory|16|16|32|139|50%|2|6|33.3%|
 |StirlingLabs.Native.NativeMemory`1|0|11|11|139|0%|0|4|0%|
 |StirlingLabs.Utilities.BinaryPrimitives|15|241|256|1067|5.8%|11|196|5.6%|
@@ -31,7 +31,7 @@
 |StirlingLabs.Utilities.Interval|2|3|5|30|40%|0|0||
 |StirlingLabs.Utilities.MemoryReader`1|0|8|8|23|0%|0|2|0%|
 |StirlingLabs.Utilities.MemoryWriter`1|0|7|7|20|0%|0|2|0%|
-|StirlingLabs.Utilities.ScheduledAction|75|20|95|232|78.9%|23|32|71.8%|
+|StirlingLabs.Utilities.ScheduledAction|82|13|95|232|86.3%|25|32|78.1%|
 |StirlingLabs.Utilities.Security|1|42|43|98|2.3%|0|22|0%|
 |StirlingLabs.Utilities.SizedUtf8String|0|58|58|224|0%|0|28|0%|
 |StirlingLabs.Utilities.ThreadPoolHelpers|20|0|20|89|100%|5|8|62.5%|
