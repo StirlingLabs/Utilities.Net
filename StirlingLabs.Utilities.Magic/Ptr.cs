@@ -8,7 +8,10 @@ using JetBrains.Annotations;
 namespace StirlingLabs.Utilities;
 
 [PublicAPI]
-[SuppressMessage("Usage", "CA2225:Operator overloads have named alternates")]
+// ReSharper disable UseNameofExpression, NotResolvedInText
+[DebuggerDisplay("{DebugString,nq}", Type = "{Type}")]
+// ReSharper restore UseNameofExpression, NotResolvedInText
+[SuppressMessage("Usage", "CA2225", Justification = "Limited use case")]
 public readonly struct Ptr<T>
     : IEquatable<Ptr<T>>,
         IComparable<Ptr<T>>,
