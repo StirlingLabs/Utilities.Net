@@ -147,7 +147,7 @@ public readonly struct Timestamp : IComparable<Timestamp>, IEquatable<Timestamp>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator !=(Timestamp left, Timestamp right)
-        => left._ticks == right._ticks;
+        => left._ticks != right._ticks;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static sbyte One(in bool v)
