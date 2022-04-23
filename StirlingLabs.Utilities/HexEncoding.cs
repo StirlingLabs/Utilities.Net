@@ -9,6 +9,70 @@ namespace StirlingLabs.Utilities;
 [PublicAPI]
 public static class HexEncoding
 {
+    public static Span<byte> ToBytes(ReadOnlySpan<byte> hexString, Span<byte> buffer)
+    {
+        if (hexString.IsEmpty) return buffer;
+
+        if (buffer.Length < hexString.Length / 2)
+            throw new ArgumentOutOfRangeException(nameof(buffer), buffer.Length, "Buffer too small");
+
+        var hexStrEnum = hexString.GetEnumerator();
+        for (var i = 0; i + 1 < hexString.Length; i += 2)
+        {
+            hexStrEnum.MoveNext();
+            var chHi = hexStrEnum.Current;
+            hexStrEnum.MoveNext();
+            var chLo = hexStrEnum.Current;
+            buffer[i / 2] = (byte)(
+                (((chHi & 0xF) << 4) + ((chHi & 0x40) >> 2) * 9)
+                | ((chLo & 0xF) + ((chLo & 0x40) >> 6) * 9)
+            );
+        }
+
+        return buffer;
+    }
+
+    public static byte[] ToBytes(ReadOnlySpan<byte> hexString)
+    {
+        if (hexString.IsEmpty) return Array.Empty<byte>();
+
+        var buf = new byte[hexString.Length / 2];
+        ToBytes(hexString, buf);
+        return buf;
+    }
+    
+    public static Span<byte> ToBytes(ReadOnlySpan<char> hexString, Span<byte> buffer)
+    {
+        if (hexString.IsEmpty) return buffer;
+
+        if (buffer.Length < hexString.Length / 2)
+            throw new ArgumentOutOfRangeException(nameof(buffer), buffer.Length, "Buffer too small");
+
+        var hexStrEnum = hexString.GetEnumerator();
+        for (var i = 0; i + 1 < hexString.Length; i += 2)
+        {
+            hexStrEnum.MoveNext();
+            var chHi = hexStrEnum.Current;
+            hexStrEnum.MoveNext();
+            var chLo = hexStrEnum.Current;
+            buffer[i / 2] = (byte)(
+                (((chHi & 0xF) << 4) + ((chHi & 0x40) >> 2) * 9)
+                | ((chLo & 0xF) + ((chLo & 0x40) >> 6) * 9)
+            );
+        }
+
+        return buffer;
+    }
+
+    public static byte[] ToBytes(ReadOnlySpan<char> hexString)
+    {
+        if (hexString.IsEmpty) return Array.Empty<byte>();
+
+        var buf = new byte[hexString.Length / 2];
+        ToBytes(hexString, buf);
+        return buf;
+    }
+    
     public static Span<byte> ToBytes(string hexString, Span<byte> buffer)
     {
         if (hexString is null) throw new ArgumentNullException(hexString);

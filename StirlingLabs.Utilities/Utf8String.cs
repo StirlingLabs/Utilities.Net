@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using JetBrains.Annotations;
 using NativeMemory = StirlingLabs.Native.NativeMemory;
 #if NET5_0_OR_GREATER
@@ -30,7 +31,7 @@ namespace StirlingLabs.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Utf8String(IntPtr data) : this((sbyte*)data) { }
 
-        private static readonly ConcurrentDictionary<string, Utf8String> InternedStrings = new();
+        private static readonly Dictionary<string, Utf8String> InternedStrings = new();
         private static readonly ConcurrentDictionary<Utf8String, string> InternedUtf8Strings = new();
 
         private const int MinConstPoolAllocSize = 4096;
@@ -109,12 +110,11 @@ namespace StirlingLabs.Utilities
                 return new(start);
             }
 
-            // interned const string
-            if (InternedStrings.TryGetValue(interned, out var u))
-                return u;
-
             lock (ConstPool)
             {
+                if (InternedStrings.TryGetValue(interned, out var u))
+                    return u;
+
                 var utf8Size = (nuint)Encoding.UTF8.GetByteCount(interned);
                 var utf8SizeWithNull = utf8Size + 1;
 
@@ -130,10 +130,7 @@ namespace StirlingLabs.Utilities
                     ConstExtents.AddLast(((IntPtr)alloc, utf8SizeWithNull));
 
                     u = new(alloc);
-                    var success = InternedStrings.TryAdd(interned, u);
-                    Debug.Assert(success);
-                    success = Intern(u, interned);
-                    Debug.Assert(success);
+                    InternFromConstPool(u, interned);
                     return u;
                 }
 
@@ -151,11 +148,9 @@ namespace StirlingLabs.Utilities
                         Encoding.UTF8.GetBytes(pChars, interned.Length, p!, (int)utf8Size);
                     //p![utf8Size] = 0;
                     node.Value = (start + (nint)utf8SizeWithNull, used + utf8SizeWithNull);
+
                     u = new(start);
-                    var success = InternedStrings.TryAdd(interned, u);
-                    Debug.Assert(success);
-                    success = InternedUtf8Strings.TryAdd(u, str);
-                    Debug.Assert(success);
+                    InternFromConstPool(u, interned);
                     return u;
                 }
                 // no buffer available, add a new one
@@ -166,14 +161,28 @@ namespace StirlingLabs.Utilities
                         Encoding.UTF8.GetBytes(pChars, interned.Length, p, (int)utf8Size);
                     //p![utf8Size] = 0;
                     ConstPool.AddFirst(((IntPtr)start, utf8SizeWithNull));
+
                     u = new(start);
-                    var success = InternedStrings.TryAdd(interned, u);
-                    Debug.Assert(success);
-                    success = InternedUtf8Strings.TryAdd(u, str);
-                    Debug.Assert(success);
+                    InternFromConstPool(u, interned);
                     return u;
                 }
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool InternFromConstPool(Utf8String u, string interned)
+        {
+            Debug.Assert(Monitor.IsEntered(ConstPool));
+#if NETSTANDARD2_0 || !DEBUG
+            InternedStrings.Add(interned, u);
+            var success = Intern(u, interned);
+#else
+            var success = InternedStrings.TryAdd(interned, u);
+            Debug.Assert(success);
+            success = Intern(u, interned);
+            Debug.Assert(success);
+#endif
+            return success;
         }
 
         private static bool Intern(Utf8String u, string interned)
@@ -253,7 +262,7 @@ namespace StirlingLabs.Utilities
                     return result; // difference in rune values
             }
 #else
-      return string.Compare(ToString(), other.ToString(), StringComparison.Ordinal);
+            return string.Compare(ToString(), other.ToString(), StringComparison.Ordinal);
 #endif
         }
 
