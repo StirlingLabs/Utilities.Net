@@ -52,15 +52,37 @@ public static class HexEncoding
             var strLen = data.Length * 2;
             var s = new string('\0', strLen);
             fixed (char* pStr = s)
-                CreateString(new(pStr, strLen), args);
+                CreateUpperCaseString(new(pStr, strLen), args);
             return s;
 #else
-        return string.Create(data.Length * 2, args, CreateString);
+        return string.Create(data.Length * 2, args, CreateUpperCaseString);
+#endif
+    }
+
+
+    public static unsafe string ToHexString(this ReadOnlySpan<byte> data, bool lowerCase)
+    {
+
+        var args = (
+            p: (IntPtr)Unsafe.AsPointer(ref Unsafe.AsRef(data.GetPinnableReference())),
+            l: data.Length
+        );
+#if NETSTANDARD2_0
+            var strLen = data.Length * 2;
+            var s = new string('\0', strLen);
+            fixed (char* pStr = s)
+                if (lowerCase)
+                    CreateLowerCaseString(new(pStr, strLen), args);
+                else
+                    CreateUpperCaseString(new(pStr, strLen), args);
+            return s;
+#else
+        return string.Create(data.Length * 2, args, lowerCase ? CreateLowerCaseString : CreateUpperCaseString);
 #endif
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static unsafe void CreateString(Span<char> c, (IntPtr p, int l) args)
+    private static unsafe void CreateUpperCaseString(Span<char> c, (IntPtr p, int l) args)
     {
         var (p, l) = args;
         var s = new ReadOnlySpan<byte>((void*)p, l);
@@ -70,15 +92,33 @@ public static class HexEncoding
             var b = s[i];
             var nibLo = b >> 4;
             var isDigLo = (nibLo - 10) >> 31;
-            var chLo = 55 + nibLo + (isDigLo & -7);
+            var chLo = 0x37 + nibLo + (isDigLo & -0x7);
             var nibHi = b & 0xF;
             var isDigHi = (nibHi - 10) >> 31;
-            var chHi = 55 + nibHi + (isDigHi & -7);
+            var chHi = 0x37 + nibHi + (isDigHi & -0x7);
             u[i] = (chHi << 16) | chLo;
         }
     }
-
-
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static unsafe void CreateLowerCaseString(Span<char> c, (IntPtr p, int l) args)
+    {
+        var (p, l) = args;
+        var s = new ReadOnlySpan<byte>((void*)p, l);
+        var u = MemoryMarshal.Cast<char, int>(c);
+        for (var i = 0; i < l; ++i)
+        {
+            var b = s[i];
+            var nibLo = b >> 4;
+            var isDigLo = (nibLo - 10) >> 31;
+            var chLo = 0x57 + nibLo + (isDigLo & -0x27);
+            var nibHi = b & 0xF;
+            var isDigHi = (nibHi - 10) >> 31;
+            var chHi = 0x57 + nibHi + (isDigHi & -0x27);
+            u[i] = (chHi << 16) | chLo;
+        }
+    }
+    
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string ToHexString(this Span<byte> bytes) => ToHexString((ReadOnlySpan<byte>)bytes);
@@ -90,4 +130,16 @@ public static class HexEncoding
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string ToHexString(this Memory<byte> bytes) => ToHexString(bytes.Span);
+
+    [DebuggerStepThrough]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static string ToHexString(this Span<byte> bytes, bool lowerCase) => ToHexString((ReadOnlySpan<byte>)bytes, lowerCase);
+
+    [DebuggerStepThrough]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static string ToHexString(this byte[] bytes, bool lowerCase) => ToHexString((ReadOnlySpan<byte>)bytes, lowerCase);
+
+    [DebuggerStepThrough]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static string ToHexString(this Memory<byte> bytes, bool lowerCase) => ToHexString(bytes.Span, lowerCase);
 }
