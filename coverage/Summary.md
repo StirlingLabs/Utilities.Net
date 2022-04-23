@@ -1,23 +1,23 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 04/22/2022 - 14:30:28 |
+| Generated on: | 04/23/2022 - 15:06:28 |
 | Parser: | CoberturaParser |
 | Assemblies: | 3 |
 | Classes: | 33 |
 | Files: | 40 |
-| Covered lines: | 439 |
-| Uncovered lines: | 930 |
-| Coverable lines: | 1369 |
-| Total lines: | 3617 |
-| Line coverage: | 32% (439 of 1369) |
-| Covered branches: | 170 |
-| Total branches: | 652 |
-| Branch coverage: | 26% (170 of 652) |
+| Covered lines: | 454 |
+| Uncovered lines: | 936 |
+| Coverable lines: | 1390 |
+| Total lines: | 3669 |
+| Line coverage: | 32.6% (454 of 1390) |
+| Covered branches: | 172 |
+| Total branches: | 656 |
+| Branch coverage: | 26.2% (172 of 656) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|
-|**StirlingLabs.Utilities**|**348**|**770**|**1118**|**3756**|**31.1%**|**131**|**552**|**23.7%**|
+|**StirlingLabs.Utilities**|**363**|**776**|**1139**|**3808**|**31.8%**|**133**|**556**|**23.9%**|
 |StirlingLabs.Native.NativeMemory|16|16|32|139|50%|2|6|33.3%|
 |StirlingLabs.Native.NativeMemory`1|0|11|11|139|0%|0|4|0%|
 |StirlingLabs.Utilities.BinaryPrimitives|15|241|256|1067|5.8%|11|196|5.6%|
@@ -26,12 +26,12 @@
 |StirlingLabs.Utilities.DelegatingEqualityComparer`1|6|8|14|34|42.8%|1|8|12.5%|
 |StirlingLabs.Utilities.GarbageCollectedNotifier|0|8|8|29|0%|0|6|0%|
 |StirlingLabs.Utilities.GcHandle`1|0|17|17|72|0%|0|4|0%|
-|StirlingLabs.Utilities.HexEncoding|20|20|40|93|50%|2|10|20%|
+|StirlingLabs.Utilities.HexEncoding|39|22|61|145|63.9%|6|14|42.8%|
 |StirlingLabs.Utilities.InsecureRandomNumberGenerator|0|11|11|38|0%|0|4|0%|
 |StirlingLabs.Utilities.Interval|2|3|5|30|40%|0|0||
 |StirlingLabs.Utilities.MemoryReader`1|0|8|8|23|0%|0|2|0%|
 |StirlingLabs.Utilities.MemoryWriter`1|0|7|7|20|0%|0|2|0%|
-|StirlingLabs.Utilities.ScheduledAction|82|13|95|232|86.3%|25|32|78.1%|
+|StirlingLabs.Utilities.ScheduledAction|78|17|95|232|82.1%|23|32|71.8%|
 |StirlingLabs.Utilities.Security|1|42|43|98|2.3%|0|22|0%|
 |StirlingLabs.Utilities.SizedUtf8String|0|58|58|224|0%|0|28|0%|
 |StirlingLabs.Utilities.ThreadPoolHelpers|20|0|20|89|100%|5|8|62.5%|
