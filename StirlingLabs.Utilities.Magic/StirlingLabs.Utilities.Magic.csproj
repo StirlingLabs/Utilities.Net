@@ -16,7 +16,7 @@
     </ImportGroup>
 
     <ItemGroup>
-        <PackageReference Include="Fody" Version="6.6.0">
+        <PackageReference Include="Fody" Version="6.6.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -25,12 +25,12 @@
     </ItemGroup>
     
     <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
         <PackageReference Include="System.Memory" Version="4.5.4" />
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.1'">
-        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="5.0.0" />
+        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
     </ItemGroup>
 
 </Project>

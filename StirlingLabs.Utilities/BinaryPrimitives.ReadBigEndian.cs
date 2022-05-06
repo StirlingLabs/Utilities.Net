@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.CompilerServices;
-using StirlingLabs.Utilities.Magic;
 using static System.BitConverter;
 using static System.Runtime.CompilerServices.Unsafe;
 
