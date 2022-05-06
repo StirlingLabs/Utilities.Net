@@ -1,27 +1,28 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 05/06/2022 - 17:15:20 |
-| Coverage date: | 05/06/2022 - 17:15:19 |
+| Generated on: | 05/06/2022 - 18:36:03 |
+| Coverage date: | 05/06/2022 - 18:36:03 |
 | Parser: | Cobertura |
 | Assemblies: | 3 |
-| Classes: | 33 |
-| Files: | 40 |
-| Covered lines: | 522 |
-| Uncovered lines: | 904 |
-| Coverable lines: | 1426 |
-| Total lines: | 3740 |
-| Line coverage: | 36.6% (522 of 1426) |
-| Covered branches: | 190 |
-| Total branches: | 672 |
-| Branch coverage: | 28.2% (190 of 672) |
-| Covered methods: | 122 |
-| Total methods: | 491 |
-| Method coverage: | 24.8% (122 of 491) |
+| Classes: | 34 |
+| Files: | 41 |
+| Covered lines: | 569 |
+| Uncovered lines: | 1021 |
+| Coverable lines: | 1590 |
+| Total lines: | 4264 |
+| Line coverage: | 35.7% (569 of 1590) |
+| Covered branches: | 205 |
+| Total branches: | 764 |
+| Branch coverage: | 26.8% (205 of 764) |
+| Covered methods: | 132 |
+| Total methods: | 518 |
+| Method coverage: | 25.4% (132 of 518) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**StirlingLabs.Utilities**|**429**|**746**|**1175**|**3879**|**36.5%**|**151**|**572**|**26.3%**|**91**|**342**|**26.6%**|
+|**StirlingLabs.Utilities**|**476**|**863**|**1339**|**4403**|**35.5%**|**166**|**664**|**25%**|**101**|**369**|**27.3%**|
+|Medallion.Collections.PriorityQueue`1|44|120|164|524|26.8%|15|92|16.3%|10|27|37%|
 |StirlingLabs.Native.NativeMemory|17|15|32|139|53.1%|2|6|33.3%|8|15|53.3%|
 |StirlingLabs.Native.NativeMemory`1|0|11|11|139|0%|0|4|0%|0|9|0%|
 |StirlingLabs.Utilities.BinaryPrimitives|15|241|256|1065|5.8%|11|196|5.6%|9|103|8.7%|
@@ -35,7 +36,7 @@
 |StirlingLabs.Utilities.Interval|2|3|5|30|40%|0|0||2|5|40%|
 |StirlingLabs.Utilities.MemoryReader`1|0|8|8|23|0%|0|2|0%|0|2|0%|
 |StirlingLabs.Utilities.MemoryWriter`1|0|7|7|20|0%|0|2|0%|0|2|0%|
-|StirlingLabs.Utilities.ScheduledAction|75|20|95|232|78.9%|23|32|71.8%|8|10|80%|
+|StirlingLabs.Utilities.ScheduledAction|78|17|95|232|82.1%|23|32|71.8%|8|10|80%|
 |StirlingLabs.Utilities.Security|1|42|43|98|2.3%|0|22|0%|1|7|14.2%|
 |StirlingLabs.Utilities.SizedUtf8String|7|51|58|224|12%|0|28|0%|5|27|18.5%|
 |StirlingLabs.Utilities.ThreadPoolHelpers|20|0|20|89|100%|5|8|62.5%|8|8|100%|
