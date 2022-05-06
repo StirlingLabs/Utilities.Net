@@ -8,6 +8,7 @@
         <Nullable>enable</Nullable>
         <TargetFrameworks>net5.0;net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
         <LangVersion>10</LangVersion>
+        <DefineConstants>$(DefineConstants);MedallionPriorityQueue_PUBLIC</DefineConstants>
     </PropertyGroup>
 
     <ImportGroup>
@@ -21,7 +22,7 @@
         </PackageReference>
         <PackageReference Include="InlineIL.Fody" Version="1.7.1" PrivateAssets="all" />
         <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" PrivateAssets="all" />
-        <PackageReference Include="MedallionPriorityQueue" Version="1.1.0" />
+        <PackageReference Include="MedallionPriorityQueue.Inline" Version="1.1.0" PrivateAssets="all" />
         <PackageReference Include="StirlingLabs.BigSpans" Version="22.4.1" />
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
