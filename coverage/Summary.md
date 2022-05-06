@@ -1,17 +1,17 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 05/06/2022 - 18:36:03 |
-| Coverage date: | 05/06/2022 - 18:36:03 |
+| Generated on: | 05/06/2022 - 19:25:01 |
+| Coverage date: | 05/06/2022 - 19:25:01 |
 | Parser: | Cobertura |
 | Assemblies: | 3 |
 | Classes: | 34 |
 | Files: | 41 |
-| Covered lines: | 569 |
-| Uncovered lines: | 1021 |
+| Covered lines: | 566 |
+| Uncovered lines: | 1024 |
 | Coverable lines: | 1590 |
 | Total lines: | 4264 |
-| Line coverage: | 35.7% (569 of 1590) |
+| Line coverage: | 35.5% (566 of 1590) |
 | Covered branches: | 205 |
 | Total branches: | 764 |
 | Branch coverage: | 26.8% (205 of 764) |
@@ -21,7 +21,7 @@
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**StirlingLabs.Utilities**|**476**|**863**|**1339**|**4403**|**35.5%**|**166**|**664**|**25%**|**101**|**369**|**27.3%**|
+|**StirlingLabs.Utilities**|**473**|**866**|**1339**|**4403**|**35.3%**|**166**|**664**|**25%**|**101**|**369**|**27.3%**|
 |Medallion.Collections.PriorityQueue`1|44|120|164|524|26.8%|15|92|16.3%|10|27|37%|
 |StirlingLabs.Native.NativeMemory|17|15|32|139|53.1%|2|6|33.3%|8|15|53.3%|
 |StirlingLabs.Native.NativeMemory`1|0|11|11|139|0%|0|4|0%|0|9|0%|
@@ -36,7 +36,7 @@
 |StirlingLabs.Utilities.Interval|2|3|5|30|40%|0|0||2|5|40%|
 |StirlingLabs.Utilities.MemoryReader`1|0|8|8|23|0%|0|2|0%|0|2|0%|
 |StirlingLabs.Utilities.MemoryWriter`1|0|7|7|20|0%|0|2|0%|0|2|0%|
-|StirlingLabs.Utilities.ScheduledAction|78|17|95|232|82.1%|23|32|71.8%|8|10|80%|
+|StirlingLabs.Utilities.ScheduledAction|75|20|95|232|78.9%|23|32|71.8%|8|10|80%|
 |StirlingLabs.Utilities.Security|1|42|43|98|2.3%|0|22|0%|1|7|14.2%|
 |StirlingLabs.Utilities.SizedUtf8String|7|51|58|224|12%|0|28|0%|5|27|18.5%|
 |StirlingLabs.Utilities.ThreadPoolHelpers|20|0|20|89|100%|5|8|62.5%|8|8|100%|
