@@ -1,32 +1,32 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 05/06/2022 - 19:25:01 |
-| Coverage date: | 05/06/2022 - 19:25:01 |
+| Generated on: | 07/25/2022 - 20:01:08 |
+| Coverage date: | 07/25/2022 - 20:01:07 |
 | Parser: | Cobertura |
 | Assemblies: | 3 |
 | Classes: | 34 |
 | Files: | 41 |
-| Covered lines: | 566 |
-| Uncovered lines: | 1024 |
+| Covered lines: | 587 |
+| Uncovered lines: | 1003 |
 | Coverable lines: | 1590 |
-| Total lines: | 4264 |
-| Line coverage: | 35.5% (566 of 1590) |
-| Covered branches: | 205 |
+| Total lines: | 4274 |
+| Line coverage: | 36.9% (587 of 1590) |
+| Covered branches: | 211 |
 | Total branches: | 764 |
-| Branch coverage: | 26.8% (205 of 764) |
-| Covered methods: | 132 |
+| Branch coverage: | 27.6% (211 of 764) |
+| Covered methods: | 135 |
 | Total methods: | 518 |
-| Method coverage: | 25.4% (132 of 518) |
+| Method coverage: | 26% (135 of 518) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**StirlingLabs.Utilities**|**473**|**866**|**1339**|**4403**|**35.3%**|**166**|**664**|**25%**|**101**|**369**|**27.3%**|
-|Medallion.Collections.PriorityQueue`1|44|120|164|524|26.8%|15|92|16.3%|10|27|37%|
+|**StirlingLabs.Utilities**|**494**|**845**|**1339**|**4413**|**36.8%**|**172**|**664**|**25.9%**|**104**|**369**|**28.1%**|
+|Medallion.Collections.PriorityQueue`1|55|109|164|524|33.5%|19|92|20.6%|12|27|44.4%|
 |StirlingLabs.Native.NativeMemory|17|15|32|139|53.1%|2|6|33.3%|8|15|53.3%|
 |StirlingLabs.Native.NativeMemory`1|0|11|11|139|0%|0|4|0%|0|9|0%|
 |StirlingLabs.Utilities.BinaryPrimitives|15|241|256|1065|5.8%|11|196|5.6%|9|103|8.7%|
-|StirlingLabs.Utilities.Common|15|37|52|234|28.8%|6|16|37.5%|5|17|29.4%|
+|StirlingLabs.Utilities.Common|15|37|52|244|28.8%|6|16|37.5%|5|17|29.4%|
 |StirlingLabs.Utilities.Crc32C|23|70|93|213|24.7%|12|44|27.2%|5|9|55.5%|
 |StirlingLabs.Utilities.DelegatingEqualityComparer`1|6|8|14|34|42.8%|1|8|12.5%|3|5|60%|
 |StirlingLabs.Utilities.GarbageCollectedNotifier|0|8|8|29|0%|0|6|0%|0|3|0%|
@@ -36,7 +36,7 @@
 |StirlingLabs.Utilities.Interval|2|3|5|30|40%|0|0||2|5|40%|
 |StirlingLabs.Utilities.MemoryReader`1|0|8|8|23|0%|0|2|0%|0|2|0%|
 |StirlingLabs.Utilities.MemoryWriter`1|0|7|7|20|0%|0|2|0%|0|2|0%|
-|StirlingLabs.Utilities.ScheduledAction|75|20|95|232|78.9%|23|32|71.8%|8|10|80%|
+|StirlingLabs.Utilities.ScheduledAction|85|10|95|232|89.4%|25|32|78.1%|9|10|90%|
 |StirlingLabs.Utilities.Security|1|42|43|98|2.3%|0|22|0%|1|7|14.2%|
 |StirlingLabs.Utilities.SizedUtf8String|7|51|58|224|12%|0|28|0%|5|27|18.5%|
 |StirlingLabs.Utilities.ThreadPoolHelpers|20|0|20|89|100%|5|8|62.5%|8|8|100%|
