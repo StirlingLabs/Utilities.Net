@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using InlineIL;
 using JetBrains.Annotations;
 
 
@@ -230,5 +231,14 @@ public static class Common
 
         exception = null;
         return true;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("ReSharper", "UnusedParameter.Global")]
+    public static TResult ValueCast<T, TResult>(T value)
+    {
+        IL.Emit.Ldarg_0();
+        IL.Emit.Ret();
+        throw IL.Unreachable();
     }
 }
