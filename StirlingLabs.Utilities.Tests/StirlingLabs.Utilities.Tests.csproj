@@ -7,6 +7,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>10</LangVersion>
         <RuntimeIdentifier>$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
+        <RuntimeIdentifier Condition="'$(RuntimeIdentifier)'==''">$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</RuntimeIdentifier>
         <CollectCoverage>true</CollectCoverage>
         <CoverletOutputFormat>cobertura</CoverletOutputFormat>
         <CoverletOutput>../coverage/</CoverletOutput>
@@ -45,6 +46,11 @@
         <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj" />
         <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj" />
     </ItemGroup>
+
+    <Target Name="RIDCheck" BeforeTargets="Build">
+        <Error Condition="'$(RuntimeIdentifier)'==''" Message="RuntimeIdentifier is not specified!" />
+    </Target>
+    
     <Target Name="GenerateHtmlCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
         <!-- generate markdown coverage report and badges -->
         <ReportGenerator ReportFiles="@(CoverletReport)" ReportTypes="MarkdownSummary;Badges" SourceDirectories="../StirlingLabs.Utilities" TargetDirectory="../coverage/" />
