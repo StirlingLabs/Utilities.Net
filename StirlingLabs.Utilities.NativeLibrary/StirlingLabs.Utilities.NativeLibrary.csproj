@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Stirling Labs</Authors>
+        <PackageOutputPath>../artifacts</PackageOutputPath>
+        <Nullable>enable</Nullable>
+        <TargetFrameworks>net5.0;net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <LangVersion>10</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ImportGroup>
+        <Import Project="../Version.proj" />
+    </ImportGroup>
+</Project>

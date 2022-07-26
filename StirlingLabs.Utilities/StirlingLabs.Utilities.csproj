@@ -16,7 +16,7 @@
     </ImportGroup>
 
     <ItemGroup>
-        <PackageReference Include="Fody" Version="6.6.1" PrivateAssets="all" />
+        <PackageReference Include="Fody" Version="6.6.3" PrivateAssets="all" />
         <PackageReference Include="InlineIL.Fody" Version="1.7.1" PrivateAssets="all" />
         <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" PrivateAssets="all" />
         <PackageReference Include="MedallionPriorityQueue.Inline" Version="1.1.0" PrivateAssets="all" />
