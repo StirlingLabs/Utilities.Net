@@ -1,27 +1,27 @@
 ﻿# Summary
 |||
 |:---|:---|
-| Generated on: | 07/25/2022 - 20:01:08 |
-| Coverage date: | 07/25/2022 - 20:01:07 |
+| Generated on: | 07/27/2022 - 17:58:23 |
+| Coverage date: | 07/27/2022 - 17:58:23 |
 | Parser: | Cobertura |
-| Assemblies: | 3 |
-| Classes: | 34 |
-| Files: | 41 |
-| Covered lines: | 587 |
-| Uncovered lines: | 1003 |
-| Coverable lines: | 1590 |
+| Assemblies: | 4 |
+| Classes: | 35 |
+| Files: | 42 |
+| Covered lines: | 585 |
+| Uncovered lines: | 1010 |
+| Coverable lines: | 1595 |
 | Total lines: | 4274 |
-| Line coverage: | 36.9% (587 of 1590) |
+| Line coverage: | 36.6% (585 of 1595) |
 | Covered branches: | 211 |
 | Total branches: | 764 |
 | Branch coverage: | 27.6% (211 of 764) |
-| Covered methods: | 135 |
-| Total methods: | 518 |
-| Method coverage: | 26% (135 of 518) |
+| Covered methods: | 136 |
+| Total methods: | 522 |
+| Method coverage: | 26% (136 of 522) |
 
 |**Name**|**Covered**|**Uncovered**|**Coverable**|**Total**|**Line coverage**|**Covered**|**Total**|**Branch coverage**|**Covered**|**Total**|**Method coverage**|
 |:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-|**StirlingLabs.Utilities**|**494**|**845**|**1339**|**4413**|**36.8%**|**172**|**664**|**25.9%**|**104**|**369**|**28.1%**|
+|**StirlingLabs.Utilities**|**491**|**848**|**1339**|**4413**|**36.6%**|**172**|**664**|**25.9%**|**104**|**369**|**28.1%**|
 |Medallion.Collections.PriorityQueue`1|55|109|164|524|33.5%|19|92|20.6%|12|27|44.4%|
 |StirlingLabs.Native.NativeMemory|17|15|32|139|53.1%|2|6|33.3%|8|15|53.3%|
 |StirlingLabs.Native.NativeMemory`1|0|11|11|139|0%|0|4|0%|0|9|0%|
@@ -36,7 +36,7 @@
 |StirlingLabs.Utilities.Interval|2|3|5|30|40%|0|0||2|5|40%|
 |StirlingLabs.Utilities.MemoryReader`1|0|8|8|23|0%|0|2|0%|0|2|0%|
 |StirlingLabs.Utilities.MemoryWriter`1|0|7|7|20|0%|0|2|0%|0|2|0%|
-|StirlingLabs.Utilities.ScheduledAction|85|10|95|232|89.4%|25|32|78.1%|9|10|90%|
+|StirlingLabs.Utilities.ScheduledAction|82|13|95|232|86.3%|25|32|78.1%|9|10|90%|
 |StirlingLabs.Utilities.Security|1|42|43|98|2.3%|0|22|0%|1|7|14.2%|
 |StirlingLabs.Utilities.SizedUtf8String|7|51|58|224|12%|0|28|0%|5|27|18.5%|
 |StirlingLabs.Utilities.ThreadPoolHelpers|20|0|20|89|100%|5|8|62.5%|8|8|100%|
@@ -52,6 +52,8 @@
 |StirlingLabs.Utilities.TypeExtensions|6|0|6|0|100%|2|4|50%|3|3|100%|
 |StirlingLabs.Utilities.UnsafeMemoryView`1|0|9|9|0|0%|0|2|0%|0|5|0%|
 |StirlingLabs.Utilities.UnsafePtr`1|0|39|39|0|0%|0|18|0%|0|31|0%|
+|**StirlingLabs.Utilities.NativeLibrary**|**1**|**4**|**5**|**0**|**20%**|**0**|**0**|****|**1**|**4**|**25%**|
+|StirlingLabs.Utilities.NativeLibrary|1|4|5|0|20%|0|0||1|4|25%|
 |**StirlingLabs.Utilities.Yaml**|**83**|**48**|**131**|**0**|**63.3%**|**37**|**58**|**63.7%**|**24**|**52**|**46.1%**|
 |StirlingLabs.Utilities.Yaml.Events.Extensions|34|1|35|0|97.1%|21|22|95.4%|6|6|100%|
 |StirlingLabs.Utilities.Yaml.Events.YamlEventsAdapter|4|9|13|0|30.7%|0|0||3|9|33.3%|
