@@ -11,7 +11,6 @@ namespace StirlingLabs.Utilities;
 #if !NETSTANDARD
 using SysNativeLibrary = System.Runtime.InteropServices.NativeLibrary;
 using DllImportResolver = System.Runtime.InteropServices.DllImportResolver;
-
 #else
 public delegate IntPtr DllImportResolver(
     string libraryName,
@@ -386,7 +385,7 @@ public abstract partial class NativeLibrary
         string? INativeLibraryLoader.GetLastError()
         {
             var err = Marshal.GetLastWin32Error();
-            return err == default ? null : new Win32Exception(Marshal.GetLastWin32Error()).Message;
+            return err == default ? null : new Win32Exception(err).Message;
         }
 
         IntPtr INativeLibraryLoader.Load(string libraryPath)
@@ -399,6 +398,8 @@ public abstract partial class NativeLibrary
             if (err == default)
                 return default;
 
+            if (err == 126)
+                throw new DllNotFoundException(new Win32Exception(err).Message);
             throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
         }
 

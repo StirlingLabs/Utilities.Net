@@ -41,8 +41,10 @@ public class SchedulingTests
 
         tw.WriteLine($"Stopwatch.Frequency={Stopwatch.Frequency}");
 
+#if NET6_0_OR_GREATER
         if (IsContinuousIntegration)
             Trace.Listeners.Add(new ConsoleTraceListener());
+#endif
 
         // spin-up
         for (var i = 0; i < 10; ++i)

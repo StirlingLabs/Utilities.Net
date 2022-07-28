@@ -89,7 +89,11 @@ public class HexEncodingTests
     {
         Span<byte> bytes = stackalloc byte[256];
 
+#if NETSTANDARD
+        HexEncoding.ToBytes((ReadOnlySpan<char>)str.ToCharArray(), bytes);
+#else
         HexEncoding.ToBytes((ReadOnlySpan<char>)str, bytes);
+#endif
 
         for (var i = 0; i <= 255; ++i)
             bytes[i].Should().Be((byte)i);
@@ -119,7 +123,11 @@ public class HexEncodingTests
     [Theory]
     public void HexCharSpanToBytesArray([Values(FullFieldUpper, FullFieldLower)] string str)
     {
+#if NETSTANDARD
+        var bytes = HexEncoding.ToBytes((ReadOnlySpan<char>)str.ToCharArray());
+#else
         var bytes = HexEncoding.ToBytes((ReadOnlySpan<char>)str);
+#endif
 
         for (var i = 0; i <= 255; ++i)
             bytes[i].Should().Be((byte)i);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using FluentAssertions;
 using NUnit.Framework;
@@ -21,9 +22,9 @@ public class NativeLibraryTests
     public void LoadSuccessTest()
     {
         var loaded = NativeLibrary.Load(
-            OperatingSystem.IsWindows()
+            RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
                 ? "msvcp60.dll"
-                : OperatingSystem.IsLinux()
+                : RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
                     ? "libstdc++.so.6"
                     : "libstdc++.6.dylib"
         );

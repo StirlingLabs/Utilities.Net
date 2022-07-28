@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Yaml", "StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj", "{91F3D8B4-D7E6-442C-8A0C-7540061BC6CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Tests", "StirlingLabs.Utilities.Tests\StirlingLabs.Utilities.Tests.csproj", "{9203218D-533B-4F43-A3AB-4FD7BB45BB70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Tests.Net60", "StirlingLabs.Utilities.Tests\StirlingLabs.Utilities.Tests.Net60.csproj", "{9203218D-533B-4F43-A3AB-4FD7BB45BB70}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{094082CC-AB00-403F-B9FA-6B1DFFE49A58}"
 ProjectSection(SolutionItems) = preProject
@@ -22,6 +22,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Magic", "StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.csproj", "{7448BCF7-BC48-404E-85CF-C229ED096F50}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.NativeLibrary", "StirlingLabs.Utilities.NativeLibrary\StirlingLabs.Utilities.NativeLibrary.csproj", "{E7E1CD82-F290-4A74-86FB-BDC1E09D3C33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Tests.Netstandard20", "StirlingLabs.Utilities.Tests\StirlingLabs.Utilities.Tests.Netstandard20.csproj", "{25D5C0C6-882D-4B67-9C3A-09E33C58C0FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Tests.Netstandard21", "StirlingLabs.Utilities.Tests\StirlingLabs.Utilities.Tests.Netstandard21.csproj", "{5F4680DB-1567-4E43-8D48-C1B8B4CF0DD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,5 +53,13 @@ Global
 		{E7E1CD82-F290-4A74-86FB-BDC1E09D3C33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7E1CD82-F290-4A74-86FB-BDC1E09D3C33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7E1CD82-F290-4A74-86FB-BDC1E09D3C33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25D5C0C6-882D-4B67-9C3A-09E33C58C0FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25D5C0C6-882D-4B67-9C3A-09E33C58C0FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25D5C0C6-882D-4B67-9C3A-09E33C58C0FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25D5C0C6-882D-4B67-9C3A-09E33C58C0FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F4680DB-1567-4E43-8D48-C1B8B4CF0DD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F4680DB-1567-4E43-8D48-C1B8B4CF0DD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F4680DB-1567-4E43-8D48-C1B8B4CF0DD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F4680DB-1567-4E43-8D48-C1B8B4CF0DD1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

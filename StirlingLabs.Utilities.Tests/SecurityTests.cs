@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
+using FluentAssertions;
 using NUnit.Framework;
 using StirlingLabs.Utilities.Assertions;
 
@@ -100,7 +101,6 @@ public static class SecurityTests
     }
 
 #if !NETSTANDARD
-
     [TestCaseSource(nameof(GetHashSource))]
     public static void GetHash(byte[] message, byte[] digest)
     {
@@ -114,4 +114,34 @@ public static class SecurityTests
         );
     }
 #endif
+
+    [Test]
+    public static void RngDataTest1()
+    {
+        Span<byte> span = stackalloc byte[32];
+
+        Security.FillWithNonZeroRandomData(span);
+
+        span.AsPinnedEnumerable(bytes => {
+            var index = 0;
+            foreach (var @byte in bytes)
+                @byte.Should().NotBe(0, $"span should contain no zeroes. (Offset {index++})");
+        });
+    }
+
+    [Test]
+    public static void RngDataTest2()
+    {
+        Span<byte> span1 = stackalloc byte[10240];
+        Span<byte> span2 = stackalloc byte[10240];
+        Span<byte> span3 = stackalloc byte[10240];
+
+        Security.FillWithRandomData(span1);
+        Security.FillWithRandomData(span2);
+        Security.FillWithRandomData(span3);
+
+        span1.SequenceEqual(span2).Should().BeFalse();
+        span1.SequenceEqual(span3).Should().BeFalse();
+        span2.SequenceEqual(span3).Should().BeFalse();
+    }
 }

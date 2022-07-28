@@ -44,7 +44,7 @@ public class YamlTests
         {
             Rng.GetBytes(buf);
             buf.CopyTo(bytesSpan);
-        } while ((longSpan[0] & 0x7FFFFFFFFFFFFFFF) < 0x7FF0000000000000);
+        } while ((longSpan[0] & 0x7FF0000000000000) == 0x7FF0000000000000);
 #endif
         return number;
     }
@@ -72,9 +72,9 @@ public class YamlTests
 
         Assert.IsNotNull(actualJson);
 
-        dynamic expected = JsonNetSerializer.Deserialize(new StringReader(expectedJson), k.GetType());
+        dynamic expected = JsonNetSerializer.Deserialize(new StringReader(expectedJson!), k.GetType());
 
-        dynamic actual = JsonNetSerializer.Deserialize(new StringReader(actualJson), k.GetType());
+        dynamic actual = JsonNetSerializer.Deserialize(new StringReader(actualJson!), k.GetType());
 
         Assert.AreEqual((IList<JsonMe>)expected.a, (IList<JsonMe>)actual.a);
 

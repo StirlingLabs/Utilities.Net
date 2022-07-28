@@ -15,7 +15,30 @@
         <DeterministicSourcePaths>true</DeterministicSourcePaths>
         <OutputType>Library</OutputType>
         <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>StirlingLabs.Utilities.Tests</RootNamespace>
+        <AssemblyName>StirlingLabs.Utilities.Tests</AssemblyName>
+        <DefineConstants>$(DefineConstants);NETSTANDARD;NETSTANDARD2_0;NETSTANDARD2_0_OR_GREATER</DefineConstants>
     </PropertyGroup>
+
+    <ItemGroup>
+        <CompileToRemove Include="obj/**/*" Exclude="$(BaseIntermediateOutputPath)/**/*" />
+        <Compile Remove="@(CompileToRemove)" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.csproj">
+            <SetTargetFramework>TargetFramework=netstandard2.0</SetTargetFramework>
+        </ProjectReference>
+        <ProjectReference Include="..\StirlingLabs.Utilities.NativeLibrary\StirlingLabs.Utilities.NativeLibrary.csproj">
+            <SetTargetFramework>TargetFramework=netstandard2.0</SetTargetFramework>
+        </ProjectReference>
+        <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj">
+            <SetTargetFramework>TargetFramework=netstandard2.0</SetTargetFramework>
+        </ProjectReference>
+        <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj">
+            <SetTargetFramework>TargetFramework=netstandard2.0</SetTargetFramework>
+        </ProjectReference>
+    </ItemGroup>
     
     <ItemGroup Condition="'$(CI)'!='' And '$(RID)'==''">
         <PackageReference Include="GitHubActionsTestLogger" Version="2.0.1" PrivateAssets="All" />
@@ -33,18 +56,8 @@
         <PackageReference Include="coverlet.collector" Version="3.1.2" PrivateAssets="all" />
         <PackageReference Include="coverlet.msbuild" Version="3.1.2" PrivateAssets="all" />
         <PackageReference Include="ReportGenerator" Version="5.1.9" PrivateAssets="all" />
-    </ItemGroup>
-
-    <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard'))">
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.csproj" />
-        <ProjectReference Include="..\StirlingLabs.Utilities.NativeLibrary\StirlingLabs.Utilities.NativeLibrary.csproj" />
-        <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj" />
-        <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj" />
     </ItemGroup>
 
     <Target Name="RIDCheck" BeforeTargets="Build">
