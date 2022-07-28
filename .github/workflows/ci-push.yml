@@ -27,7 +27,11 @@ jobs:
       - name: Build
         run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
       - name: Test
-        run: dotnet test StirlingLabs.Utilities.Net.sln --no-build -c Release --logger GitHubActions
+        run: |
+            sudo apt install --no-install-recommends cabextract xfonts-utils
+            wget https://httpredir.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb
+            sudo dpkg -i ttf-mscorefonts-installer_3.8_all.deb
+            dotnet test StirlingLabs.Utilities.Net.sln --no-build -c Release --logger GitHubActions
       - name: Artifacts
         uses: actions/upload-artifact@v2
         with:
