@@ -16,7 +16,7 @@ namespace StirlingLabs.Utilities.Tests;
 [Parallelizable(ParallelScope.None)]
 public class SchedulingTests
 {
-    private const int NoGcRegionSize = 2 * 1024 * 1024;
+    private const int NoGcRegionSize = 4 * 1024 * 1024;
 
     private double Sustain = 1 / 3d;
 
@@ -423,8 +423,12 @@ public class SchedulingTests
             }
 
             if (cd.IsSet) return false;
-            GC.TryStartNoGCRegion(NoGcRegionSize, true)
-                .Should().BeTrue();
+            if (GCSettings.LatencyMode != GCLatencyMode.NoGCRegion)
+            {
+                GC.Collect(2, GCCollectionMode.Forced, true, true);
+                GC.TryStartNoGCRegion(NoGcRegionSize, true)
+                    .Should().BeTrue();
+            }
             return true;
         });
 
