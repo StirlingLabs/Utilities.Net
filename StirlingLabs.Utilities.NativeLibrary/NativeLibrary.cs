@@ -81,7 +81,7 @@ public abstract partial class NativeLibrary
 
             var loaded = Load(libraryName);
             if (loaded == default)
-                throw new InvalidProgramException(libraryName);
+                throw new DllNotFoundException(libraryName);
 
             return loaded;
         }
@@ -101,7 +101,7 @@ public abstract partial class NativeLibrary
 
         var loaded = Loader.Load(libraryPath);
         if (loaded == default)
-            throw new InvalidProgramException(libraryPath);
+            throw new DllNotFoundException(libraryPath);
 
         return loaded;
 #else
