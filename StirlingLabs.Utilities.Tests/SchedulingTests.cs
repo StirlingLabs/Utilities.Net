@@ -16,7 +16,7 @@ namespace StirlingLabs.Utilities.Tests;
 [Parallelizable(ParallelScope.None)]
 public class SchedulingTests
 {
-    private const int NoGcRegionSize = 4 * 1024 * 1024;
+    private const int NoGcRegionSize = 16 * 1024 * 1024;
 
     private double Sustain = 1 / 3d;
 
@@ -99,7 +99,8 @@ public class SchedulingTests
 
         try
         {
-            GC.EndNoGCRegion();
+            if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+                GC.EndNoGCRegion();
         }
         catch
         {
@@ -124,7 +125,8 @@ public class SchedulingTests
             ++count;
         var elapsed = Timestamp.Now - ts;
         var fin = DateTime.Now;
-        GC.EndNoGCRegion();
+        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+            GC.EndNoGCRegion();
         var estDiff = fin - start;
         var estOff = estDiff.TotalSeconds - Sustain;
         var diff = elapsed - Sustain;
@@ -164,7 +166,8 @@ public class SchedulingTests
         Timestamp.Wait(Sustain);
         var elapsed = Timestamp.Now - ts;
         var fin = DateTime.Now;
-        GC.EndNoGCRegion();
+        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+            GC.EndNoGCRegion();
         var estDiff = fin - start;
         var estOff = estDiff.TotalSeconds - Sustain;
         var diff = elapsed - Sustain;
@@ -209,7 +212,8 @@ public class SchedulingTests
             .Should().Throw<OperationCanceledException>();
         var elapsed = Timestamp.Now - ts;
         var fin = DateTime.Now;
-        GC.EndNoGCRegion();
+        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+            GC.EndNoGCRegion();
         var estDiff = fin - start;
         var estOff = estDiff.TotalSeconds - halfSustain;
         var diff = elapsed - halfSustain;
@@ -256,7 +260,8 @@ public class SchedulingTests
             .Should().Throw<OperationCanceledException>();
         var elapsed = Timestamp.Now - ts;
         var fin = DateTime.Now;
-        GC.EndNoGCRegion();
+        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+            GC.EndNoGCRegion();
         var estDiff = fin - start;
         var estOff = estDiff.TotalSeconds - halfSustain;
         var diff = elapsed - halfSustain;
@@ -300,7 +305,8 @@ public class SchedulingTests
         Timestamp.Wait(Sustain, cts.Token);
         var elapsed = Timestamp.Now - ts;
         var fin = DateTime.Now;
-        GC.EndNoGCRegion();
+        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+            GC.EndNoGCRegion();
         var estDiff = fin - start;
         var estOff = estDiff.TotalSeconds - Sustain;
         var diff = elapsed - Sustain;
@@ -341,7 +347,8 @@ public class SchedulingTests
             var elapsed = Timestamp.Now - ts;
             var fin = DateTime.Now;
 
-            GC.EndNoGCRegion();
+            if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+                GC.EndNoGCRegion();
 
             var estDiff = fin - start;
             var estOff = estDiff.TotalSeconds - Sustain;
@@ -393,7 +400,8 @@ public class SchedulingTests
             var elapsed = Timestamp.Now - ts;
             var fin = DateTime.Now;
 
-            GC.EndNoGCRegion();
+            if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+                GC.EndNoGCRegion();
 
             var estDiff = fin - start;
             var estOff = estDiff.TotalSeconds - Sustain;
