@@ -447,7 +447,7 @@ public class SchedulingTests
         using (new AssertionScope())
         {
             while (exceptions.TryDequeue(out var ex))
-                ex.Should().BeNull();
+                ex.Should().BeOfType<InconclusiveException>();
         }
 
         cd.CurrentCount.Should().Be(0, $"Signalled {cd.InitialCount - cd.CurrentCount}/{cd.InitialCount} times");
