@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\StirlingLabs.Utilities.Extensions\StirlingLabs.Utilities.Extensions.csproj" />
         <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.csproj">
             <SetTargetFramework>TargetFramework=netstandard2.0</SetTargetFramework>
         </ProjectReference>
