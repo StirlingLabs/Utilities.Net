@@ -99,10 +99,6 @@ internal static class LlvmMcJitContext
         };
     }
 
-    [DllImport("libLLVM", CallingConvention = CallingConvention.Cdecl, EntryPoint = "LLVMPassManagerBuilderSetOptLevel", ExactSpelling = true)]
-    public static extern unsafe void PassManagerBuilderSetOptLevel(LLVMOpaquePassManagerBuilder* PMB, uint OptLevel);
-
-
     private static unsafe LLVMOpaqueModule* CreateModule(string name, out LLVMOpaqueExecutionEngine* engine, out LLVMOpaquePassManager* mpm,
         out LLVMOpaquePassManager* fpm)
     {
@@ -151,7 +147,7 @@ internal static class LlvmMcJitContext
         LLVM.AddAnalysisPasses(tm, mpm);
         
         var pmb = LLVM.PassManagerBuilderCreate();
-        PassManagerBuilderSetOptLevel(pmb, 3);
+        LLVM.PassManagerBuilderSetOptLevel(pmb, 3);
         LLVM.PassManagerBuilderSetSizeLevel(pmb, 0);
         LLVM.PassManagerBuilderUseInlinerWithThreshold(pmb, 4096);
         LLVM.PassManagerBuilderAddCoroutinePassesToExtensionPoints(pmb);
