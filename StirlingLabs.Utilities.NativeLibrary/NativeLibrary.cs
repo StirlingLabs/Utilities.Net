@@ -231,7 +231,7 @@ public abstract partial class NativeLibrary
                 return default;
 
             var errStr = new string(err);
-            throw new InvalidOperationException(errStr);
+            throw new DllNotFoundException(errStr);
         }
 
         IntPtr INativeLibraryLoader.GetExport(IntPtr handle, string name)
@@ -272,7 +272,7 @@ public abstract partial class NativeLibrary
                 return default;
 
             var errStr = new string(err);
-            throw new InvalidOperationException(errStr);
+            throw new DllNotFoundException(errStr);
         }
 
         IntPtr INativeLibraryLoader.GetExport(IntPtr handle, string name)
@@ -314,7 +314,7 @@ public abstract partial class NativeLibrary
                 return default;
 
             var errStr = new string(err);
-            throw new InvalidOperationException(errStr);
+            throw new DllNotFoundException(errStr);
         }
 
         IntPtr INativeLibraryLoader.GetExport(IntPtr handle, string name)
@@ -356,7 +356,7 @@ public abstract partial class NativeLibrary
                 return default;
 
             var errStr = new string(err);
-            throw new InvalidOperationException(errStr);
+            throw new DllNotFoundException(errStr);
         }
 
         IntPtr INativeLibraryLoader.GetExport(IntPtr handle, string name)
