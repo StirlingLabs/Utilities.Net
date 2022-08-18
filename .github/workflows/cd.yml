@@ -6,6 +6,7 @@ on:
 jobs:
   create_release:
     runs-on: ubuntu-latest
+    if: false
     env:
         DOTNET_NOLOGO: true
         DOTNET_CLI_TELEMETRY_OPTOUT: true

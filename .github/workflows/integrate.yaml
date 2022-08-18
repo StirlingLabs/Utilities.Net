@@ -1,0 +1,149 @@
+name: Integration
+
+on:
+  pull_request:
+    branches: [ '**','!gh-pages' ]
+  push:
+    branches: [ main, master ]
+  workflow_call:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  skip_check:
+    name: Run Check
+    continue-on-error: true
+    runs-on: ubuntu-22.04
+    outputs:
+      should_skip: ${{ steps.collate_checks.outputs.should_skip }}
+      run_integration: true
+      run_release: ${{ !steps.collate_checks.outputs.should_skip }}
+    steps:
+      - name: Check if CI is forced
+        id: force_ci_check
+        if: |
+            github.event_name == 'push' &&
+            contains(github.event.head_commit.message, '[force ci]')
+        run: |
+            echo "::set-output name=should_skip::false"
+      - name: Check if PR is a draft
+        id: pr_draft_check
+        if: |
+          github.event.pull_request &&
+          (steps.force_ci_check.outcome == 'skipped' || steps.force_ci_check.outputs.should_skip != 'false')
+        env:
+            draft: ${{ github.event.pull_request.draft }}
+        run: |
+            echo "::set-output name=should_skip::$draft"
+      - name: Check if this is a Release
+        id: released_check
+        if: |
+            github.event_name == 'push' &&
+            github.ref_type == 'tag' &&
+            startsWith(github.ref_name, 'v')
+        run: |
+            echo "::set-output name=should_skip::false"
+      - name: Check if changes pushed
+        id: push_new_check
+        if: |
+            github.event_name == 'push' &&
+            (steps.force_ci_check.outcome == 'skipped' || steps.force_ci_check.outputs.should_skip != 'false') &&
+            (steps.released_check.outcome == 'skipped' || steps.released_check.outputs.should_skip != 'false')
+        uses: fkirc/skip-duplicate-actions@v4
+        with:
+            skip_after_successful_duplicate: 'true'
+            paths_ignore: '["**/README.md", ".idea/**", ".editorconfig", ".git*", "docs/**", ".github/**", "**/Doxyfile.in"]'
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            concurrent_skipping: never
+      - name: Collate Checks
+        id: collate_checks
+        if: |
+            (steps.pr_draft_check.outcome == 'skipped' || steps.pr_draft_check.outputs.should_skip != 'false') &&
+            (steps.force_ci_check.outcome == 'skipped' || steps.force_ci_check.outputs.should_skip != 'false') &&
+            (steps.released_check.outcome == 'skipped' || steps.released_check.outputs.should_skip != 'false') &&
+            (steps.push_new_check.outcome == 'skipped' || steps.push_new_check.outputs.should_skip == 'true')
+        env:
+            pr_draft_check: ${{ steps.pr_draft_check.outcome }}
+            force_ci_check: ${{ steps.force_ci_check.outcome }}
+            released_check: ${{ steps.released_check.outcome }}
+            push_new_check: ${{ steps.push_new_check.outcome }}
+        run: |
+            echo "Step status was $pr_draft_check : $force_ci_check : $released_check : $push_new_check"
+            if [ "$pr_draft_check" == "skipped" ] && \
+                [ "$force_ci_check" == "skipped" ] && \
+                [ "$released_check" == "skipped" ] && \
+                [ "$push_new_check" == "skipped" ]
+            then
+                echo "All checks skipped, I don't know what to do."
+                exit 1
+            else
+                echo "::set-output name=should_skip::true"
+            fi
+
+  build:
+        name: Build
+        needs: skip_check
+        if: needs.skip_check.outputs.should_skip != 'true'
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [ubuntu-22.04, macos-12, windows-2022]
+            fail-fast: false
+        env:
+            DOTNET_NOLOGO: true
+            DOTNET_CLI_TELEMETRY_OPTOUT: true
+        steps:
+        -   name: Check out code
+            uses: actions/checkout@v3
+            with:
+                submodules: true
+        -   name: NuGet Auth
+            uses: StirlingLabs/GithubNugetAuthAction@main
+            with:
+                token: ${{secrets.DAEMON_NUGET}}
+        -   name: Is .NET 6 Installed?
+            id: dotnet_version
+            run: |
+                six=false
+                which="which"
+                if [[ "${RUNNER_OS}"=="Windows" ]]; then
+                    which="where"
+                fi
+                if [[ $(${which} dotnet) && $(dotnet --list-sdks) == *"6.0."* ]] ; then 
+                    six=true
+                fi
+                echo "::set-output name=six::${six}"
+        -   name: Install .Net 6
+            uses: actions/setup-dotnet@v2
+            if: |
+                failure() || 
+                steps.dotnet_version.outputs.six != 'true'
+            with:
+                dotnet-version: '6.0.x'
+        -   name: Build
+            run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
+        -   name: Install fonts for Coverage
+            if: runner.os == 'Linux'
+            run: |
+                sudo apt install --no-install-recommends cabextract xfonts-utils
+                wget https://httpredir.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb
+                sudo dpkg -i ttf-mscorefonts-installer_3.8_all.deb
+        -   name: Test
+            run: |
+                dotnet test StirlingLabs.Utilities.Net.sln --no-build -c Release --logger GitHubActions
+        -   name: Artifacts
+            uses: actions/upload-artifact@v3
+            with:
+                name: Utilities.Net-${{ runner.os }}
+                path: |
+                    artifacts/*.nupkg
+                    coverage
+                if-no-files-found: error
+        -   name: Report Coverage to PR
+            if: github.event.pull_request
+            uses: StirlingLabs/PROutputAction@v1.0.1
+            with:
+                sources: '.github/coverage/prefix,coverage/,.github/coverage/suffix'
+                token: ${{ github.token }}

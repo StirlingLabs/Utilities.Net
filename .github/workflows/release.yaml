@@ -1,0 +1,73 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v[0-9]+.*'
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: NuGet Auth
+        uses: StirlingLabs/GithubNugetAuthAction@main
+        with:
+            token: ${{secrets.DAEMON_NUGET}}
+      - name: Install all of the .Net SDKs
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: |
+              '3.1.x'
+              '5.0.x'
+              '6.0.x'
+      - name: Build
+        run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
+      - name: Test
+        run: dotnet test StirlingLabs.Utilities.Net.sln --no-build -c Release --logger GitHubActions
+      - name: Create release on GitHub
+        uses: softprops/action-gh-release@v0.1.14
+        with:
+          name: Utilities.Net
+          files: |
+            artifacts/*.nupkg
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Save coverage to storage branch
+        uses: StirlingLabs/BranchStorageAction@v21.07.3
+        with:
+          comment: |
+            Coverage for ${{github.ref}}
+            Action: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}
+            Commit: https://github.com/${{github.repository}}/commit/${{github.sha}}
+          storage-branch: coverage
+          src: coverage
+          dst: coverage
+          prune: true
+      - name: Push NuPkg
+        run: dotnet nuget push artifacts/*.nupkg -k ${{github.token}} -s https://nuget.pkg.github.com/${{github.repository_owner}}/index.json -n 1
+      - name: Set NuPkg Name Glob
+        id: set_nupkg
+        run: |
+          echo "::set-output name=glob::artifacts/*.nupkg"
+      - name: Push to GitHub Package Repo
+        run: |
+            dotnet nuget push "${glob}" --api-key ${key} --source ${pkgRepo} --skip-duplicate
+        env:
+          glob: ${{ steps.set_nupkg.outputs.glob }}
+          pkgRepo: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+          key: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push to NuGet Package Repo
+        if: |
+            !contains(github.ref_name, '-') &&
+            !github.event.release.prerelease &&
+            false
+        run: |
+            dotnet nuget push "${glob}" --api-key ${key} --source ${pkgRepo} --skip-duplicate --no-symbols
+        env:
+          glob: ${{ steps.set_nupkg.outputs.glob }}
+          pkgRepo: https://api.nuget.org/v3/index.json
+          key: ${{ secrets.NUGET_STIRLINGLABS_API_KEY }}
