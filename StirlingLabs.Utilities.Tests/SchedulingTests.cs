@@ -13,7 +13,7 @@ using static FluentAssertions.FluentActions;
 
 namespace StirlingLabs.Utilities.Tests;
 
-[Parallelizable(ParallelScope.None)]
+[NonParallelizable]
 public class SchedulingTests
 {
     private const int NoGcRegionSize = 16 * 1024 * 1024;
@@ -111,6 +111,7 @@ public class SchedulingTests
 
     [Order(1)]
     [Theory]
+    [NonParallelizable]
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void AccurateTime([Values(1, 2, 3)] int _)
     {
@@ -155,6 +156,7 @@ public class SchedulingTests
 
     [Order(2)]
     [Theory]
+    [NonParallelizable]
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void AccurateWait([Values(1, 2, 3)] int _)
     {
@@ -195,6 +197,7 @@ public class SchedulingTests
 
     [Order(3)]
     [Theory]
+    [NonParallelizable]
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void CancellableWait1([Values(1, 2, 3)] int _)
     {
@@ -245,6 +248,7 @@ public class SchedulingTests
 
     [Order(4)]
     [Theory]
+    [NonParallelizable]
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void CancellableWait2([Values(1, 2, 3)] int _)
     {
@@ -293,6 +297,7 @@ public class SchedulingTests
 
     [Order(5)]
     [Theory]
+    [NonParallelizable]
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void AccurateCancellableWait([Values(1, 2, 3)] int _)
     {
@@ -333,6 +338,7 @@ public class SchedulingTests
 
     [Order(6)]
     [Theory]
+    [NonParallelizable]
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void TimeoutTest([Values(1, 2, 3)] int _)
     {
@@ -382,6 +388,7 @@ public class SchedulingTests
 
     [Order(7)]
     [Theory]
+    [NonParallelizable]
     public void IntervalTest([Values(1, 2, 3)] int _)
     {
         GC.Collect(2, GCCollectionMode.Forced, true, true);
