@@ -83,7 +83,7 @@ jobs:
             fi
 
   build:
-        name: Build
+        name: Test
         needs: skip_check
         if: needs.skip_check.outputs.should_skip != 'true'
         runs-on: ${{ matrix.os }}
@@ -124,12 +124,6 @@ jobs:
                 dotnet-version: '6.0.x'
         -   name: Build
             run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
-        -   name: Install fonts for Coverage
-            if: runner.os == 'Linux'
-            run: |
-                sudo apt install --no-install-recommends cabextract xfonts-utils
-                wget https://httpredir.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb
-                sudo dpkg -i ttf-mscorefonts-installer_3.8_all.deb
         -   name: Test
             run: |
                 dotnet test StirlingLabs.Utilities.Net.sln --no-build -c Release --logger GitHubActions
