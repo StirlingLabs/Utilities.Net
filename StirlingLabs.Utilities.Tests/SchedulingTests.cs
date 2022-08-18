@@ -152,6 +152,9 @@ public class SchedulingTests
                 throw;
             }
         }
+
+        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+            GC.EndNoGCRegion();
     }
 
     [Order(2)]
@@ -193,6 +196,9 @@ public class SchedulingTests
                 throw;
             }
         }
+
+        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+            GC.EndNoGCRegion();
     }
 
     [Order(3)]
@@ -244,6 +250,9 @@ public class SchedulingTests
                 throw;
             }
         }
+
+        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+            GC.EndNoGCRegion();
     }
 
     [Order(4)]
@@ -293,6 +302,9 @@ public class SchedulingTests
                 throw;
             }
         }
+
+        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+            GC.EndNoGCRegion();
     }
 
     [Order(5)]
@@ -334,6 +346,9 @@ public class SchedulingTests
                 throw;
             }
         }
+
+        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+            GC.EndNoGCRegion();
     }
 
     [Order(6)]
@@ -384,6 +399,9 @@ public class SchedulingTests
         if (!_inSetUp)
             mre.IsSet
                 .Should().BeTrue();
+
+        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+            GC.EndNoGCRegion();
     }
 
     [Order(7)]
@@ -449,12 +467,18 @@ public class SchedulingTests
 
         cd.Wait(TimeSpan.FromSeconds(Sustain * 4));
 
+        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+            GC.EndNoGCRegion();
+
         if (_inSetUp) return;
 
         using (new AssertionScope())
         {
             while (exceptions.TryDequeue(out var ex))
-                ex.Should().BeOfType<InconclusiveException>();
+            {
+                if (ex is not InconclusiveException)
+                    throw ex;
+            }
         }
 
         cd.CurrentCount.Should().Be(0, $"Signalled {cd.InitialCount - cd.CurrentCount}/{cd.InitialCount} times");
