@@ -103,9 +103,8 @@ internal static class LlvmMcJitContext
         out LLVMOpaquePassManager* fpm)
     {
 
-        LLVMOpaqueModule* module;
-        fixed (byte* utf8Buf = &Encoding.UTF8.GetBytes($"{nameof(StirlingLabs)}_" + name)[0])
-            module = LLVM.ModuleCreateWithName((sbyte*)utf8Buf);
+        var utf8Buf = Utf8String.Create($"{nameof(StirlingLabs)}_" + name);
+        var module = LLVM.ModuleCreateWithName(utf8Buf.Pointer);
 
         var defaultTriple = LLVM.GetDefaultTargetTriple();
         LLVMTarget* target;
@@ -139,13 +138,12 @@ internal static class LlvmMcJitContext
                     new(GetStringFromLlvmUtf8Error(error, true, true)));
         }
 
-
         fpm = LLVM.CreateFunctionPassManagerForModule(module);
         mpm = LLVM.CreatePassManager();
 
         LLVM.AddAnalysisPasses(tm, fpm);
         LLVM.AddAnalysisPasses(tm, mpm);
-        
+
         var pmb = LLVM.PassManagerBuilderCreate();
         LLVM.PassManagerBuilderSetOptLevel(pmb, 3);
         LLVM.PassManagerBuilderSetSizeLevel(pmb, 0);
@@ -270,35 +268,38 @@ internal static class LlvmMcJitContext
 
         Debug.WriteLine($"LlvmMcJitContext.LlvmCreateFnPtr generating {name}");
 
-        fixed (byte* nameUtf8 = &Encoding.UTF8.GetBytes(name)[0])
-        {
-            var fn = LLVM.AddFunction(module, (sbyte*)nameUtf8, funcType);
-            LLVMOpaqueBasicBlock* entry;
-            fixed (byte* utf8Buf = &Encoding.UTF8.GetBytes($"{name}_EntryPoint")[0])
-                entry = LLVM.AppendBasicBlock(fn, (sbyte*)utf8Buf);
+        var utf8Name = Utf8String.Create(name);
 
-            var builder = LLVM.CreateBuilderInContext(context);
-            LLVM.PositionBuilderAtEnd(builder, entry);
-            dlgBuild(builder, funcType, fn);
-            LLVM.DisposeBuilder(builder);
-            LLVM.RunFunctionPassManager(fpm, fn);
-            LLVM.RunPassManager(mpm, module);
+        var fn = LLVM.AddFunction(module, utf8Name.Pointer, funcType);
 
-            //if (LLVM.VerifyFunction(fn, LLVMVerifierFailureAction.LLVMReturnStatusAction) != LlvmSuccess)
-            //  throw new InvalidOperationException("Function failed to pass verifier.");
+        var utf8Buf = Utf8String.Create($"{name}_EntryPoint");
 
-            //VerifyFunction(fn);
+        var entry = LLVM.AppendBasicBlock(fn, utf8Buf.Pointer);
 
-            LLVM.DumpModule(module);
-            VerifyModule(module);
+        var builder = LLVM.CreateBuilderInContext(context);
+        LLVM.PositionBuilderAtEnd(builder, entry);
+        dlgBuild(builder, funcType, fn);
+        LLVM.DisposeBuilder(builder);
+        LLVM.RunFunctionPassManager(fpm, fn);
+        LLVM.RunPassManager(mpm, module);
 
-            var pFn = LLVM.GetPointerToGlobal(engine, fn);
-            //dlg = Marshal.GetDelegateForFunctionPointer<TDelegate>(pFn);
+        //if (LLVM.VerifyFunction(fn, LLVMVerifierFailureAction.LLVMReturnStatusAction) != LlvmSuccess)
+        //  throw new InvalidOperationException("Function failed to pass verifier.");
 
-            //LLVM.FinalizeFunctionPassManager(fpm);
+        //VerifyFunction(fn);
 
-            return pFn;
-        }
+        LLVM.DumpModule(module);
+        VerifyModule(module);
+
+        var pFn = LLVM.GetPointerToGlobal(engine, fn);
+        //dlg = Marshal.GetDelegateForFunctionPointer<TDelegate>(pFn);
+
+        //LLVM.FinalizeFunctionPassManager(fpm);
+
+        if (pFn is null)
+            throw new MissingMethodException("Could not get function pointer from LLVM engine.");
+
+        return pFn;
     }
 
     private static readonly unsafe LlvmDiagnosticHandlerDelegate LlvmDiagnosticHandlerDelegatePersistRef = LlvmDiagnosticHandler;

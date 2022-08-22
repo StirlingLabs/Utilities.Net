@@ -383,9 +383,6 @@ public class AtomicExtensionTests
 
         var expected = actual & 0x5555555555555555;
 
-        var p = (nint)LlvmAtomicOps<ulong>.StoreAnd;
-        var s = $"0x{p:X8}";
-        Console.WriteLine(s);
         actual.AtomicAnd(0x5555555555555555);
 
         actual.Should().Be(expected);
@@ -402,10 +399,6 @@ public class AtomicExtensionTests
         actual = unchecked((int)0xFEC84210);
 
         var expected = 0;
-
-        var p = (nint)LlvmAtomicOps<int>.CmpXchg;
-        var s = $"0x{p:X8}";
-        Console.WriteLine(s);
 
         actual.AtomicCompareExchange(expected, expected);
 
@@ -466,10 +459,6 @@ public class AtomicExtensionTests
         actual = 0xFEC84210FEC84210;
 
         var expected = 0uL;
-
-        var p = (nint)LlvmAtomicOps<ulong>.CmpXchg;
-        var s = $"0x{p:X8}";
-        Console.WriteLine(s);
 
         actual.AtomicCompareExchange(expected, expected);
 
