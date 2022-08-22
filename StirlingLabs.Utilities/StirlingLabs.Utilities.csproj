@@ -24,7 +24,7 @@
         <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
     </ItemGroup>
     <ItemGroup Condition="'$(TargetFramework)'=='net5.0' Or '$(TargetFramework)'=='net6.0'">
-        <PackageReference Include="StirlingLabs.XKCP.NET" Version="22.7.1" />
+        <PackageReference Include="StirlingLabs.XKCP.NET" Version="22.8.0" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.csproj" />

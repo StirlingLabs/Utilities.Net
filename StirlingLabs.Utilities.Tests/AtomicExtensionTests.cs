@@ -10,7 +10,6 @@ using StirlingLabs.Utilities.Extensions;
 namespace StirlingLabs.Utilities.Tests;
 
 [TestFixture]
-[Ignore("Not yet implemented.")]
 public class AtomicExtensionTests
 {
     [Test]
