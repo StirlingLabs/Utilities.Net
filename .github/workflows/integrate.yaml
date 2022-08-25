@@ -111,8 +111,8 @@ jobs:
             run: |
                 six=false
                 which="which"
-                if [[ "${RUNNER_OS}"=="Windows" ]]; then
-                    echo "Redefining which for Windows."
+                if [[ "${RUNNER_OS}" == "Windows" ]]; then
+                    echo "Redefining which for ${RUNNER_OS}."
                     which="where"
                 fi
                 if [[ $(${which} dotnet) && $(dotnet --list-sdks) == *"6.0."* ]] ; then 
