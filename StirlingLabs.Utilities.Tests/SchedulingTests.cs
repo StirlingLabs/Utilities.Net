@@ -66,18 +66,27 @@ public class SchedulingTests
 
         tw.WriteLine($"Stopwatch.Frequency={Stopwatch.Frequency}");
 
+        if (GCSettings.IsServerGC)
+            GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
+        else
+            GCSettings.LatencyMode = GCLatencyMode.LowLatency;
+        
 #if NET6_0_OR_GREATER
         if (IsContinuousIntegration)
             Trace.Listeners.Add(new ConsoleTraceListener());
 #endif
 
         // spin-up
-        for (var i = 0; i < 10; ++i)
+        for (var i = 0; i < 24; ++i)
             Timestamp.Wait(.003);
 
         Common.Try(() => AccurateTime(1));
         TearDown();
+        Common.Try(() => AccurateTime(1));
+        TearDown();
 
+        Common.Try(() => AccurateCancellableWait(1));
+        TearDown();
         Common.Try(() => AccurateCancellableWait(1));
         TearDown();
 
@@ -86,10 +95,19 @@ public class SchedulingTests
 
             Common.Try(() => AccurateWait(j));
             TearDown();
+            Common.Try(() => AccurateWait(j));
+            TearDown();
 
             Common.Try(() => TimeoutTest(j));
             TearDown();
+            Common.Try(() => TimeoutTest(j));
+            TearDown();
 
+            for (var i = 1; i <= 3; ++i)
+            {
+                Common.Try(() => IntervalTest(j));
+                TearDown();
+            }
             for (var i = 1; i <= 3; ++i)
             {
                 Common.Try(() => IntervalTest(j));
@@ -137,7 +155,7 @@ public class SchedulingTests
     [Order(1)]
     [Theory]
     [NonParallelizable]
-    [MethodImpl(MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.AggressiveOptimization)]
     public void AccurateTime([Values(1, 2, 3)] int _)
     {
         ForceStartNoGcRegion();
@@ -183,7 +201,7 @@ public class SchedulingTests
     [Order(2)]
     [Theory]
     [NonParallelizable]
-    [MethodImpl(MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.AggressiveOptimization)]
     public void AccurateWait([Values(1, 2, 3)] int _)
     {
         ForceStartNoGcRegion();
@@ -225,7 +243,7 @@ public class SchedulingTests
     [Order(3)]
     [Theory]
     [NonParallelizable]
-    [MethodImpl(MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.AggressiveOptimization)]
     public void CancellableWait1([Values(1, 2, 3)] int _)
     {
         ForceStartNoGcRegion();
@@ -277,7 +295,7 @@ public class SchedulingTests
     [Order(4)]
     [Theory]
     [NonParallelizable]
-    [MethodImpl(MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.AggressiveOptimization)]
     public void CancellableWait2([Values(1, 2, 3)] int _)
     {
         ForceStartNoGcRegion();
@@ -327,7 +345,7 @@ public class SchedulingTests
     [Order(5)]
     [Theory]
     [NonParallelizable]
-    [MethodImpl(MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.AggressiveOptimization)]
     public void AccurateCancellableWait([Values(1, 2, 3)] int _)
     {
         using var cts = new CancellationTokenSource();
@@ -369,7 +387,7 @@ public class SchedulingTests
     [Order(6)]
     [Theory]
     [NonParallelizable]
-    [MethodImpl(MethodImplOptions.NoInlining)]
+    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.AggressiveOptimization)]
     public void TimeoutTest([Values(1, 2, 3)] int _)
     {
         ForceStartNoGcRegion();
