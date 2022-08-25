@@ -103,12 +103,16 @@ jobs:
             uses: StirlingLabs/GithubNugetAuthAction@main
             with:
                 token: ${{secrets.DAEMON_NUGET}}
+        -   name: Install .Net 6 on Linux
+            if: runner.os == 'Linux'
+            run: sudo apt install dotnet6
         -   name: Is .NET 6 Installed?
             id: dotnet_version
             run: |
                 six=false
                 which="which"
                 if [[ "${RUNNER_OS}"=="Windows" ]]; then
+                    echo "Redefining which for Windows."
                     which="where"
                 fi
                 if [[ $(${which} dotnet) && $(dotnet --list-sdks) == *"6.0."* ]] ; then 
