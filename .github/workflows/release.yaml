@@ -21,9 +21,9 @@ jobs:
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: |
-              '3.1.x'
-              '5.0.x'
-              '6.0.x'
+            3.1.x
+            5.0.x
+            6.0.x
       - name: Build
         run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
       - name: Test
@@ -47,8 +47,8 @@ jobs:
           src: coverage
           dst: coverage
           prune: true
-      - name: Push NuPkg
-        run: dotnet nuget push artifacts/*.nupkg -k ${{github.token}} -s https://nuget.pkg.github.com/${{github.repository_owner}}/index.json -n 1
+      - name: List NuPkg
+        run: ls -l artifacts/*.nupkg
       - name: Set NuPkg Name Glob
         id: set_nupkg
         run: |
