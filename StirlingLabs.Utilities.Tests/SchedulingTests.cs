@@ -27,6 +27,31 @@ public class SchedulingTests
 
     private static bool _inSetUp;
 
+    private static void ForceStartNoGcRegion()
+    {
+        do
+        {
+            while (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
+                try { GC.EndNoGCRegion(); }
+                catch
+                {
+                    /* discard */
+                }
+
+            GC.Collect(2, GCCollectionMode.Forced, true, true);
+
+            try
+            {
+                while (GCSettings.LatencyMode != GCLatencyMode.NoGCRegion)
+                    GC.TryStartNoGCRegion(NoGcRegionSize, true);
+            }
+            catch
+            {
+                /* discard */
+            }
+        } while (GCSettings.LatencyMode != GCLatencyMode.NoGCRegion);
+    }
+
     [OneTimeSetUp]
     [SuppressMessage("Design", "CA1031", Justification = "Test Setup")]
     public void OneTimeSetUp()
@@ -115,11 +140,7 @@ public class SchedulingTests
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void AccurateTime([Values(1, 2, 3)] int _)
     {
-        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
-            GC.EndNoGCRegion();
-        GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GC.TryStartNoGCRegion(NoGcRegionSize, true)
-            .Should().BeTrue();
+        ForceStartNoGcRegion();
         ulong count = 0;
         var start = DateTime.Now;
         var ts = Timestamp.Now;
@@ -165,11 +186,7 @@ public class SchedulingTests
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void AccurateWait([Values(1, 2, 3)] int _)
     {
-        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
-            GC.EndNoGCRegion();
-        GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GC.TryStartNoGCRegion(NoGcRegionSize, true)
-            .Should().BeTrue();
+        ForceStartNoGcRegion();
         var start = DateTime.Now;
         var ts = Timestamp.Now;
         Timestamp.Wait(Sustain);
@@ -211,11 +228,7 @@ public class SchedulingTests
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void CancellableWait1([Values(1, 2, 3)] int _)
     {
-        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
-            GC.EndNoGCRegion();
-        GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GC.TryStartNoGCRegion(NoGcRegionSize, true)
-            .Should().BeTrue();
+        ForceStartNoGcRegion();
         var halfSustain = Sustain / 2;
         using var cts = new CancellationTokenSource();
         // ReSharper disable once AccessToDisposedClosure
@@ -267,11 +280,7 @@ public class SchedulingTests
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void CancellableWait2([Values(1, 2, 3)] int _)
     {
-        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
-            GC.EndNoGCRegion();
-        GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GC.TryStartNoGCRegion(NoGcRegionSize, true)
-            .Should().BeTrue();
+        ForceStartNoGcRegion();
         var halfSustain = Sustain / 2;
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(halfSustain));
         var start = DateTime.Now;
@@ -322,11 +331,7 @@ public class SchedulingTests
     public void AccurateCancellableWait([Values(1, 2, 3)] int _)
     {
         using var cts = new CancellationTokenSource();
-        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
-            GC.EndNoGCRegion();
-        GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GC.TryStartNoGCRegion(NoGcRegionSize, true)
-            .Should().BeTrue();
+        ForceStartNoGcRegion();
         var start = DateTime.Now;
         var ts = Timestamp.Now;
         Timestamp.Wait(Sustain, cts.Token);
@@ -367,11 +372,7 @@ public class SchedulingTests
     [MethodImpl(MethodImplOptions.NoInlining)]
     public void TimeoutTest([Values(1, 2, 3)] int _)
     {
-        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
-            GC.EndNoGCRegion();
-        GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GC.TryStartNoGCRegion(NoGcRegionSize, true)
-            .Should().BeTrue();
+        ForceStartNoGcRegion();
         var start = DateTime.Now;
         var ts = Timestamp.Now;
         using var mre = new ManualResetEventSlim();
@@ -421,11 +422,7 @@ public class SchedulingTests
     [NonParallelizable]
     public void IntervalTest([Values(1, 2, 3)] int _)
     {
-        if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
-            GC.EndNoGCRegion();
-        GC.Collect(2, GCCollectionMode.Forced, true, true);
-        GC.TryStartNoGCRegion(NoGcRegionSize, true)
-            .Should().BeTrue();
+        ForceStartNoGcRegion();
         var start = DateTime.Now;
         var ts = Timestamp.Now;
         using var cd = new CountdownEvent(3);
@@ -472,11 +469,7 @@ public class SchedulingTests
             if (cd.IsSet) return false;
             if (GCSettings.LatencyMode != GCLatencyMode.NoGCRegion)
             {
-                if (GCSettings.LatencyMode == GCLatencyMode.NoGCRegion)
-                    GC.EndNoGCRegion();
-                GC.Collect(2, GCCollectionMode.Forced, true, true);
-                GC.TryStartNoGCRegion(NoGcRegionSize, true)
-                    .Should().BeTrue();
+                ForceStartNoGcRegion();
             }
             return true;
         });
