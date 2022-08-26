@@ -56,6 +56,8 @@ public class SchedulingTests
     [SuppressMessage("Design", "CA1031", Justification = "Test Setup")]
     public void OneTimeSetUp()
     {
+        MultimediaTimerPeriod.BeginPeriod(1);
+
         _inSetUp = true;
 
         var tw = TestContext.Progress;
@@ -70,7 +72,7 @@ public class SchedulingTests
             GCSettings.LatencyMode = GCLatencyMode.SustainedLowLatency;
         else
             GCSettings.LatencyMode = GCLatencyMode.LowLatency;
-        
+
 #if NET6_0_OR_GREATER
         if (IsContinuousIntegration)
             Trace.Listeners.Add(new ConsoleTraceListener());
@@ -126,7 +128,11 @@ public class SchedulingTests
 
     [OneTimeTearDown]
     public void OneTimeTearDown()
-        => Trace.Flush();
+    {
+        Trace.Flush();
+
+        MultimediaTimerPeriod.EndPeriod(1);
+    }
 
     [SetUp]
     public void SetUp()
@@ -155,7 +161,7 @@ public class SchedulingTests
     [Order(1)]
     [Theory]
     [NonParallelizable]
-    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.AggressiveOptimization)]
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
     public void AccurateTime([Values(1, 2, 3)] int _)
     {
         ForceStartNoGcRegion();
@@ -201,7 +207,7 @@ public class SchedulingTests
     [Order(2)]
     [Theory]
     [NonParallelizable]
-    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.AggressiveOptimization)]
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
     public void AccurateWait([Values(1, 2, 3)] int _)
     {
         ForceStartNoGcRegion();
@@ -243,7 +249,7 @@ public class SchedulingTests
     [Order(3)]
     [Theory]
     [NonParallelizable]
-    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.AggressiveOptimization)]
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
     public void CancellableWait1([Values(1, 2, 3)] int _)
     {
         ForceStartNoGcRegion();
@@ -295,7 +301,7 @@ public class SchedulingTests
     [Order(4)]
     [Theory]
     [NonParallelizable]
-    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.AggressiveOptimization)]
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
     public void CancellableWait2([Values(1, 2, 3)] int _)
     {
         ForceStartNoGcRegion();
@@ -345,7 +351,7 @@ public class SchedulingTests
     [Order(5)]
     [Theory]
     [NonParallelizable]
-    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.AggressiveOptimization)]
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
     public void AccurateCancellableWait([Values(1, 2, 3)] int _)
     {
         using var cts = new CancellationTokenSource();
@@ -387,7 +393,7 @@ public class SchedulingTests
     [Order(6)]
     [Theory]
     [NonParallelizable]
-    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.AggressiveOptimization)]
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
     public void TimeoutTest([Values(1, 2, 3)] int _)
     {
         ForceStartNoGcRegion();
