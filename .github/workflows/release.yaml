@@ -63,8 +63,7 @@ jobs:
       - name: Push to NuGet Package Repo
         if: |
             !contains(github.ref_name, '-') &&
-            !github.event.release.prerelease &&
-            false
+            !github.event.release.prerelease
         run: |
             dotnet nuget push "${glob}" --api-key ${key} --source ${pkgRepo} --skip-duplicate --no-symbols
         env:
