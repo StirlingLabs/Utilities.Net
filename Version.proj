@@ -6,6 +6,10 @@
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/StirlingLabs/Utilities.Net.git</RepositoryUrl>
         <PackageProjectUrl>https://github.com/StirlingLabs/Utilities.Net</PackageProjectUrl>
+        <description>
+          Common utilities used throughout the Stirling Labs C# codebase,
+          including Native Library loading, debugging tools, Atomic operations, etc.
+        </description>
         <GitDefaultBranch>main</GitDefaultBranch>
         <GitCommitsIgnoreMerges>true</GitCommitsIgnoreMerges>
         <VersionNetDebugImportance>high</VersionNetDebugImportance>
