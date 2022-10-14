@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 #if NET5_0_OR_GREATER
 using System.Runtime.InteropServices;
@@ -52,6 +53,39 @@ namespace StirlingLabs.Utilities
             return Calculate(checksum, ref refByte, l);
         }
 
+        public static long Calculate2(ReadOnlySpan<byte> buffer)
+        {
+            long result = 0;
+            Calculate2(ref result, buffer);
+            return result;
+        }
+
+        [SuppressMessage("Design", "CA1045", Justification = "Implementation detail")]
+        public static long Calculate2(long checksums, ReadOnlySpan<byte> buffer)
+        {
+            var bufSize = buffer.Length;
+            var longResult = BigSpan.Create(ref checksums, 1);
+            var uintResult = longResult.CastAs<uint>();
+            var rem = bufSize & 1;
+            var half = bufSize / 2;
+            uintResult[0u] = Calculate(uintResult[0u], buffer.Slice(0, half));
+            uintResult[1u] = Calculate(uintResult[1u], buffer.Slice(half, half + rem));
+            return checksums;
+        }
+
+        [SuppressMessage("Design", "CA1045", Justification = "Implementation detail")]
+        public static void Calculate2(ref long checksums, ReadOnlySpan<byte> buffer)
+        {
+            var bufSize = buffer.Length;
+            var longResult = BigSpan.Create(ref checksums, 1);
+            var uintResult = longResult.CastAs<uint>();
+            var rem = bufSize & 1;
+            var half = bufSize / 2;
+            uintResult[0u] = Calculate(uintResult[0u], buffer.Slice(0, half));
+            uintResult[1u] = Calculate(uintResult[1u], buffer.Slice(half, half + rem));
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint Calculate(byte[] bytes)
             => Calculate(0u, bytes);
@@ -63,9 +97,14 @@ namespace StirlingLabs.Utilities
 #if NET5_0_OR_GREATER
             ref var refByte = ref MemoryMarshal.GetArrayDataReference(bytes);
 #else
-      ref var refByte = ref bytes[0];
+            ref var refByte = ref bytes[0];
 #endif
             return Calculate(checksum, ref refByte, l);
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint CalculateByRef(uint checksum, in byte source, nint length)
+        {
+            return Calculate(checksum, ref (Unsafe.AsRef(source)), length);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -78,7 +117,7 @@ namespace StirlingLabs.Utilities
                 checksum = CalcArm(checksum, ref source, length);
             else
 #endif
-                return CalcNaive(checksum, ref source, length);
+            return CalcNaive(checksum, ref source, length);
 #if NET5_0_OR_GREATER
             return checksum;
 #endif

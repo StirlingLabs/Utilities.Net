@@ -9,7 +9,23 @@ public static class SystemFingerprintTests
 {
     
     [Test]
-    public static void SelfConsistentTest()
+    public static void SelfConsistentSystemFingerprintTest()
+    {
+        var a = SystemFingerprint.GetSystemFingerprint();
+        
+        a.Should().Be(SystemFingerprint.GetSystemFingerprint());
+        
+        var low = (uint)a;
+        low.Should().NotBe(0u);
+        
+        var high = (uint)((ulong)a >> 32);
+        high.Should().NotBe(0u);
+        
+        low.Should().NotBe(high);
+    }
+    
+    [Test]
+    public static void SelfConsistentNetworkFingerprintTest()
     {
         var a = SystemFingerprint.GetNetworkFingerprint();
         
