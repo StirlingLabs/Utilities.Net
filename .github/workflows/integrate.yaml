@@ -83,7 +83,7 @@ jobs:
             fi
 
   build:
-        name: Test
+        name: Build & Test
         needs: skip_check
         if: needs.skip_check.outputs.should_skip != 'true'
         runs-on: ${{ matrix.os }}
@@ -103,29 +103,6 @@ jobs:
             uses: StirlingLabs/GithubNugetAuthAction@main
             with:
                 token: ${{secrets.DAEMON_NUGET}}
-        -   name: Install .Net 6 on Linux
-            if: runner.os == 'Linux'
-            run: sudo apt install dotnet6
-        -   name: Is .NET 6 Installed?
-            id: dotnet_version
-            run: |
-                six=false
-                which="which"
-                if [[ "${RUNNER_OS}" == "Windows" ]]; then
-                    echo "Redefining which for ${RUNNER_OS}."
-                    which="where"
-                fi
-                if [[ $(${which} dotnet) && $(dotnet --list-sdks) == *"6.0."* ]] ; then 
-                    six=true
-                fi
-                echo "::set-output name=six::${six}"
-        -   name: Install .Net 6
-            uses: actions/setup-dotnet@v2
-            if: |
-                failure() || 
-                steps.dotnet_version.outputs.six != 'true'
-            with:
-                dotnet-version: '6.0.x'
         -   name: Build
             run: dotnet build StirlingLabs.Utilities.Net.sln -c Release
         -   name: Test
