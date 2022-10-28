@@ -15,7 +15,7 @@
 
     <ItemGroup>
       <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" PrivateAssets="all" />
-      <PackageReference Include="YamlDotNet" Version="12.0.0" />
+      <PackageReference Include="YamlDotNet" Version="12.0.2" />
     </ItemGroup>
 
     <ItemGroup>
