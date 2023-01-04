@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Extensions", "StirlingLabs.Utilities.Extensions\StirlingLabs.Utilities.Extensions.csproj", "{B27DB3C6-0A7C-4BF7-A5C7-374A72A9A85A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Tests.Net70", "StirlingLabs.Utilities.Tests\StirlingLabs.Utilities.Tests.Net70.csproj", "{EADA5849-6D8A-488E-979D-E40855D4AA1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,5 +69,9 @@ Global
 		{B27DB3C6-0A7C-4BF7-A5C7-374A72A9A85A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B27DB3C6-0A7C-4BF7-A5C7-374A72A9A85A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B27DB3C6-0A7C-4BF7-A5C7-374A72A9A85A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EADA5849-6D8A-488E-979D-E40855D4AA1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EADA5849-6D8A-488E-979D-E40855D4AA1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EADA5849-6D8A-488E-979D-E40855D4AA1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EADA5849-6D8A-488E-979D-E40855D4AA1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

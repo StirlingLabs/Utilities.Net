@@ -9,6 +9,16 @@ namespace StirlingLabs.Utilities;
 [PublicAPI]
 public static class HexEncoding
 {
+    public static bool IsHexDigit(this char c)
+        => c is >= '0' and <= '9'
+            or >= 'A' and <= 'F'
+            or >= 'a' and <= 'f';
+
+    public static bool IsHexDigitAscii(this byte c)
+        => c is >= (byte)'0' and <= (byte)'9'
+            or >= (byte)'A' and <= (byte)'F'
+            or >= (byte)'a' and <= (byte)'f';
+
     public static Span<byte> ToBytes(ReadOnlySpan<byte> hexString, Span<byte> buffer)
     {
         if (hexString.IsEmpty) return buffer;
@@ -16,13 +26,12 @@ public static class HexEncoding
         if (buffer.Length < hexString.Length / 2)
             throw new ArgumentOutOfRangeException(nameof(buffer), buffer.Length, "Buffer too small");
 
-        var hexStrEnum = hexString.GetEnumerator();
         for (var i = 0; i + 1 < hexString.Length; i += 2)
         {
-            hexStrEnum.MoveNext();
-            var chHi = hexStrEnum.Current;
-            hexStrEnum.MoveNext();
-            var chLo = hexStrEnum.Current;
+            var chHi = hexString[i];
+            var chLo = hexString[i + 1];
+            if (!chLo.IsHexDigitAscii() || !chHi.IsHexDigitAscii())
+                throw new ArgumentOutOfRangeException(nameof(hexString), "Invalid hex string");
             buffer[i / 2] = (byte)(
                 (((chHi & 0xF) << 4) + ((chHi & 0x40) >> 2) * 9)
                 | ((chLo & 0xF) + ((chLo & 0x40) >> 6) * 9)
@@ -40,7 +49,7 @@ public static class HexEncoding
         ToBytes(hexString, buf);
         return buf;
     }
-    
+
     public static Span<byte> ToBytes(ReadOnlySpan<char> hexString, Span<byte> buffer)
     {
         if (hexString.IsEmpty) return buffer;
@@ -48,13 +57,12 @@ public static class HexEncoding
         if (buffer.Length < hexString.Length / 2)
             throw new ArgumentOutOfRangeException(nameof(buffer), buffer.Length, "Buffer too small");
 
-        var hexStrEnum = hexString.GetEnumerator();
         for (var i = 0; i + 1 < hexString.Length; i += 2)
         {
-            hexStrEnum.MoveNext();
-            var chHi = hexStrEnum.Current;
-            hexStrEnum.MoveNext();
-            var chLo = hexStrEnum.Current;
+            var chHi = hexString[i];
+            var chLo = hexString[i + 1];
+            if (!chLo.IsHexDigit() || !chHi.IsHexDigit())
+                throw new ArgumentOutOfRangeException(nameof(hexString), "Invalid hex string");
             buffer[i / 2] = (byte)(
                 (((chHi & 0xF) << 4) + ((chHi & 0x40) >> 2) * 9)
                 | ((chLo & 0xF) + ((chLo & 0x40) >> 6) * 9)
@@ -72,9 +80,11 @@ public static class HexEncoding
         ToBytes(hexString, buf);
         return buf;
     }
-    
+
     public static Span<byte> ToBytes(string hexString, Span<byte> buffer)
     {
+#if NETSTANDARD2_0
+
         if (hexString is null) throw new ArgumentNullException(hexString);
 
         if (buffer.Length < hexString.Length / 2)
@@ -87,6 +97,8 @@ public static class HexEncoding
             var chHi = hexStrEnum.Current;
             hexStrEnum.MoveNext();
             var chLo = hexStrEnum.Current;
+            if (!chLo.IsHexDigit() || !chHi.IsHexDigit())
+                throw new ArgumentOutOfRangeException(nameof(hexString), "Invalid hex string");
             buffer[i / 2] = (byte)(
                 (((chHi & 0xF) << 4) + ((chHi & 0x40) >> 2) * 9)
                 | ((chLo & 0xF) + ((chLo & 0x40) >> 6) * 9)
@@ -94,6 +106,9 @@ public static class HexEncoding
         }
 
         return buffer;
+#else
+        return ToBytes((ReadOnlySpan<char>)hexString, buffer);
+#endif
     }
 
     public static byte[] ToBytes(string hexString)
@@ -113,11 +128,11 @@ public static class HexEncoding
             l: data.Length
         );
 #if NETSTANDARD2_0
-            var strLen = data.Length * 2;
-            var s = new string('\0', strLen);
-            fixed (char* pStr = s)
-                CreateUpperCaseString(new(pStr, strLen), args);
-            return s;
+        var strLen = data.Length * 2;
+        var s = new string('\0', strLen);
+        fixed (char* pStr = s)
+            CreateUpperCaseString(new(pStr, strLen), args);
+        return s;
 #else
         return string.Create(data.Length * 2, args, CreateUpperCaseString);
 #endif
@@ -132,14 +147,14 @@ public static class HexEncoding
             l: data.Length
         );
 #if NETSTANDARD2_0
-            var strLen = data.Length * 2;
-            var s = new string('\0', strLen);
-            fixed (char* pStr = s)
-                if (lowerCase)
-                    CreateLowerCaseString(new(pStr, strLen), args);
-                else
-                    CreateUpperCaseString(new(pStr, strLen), args);
-            return s;
+        var strLen = data.Length * 2;
+        var s = new string('\0', strLen);
+        fixed (char* pStr = s)
+            if (lowerCase)
+                CreateLowerCaseString(new(pStr, strLen), args);
+            else
+                CreateUpperCaseString(new(pStr, strLen), args);
+        return s;
 #else
         return string.Create(data.Length * 2, args, lowerCase ? CreateLowerCaseString : CreateUpperCaseString);
 #endif
@@ -163,7 +178,7 @@ public static class HexEncoding
             u[i] = (chHi << 16) | chLo;
         }
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static unsafe void CreateLowerCaseString(Span<char> c, (IntPtr p, int l) args)
     {
@@ -182,7 +197,7 @@ public static class HexEncoding
             u[i] = (chHi << 16) | chLo;
         }
     }
-    
+
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static string ToHexString(this Span<byte> bytes) => ToHexString((ReadOnlySpan<byte>)bytes);

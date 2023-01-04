@@ -6,7 +6,7 @@
         <Authors>Stirling Labs</Authors>
         <PackageOutputPath>../artifacts</PackageOutputPath>
         <Nullable>enable</Nullable>
-        <TargetFrameworks>net5.0;net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net5.0;net6.0;net7.0;netstandard2.0;netstandard2.1</TargetFrameworks>
         <LangVersion>10</LangVersion>
         <DefineConstants>$(DefineConstants);MedallionPriorityQueue_PUBLIC</DefineConstants>
     </PropertyGroup>

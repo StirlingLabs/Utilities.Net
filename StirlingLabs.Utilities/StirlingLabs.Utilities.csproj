@@ -6,7 +6,7 @@
         <Authors>Stirling Labs</Authors>
         <PackageOutputPath>../artifacts</PackageOutputPath>
         <Nullable>enable</Nullable>
-        <TargetFrameworks>net5.0;net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <TargetFrameworks>net5.0;net6.0;net7.0;netstandard2.0;netstandard2.1</TargetFrameworks>
         <LangVersion>10</LangVersion>
         <DefineConstants>$(DefineConstants);MedallionPriorityQueue_PUBLIC</DefineConstants>
     </PropertyGroup>
@@ -23,7 +23,7 @@
         <PackageReference Include="StirlingLabs.BigSpans" Version="22.9.4" />
         <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0" />
     </ItemGroup>
-    <ItemGroup Condition="'$(TargetFramework)'=='net5.0' Or '$(TargetFramework)'=='net6.0'">
+    <ItemGroup Condition="'$(TargetFramework)'=='net5.0' Or '$(TargetFramework)'=='net6.0' Or '$(TargetFramework)'=='net7.0'">
         <PackageReference Include="StirlingLabs.XKCP.NET" Version="22.10.0" />
     </ItemGroup>
     <ItemGroup>

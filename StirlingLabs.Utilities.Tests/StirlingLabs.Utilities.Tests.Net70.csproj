@@ -1,0 +1,76 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Authors>Stirling Labs</Authors>
+        <Nullable>enable</Nullable>
+        <LangVersion>10</LangVersion>
+        <RuntimeIdentifier>$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
+        <RuntimeIdentifier Condition="'$(RuntimeIdentifier)'==''">$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</RuntimeIdentifier>
+        <CollectCoverage>true</CollectCoverage>
+        <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+        <CoverletOutput>../coverage/</CoverletOutput>
+        <DeterministicReport>true</DeterministicReport>
+        <DeterministicSourcePaths>true</DeterministicSourcePaths>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net7.0</TargetFramework>
+        <RootNamespace>StirlingLabs.Utilities.Tests</RootNamespace>
+        <AssemblyName>StirlingLabs.Utilities.Tests</AssemblyName>
+        <DisableImplicitFrameworkDefines>true</DisableImplicitFrameworkDefines>
+        <DefineConstants>$(DefineConstants);NET;NET7_0;NET7_0_OR_GREATER</DefineConstants>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <CompileToRemove Include="obj/**/*" Exclude="$(BaseIntermediateOutputPath)/**/*" />
+        <Compile Remove="@(CompileToRemove)" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\StirlingLabs.Utilities.Extensions\StirlingLabs.Utilities.Extensions.csproj">
+            <SetTargetFramework>TargetFramework=net7.0</SetTargetFramework>
+        </ProjectReference>
+        <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.csproj">
+            <SetTargetFramework>TargetFramework=net7.0</SetTargetFramework>
+        </ProjectReference>
+        <ProjectReference Include="..\StirlingLabs.Utilities.NativeLibrary\StirlingLabs.Utilities.NativeLibrary.csproj">
+            <SetTargetFramework>TargetFramework=net7.0</SetTargetFramework>
+        </ProjectReference>
+        <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj">
+            <SetTargetFramework>TargetFramework=net7.0</SetTargetFramework>
+        </ProjectReference>
+        <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj">
+            <SetTargetFramework>TargetFramework=net7.0</SetTargetFramework>
+        </ProjectReference>
+    </ItemGroup>
+    
+    <ItemGroup Condition="'$(CI)'!='' And '$(RID)'==''">
+        <PackageReference Include="GitHubActionsTestLogger" Version="2.0.1" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="StirlingLabs.libLLVM" Version="14.0.6.4" />
+        <PackageReference Include="AutoBogus" Version="2.13.1" />
+        <PackageReference Include="FluentAssertions" Version="6.8.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="NUnit" Version="3.13.3" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
+        <PackageReference Include="StirlingLabs.BigSpans" Version="22.9.4" />
+        <PackageReference Include="StirlingLabs.BigSpans.NUnit" Version="22.9.4" />
+        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" PrivateAssets="all" />
+        <PackageReference Include="coverlet.collector" Version="3.1.2" PrivateAssets="all" />
+        <PackageReference Include="coverlet.msbuild" Version="3.1.2" PrivateAssets="all" />
+        <PackageReference Include="ReportGenerator" Version="5.1.10" PrivateAssets="all" />
+    </ItemGroup>
+
+    <Target Name="RIDCheck" BeforeTargets="Build">
+        <Error Condition="'$(RuntimeIdentifier)'==''" Message="RuntimeIdentifier is not specified!" />
+    </Target>
+    
+    <Target Name="GenerateHtmlCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
+        <!-- generate markdown coverage report and badges -->
+        <ReportGenerator ReportFiles="@(CoverletReport)" ReportTypes="MarkdownSummary;Badges" SourceDirectories="../StirlingLabs.Utilities" TargetDirectory="../coverage/" />
+    </Target>
+
+</Project>
