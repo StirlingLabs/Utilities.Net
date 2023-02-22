@@ -1,60 +1,42 @@
-#if NET5_0_OR_GREATER
 using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Text;
-using JetBrains.Annotations;
 
-// TODO: move to StirlingLabs.Utilities
-namespace StirlingLabs.Utilities
-{
-    [PublicAPI]
-    public ref struct Utf8RuneEnumerator
-    {
-        private ReadOnlySpan<byte> _remaining;
-        private Rune _current;
+namespace StirlingLabs.Utilities;
 
-        public Utf8RuneEnumerator(ReadOnlySpan<byte> buffer)
-        {
-            _remaining = buffer;
-            _current = default;
-        }
+public ref struct Utf8RuneEnumerator {
 
-        public Rune Current
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _current;
-        }
+  public ReadOnlySpan<byte> Remaining;
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Utf8RuneEnumerator GetEnumerator() => this;
+  public Rune Current;
 
-        public bool MoveNext()
-        {
-            if (_remaining.IsEmpty)
-            {
-                // reached the end of the buffer
-                _current = default;
-                return false;
-            }
+  public Utf8RuneEnumerator(ReadOnlySpan<byte> buffer) {
+    Remaining = buffer;
+    Current = new();
+  }
 
-            var status = Rune.DecodeFromUtf8(_remaining, out _current, out var bytesRead);
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  public Utf8RuneEnumerator GetEnumerator() => this;
 
-            if (status == OperationStatus.InvalidData)
-            {
-                _remaining = default;
-                throw new InvalidOperationException("Invalid data encountered in UTF8 string.");
-            }
-
-            if (bytesRead == 0)
-            {
-                _remaining = default;
-                return false;
-            }
-
-            _remaining = _remaining.Slice(bytesRead);
-            return true;
-        }
+  public bool MoveNext() {
+    if (Remaining.IsEmpty) {
+      Current = new();
+      return false;
     }
+
+    if (Rune.DecodeFromUtf8(Remaining, out Current, out var bytesConsumed) == OperationStatus.InvalidData) {
+      Remaining = new();
+      throw new InvalidOperationException("Invalid data encountered in UTF8 string.");
+    }
+
+    if (bytesConsumed == 0) {
+      Remaining = new();
+      return false;
+    }
+
+    Remaining = Remaining.Slice(bytesConsumed);
+    return true;
+  }
+
 }
-#endif

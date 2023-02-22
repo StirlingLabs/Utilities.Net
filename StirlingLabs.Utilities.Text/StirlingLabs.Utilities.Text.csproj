@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net5.0;net6.0;net7.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>11</LangVersion>
+        <DefineConstants Condition="'$(Configuration)'=='Debug'">$(DefineConstants);ICU4X_LOGGING</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="StirlingLabs.icu4x.runtime.linux-x64" Version="1.1.0.1" />
+      <PackageReference Include="StirlingLabs.icu4x.runtime.osx" Version="1.1.0.1" />
+      <PackageReference Include="StirlingLabs.icu4x.runtime.win-x64" Version="1.1.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.csproj" />
+      <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj" />
+    </ItemGroup>
+
+</Project>

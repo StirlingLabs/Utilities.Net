@@ -16,19 +16,21 @@ namespace StirlingLabs.Utilities
 #if NET5_0_OR_GREATER
         [SupportedOSPlatform("windows")]
 #endif
-        [SuppressMessage("Security", "CA5392:Use DefaultDllImportSearchPaths attribute for P/Invokes")]
-        [SuppressMessage("Design", "CA1060:Move pinvokes to native methods class")]
+        [SuppressMessage("Design", "CA1060", Justification = "Unnecessary")]
         internal static class Native
         {
             private const string WinMm = "winmm";
 
             [DllImport(WinMm, ExactSpelling = true)]
+            [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
             internal static extern int timeGetDevCaps(ref TIMECAPS ptc, int cbtc);
 
             [DllImport(WinMm, ExactSpelling = true)]
+            [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
             internal static extern int timeBeginPeriod(int uPeriod);
 
             [DllImport(WinMm, ExactSpelling = true)]
+            [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
             internal static extern int timeEndPeriod(int uPeriod);
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
@@ -31,6 +32,7 @@ public static class PreloadDllImportLibs
     /// </summary>
     /// <param name="assembly">The assembly to check and preload imports for.</param>
     /// <returns>false if skipped, otherwise true</returns>
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types")]
     public static bool Execute(Assembly assembly)
         => Tracker.GetOrAdd(assembly, asm => {
             var attrib = asm.GetCustomAttribute<PreloadDllImportLibsAttribute>();

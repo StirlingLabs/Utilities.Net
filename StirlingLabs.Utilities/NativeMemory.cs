@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
@@ -7,6 +8,9 @@ using StirlingLabs.Utilities;
 namespace StirlingLabs.Native;
 
 [PublicAPI]
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+[SuppressMessage("ReSharper", "IdentifierTypo")]
+[SuppressMessage("Performance", "CA1810", Justification = "Implementation detail")]
 public static class NativeMemory
 {
     private static readonly unsafe delegate* managed<nuint, void*> malloc;
@@ -79,6 +83,9 @@ public static class NativeMemory
         initializer(p);
         return p;
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static unsafe void Free(void* ptr)
+        => free(ptr);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe void Free<T>(T* ptr) where T : unmanaged

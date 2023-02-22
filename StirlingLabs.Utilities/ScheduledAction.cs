@@ -226,7 +226,7 @@ public abstract class ScheduledAction : IDisposable
     {
         Debug.Assert(act != null);
         Debug.Assert(arg != null);
-        Trace.TraceError($"{act.GetType().Name}: {arg.SourceException}");
-        UnobservedException?.Invoke(act, arg);
+        Trace.TraceError($"{act!.GetType().Name}: {arg!.SourceException}");
+        UnobservedException?.Invoke(act!, arg!);
     }
 }

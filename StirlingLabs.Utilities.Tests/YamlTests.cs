@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using AutoBogus;
 using Bogus;
+using FluentAssertions;
 using NUnit.Framework;
 using StirlingLabs.Utilities.Yaml;
 using YamlDotNet.RepresentationModel;
@@ -27,6 +29,7 @@ public class YamlTests
     private static readonly RandomNumberGenerator Rng = RandomNumberGenerator.Create();
 #endif
 
+    [SuppressMessage("ReSharper", "RedundantUnsafeContext")]
     public static unsafe double GetActuallyRandomNumber()
     {
         double number = 0;
@@ -64,19 +67,19 @@ public class YamlTests
         var expectedJson = ys.Serialize(OnDemand.JsonSerializer);
         var json1 = sw.ElapsedTicks;
 
-        Assert.IsNotNull(expectedJson);
+        expectedJson.Should().NotBeNull();
 
         sw.Restart();
         var actualJson = ys.ToJson();
         var json2 = sw.ElapsedTicks;
 
-        Assert.IsNotNull(actualJson);
+        actualJson.Should().NotBeNull();
 
-        dynamic expected = JsonNetSerializer.Deserialize(new StringReader(expectedJson!), k.GetType());
+        dynamic expected = JsonNetSerializer.Deserialize(new StringReader(expectedJson!), k.GetType())!;
 
-        dynamic actual = JsonNetSerializer.Deserialize(new StringReader(actualJson!), k.GetType());
+        dynamic actual = JsonNetSerializer.Deserialize(new StringReader(actualJson!), k.GetType())!;
 
-        Assert.AreEqual((IList<JsonMe>)expected.a, (IList<JsonMe>)actual.a);
+        ((object)((IList<JsonMe>)actual.a)).Should().Be((IList<JsonMe>)expected.a);
 
         Console.WriteLine($"ToJson w/ Serializer: {json1}, ToJson w/ YamlToJsonVisitor: {json2}");
     }
