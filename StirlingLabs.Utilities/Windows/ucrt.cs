@@ -5,6 +5,7 @@ namespace StirlingLabs.Utilities;
 
 [SuppressMessage("ReSharper", "IdentifierTypo")]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
+[SuppressMessage("Design", "CA1060", Justification = "Unnecessary")]
 internal static unsafe class ucrt
 {
     public const string LibName = "ucrtbase";
@@ -13,29 +14,34 @@ internal static unsafe class ucrt
     [SuppressGCTransition]
 #endif
     [DllImport(LibName, SetLastError = true)]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     public static extern void* malloc(nuint size);
 
 #if NET5_0_OR_GREATER
     [SuppressGCTransition]
 #endif
     [DllImport(LibName, SetLastError = true)]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     public static extern void* calloc(nuint number, nuint size);
 
 #if NET5_0_OR_GREATER
     [SuppressGCTransition]
 #endif
     [DllImport(LibName, SetLastError = true)]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     public static extern void free(void* ptr);
 
 #if NET5_0_OR_GREATER
     [SuppressGCTransition]
 #endif
     [DllImport(LibName, SetLastError = true)]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     public static extern void* realloc(void* ptr, nuint newSize);
 
 #if NET5_0_OR_GREATER
     [SuppressGCTransition]
 #endif
     [DllImport(LibName, SetLastError = true)]
+    [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
     public static extern void* memmove(void* to, void* from, nuint size);
 }

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using JetBrains.Annotations;
@@ -5,6 +6,7 @@ using JetBrains.Annotations;
 namespace StirlingLabs.Utilities.Extensions;
 
 [PublicAPI]
+[SuppressMessage("Microsoft.Design", "CA1045", Justification = "Nope")]
 public static class AtomicExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

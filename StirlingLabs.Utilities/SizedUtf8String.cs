@@ -200,11 +200,8 @@ public readonly unsafe struct SizedUtf8String
 
     [DebuggerStepThrough]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override bool Equals(object obj)
-    {
-        if (obj is SizedUtf8String s) return Equals(s);
-        return false;
-    }
+    public override bool Equals(object? obj)
+        => obj is SizedUtf8String s && Equals(s);
 
     [DebuggerStepThrough]
     [System.Diagnostics.Contracts.Pure]

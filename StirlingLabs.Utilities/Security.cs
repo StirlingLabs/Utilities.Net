@@ -1,6 +1,7 @@
 using System;
 using System.Buffers;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
@@ -10,6 +11,7 @@ using JetBrains.Annotations;
 namespace StirlingLabs.Utilities;
 
 [PublicAPI]
+[SuppressMessage("Design", "CA1724", Justification = "Nope")]
 public static class Security
 {
 #if !(NET5_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER)

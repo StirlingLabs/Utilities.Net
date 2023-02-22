@@ -4,8 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
+#if !NET7_0_OR_GREATER
 using static InlineIL.IL;
 using static InlineIL.IL.Emit;
+#endif
 
 namespace StirlingLabs.Utilities
 {
@@ -13,35 +15,60 @@ namespace StirlingLabs.Utilities
     [StructLayout(LayoutKind.Sequential)]
     public readonly ref struct ByReference<T>
     {
-        private readonly ReadOnlySpan<T> _span;
+#if NET7_0_OR_GREATER
+        private readonly ref T _ref;
+#else
+        private readonly ReadOnlySpan<T> _ref;
+#endif
 
+#if NET7_0_OR_GREATER
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ByReference(Span<T> span)
-            => _span = span;
+            => _ref = MemoryMarshal.GetReference(span);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ByReference(ReadOnlySpan<T> span)
-            => _span = span;
+            => _ref = MemoryMarshal.GetReference(span);
+#else
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ByReference(Span<T> span)
+            => _ref = span;
 
-#if NETSTANDARD2_0
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ByReference(ReadOnlySpan<T> span)
+            => _ref = span;
+#endif
+
+#if NET7_0_OR_GREATER
+        [SuppressMessage("Microsoft.Design", "CA1045", Justification = "Nope")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ByReference(ref T item)
+            => _ref = ref item;
+#elif NETSTANDARD2_0
         [SuppressMessage("Microsoft.Design","CA1045", Justification = "Nope")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe ByReference(ref T item)
-            => _span = new(Unsafe.AsPointer(ref item), 1);
+            => _ref = new(Unsafe.AsPointer(ref item), 1);
 #else
         [SuppressMessage("Microsoft.Design", "CA1045", Justification = "Nope")]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ByReference(ref T item)
-            => _span = MemoryMarshal.CreateReadOnlySpan(ref item, 1);
+            => _ref = MemoryMarshal.CreateReadOnlySpan(ref item, 1);
 #endif
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
         public ref T Value
         {
+#if NET7_0_OR_GREATER
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => ref MemoryMarshal.GetReference(_span);
+            get => ref _ref;
+#else
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => ref MemoryMarshal.GetReference(_ref);
+#endif
         }
 
+#if !NET7_0_OR_GREATER
         public ref nuint Length
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -52,5 +79,6 @@ namespace StirlingLabs.Utilities
                 return ref ReturnRef<nuint>();
             }
         }
+#endif
     }
 }

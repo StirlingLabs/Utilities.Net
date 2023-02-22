@@ -40,21 +40,21 @@ public partial class JsonMe : IEquatable<JsonMe>
             return false;
         if (!number.Equals(other.number))
             return false;
-        if (!texts.SequenceEqual(other.texts))
+        if (!texts!.SequenceEqual(other.texts!))
             return false;
-        if (!numbers.SequenceEqual(other.numbers))
+        if (!numbers!.SequenceEqual(other.numbers!))
             return false;
-        if (stringDict.Count != other.stringDict.Count)
+        if (stringDict!.Count != other.stringDict!.Count)
             return false;
         if (stringDict.Except(other.stringDict).Any())
             return false;
-        if (numberDict.Count != other.numberDict.Count)
+        if (numberDict!.Count != other.numberDict!.Count)
             return false;
         if (numberDict.Except(other.numberDict).Any())
             return false;
         if (numberDict.Count != other.numberDict.Count)
             return false;
-        if (arbitraryDict.Except(other.arbitraryDict, ArbitraryDictComparer).Any())
+        if (arbitraryDict!.Except(other.arbitraryDict!, ArbitraryDictComparer).Any())
             return false;
         return true;
     }
@@ -70,6 +70,7 @@ public partial class JsonMe : IEquatable<JsonMe>
     }
     [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
     [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalse")]
+    [SuppressMessage("ReSharper", "ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract")]
     public override unsafe int GetHashCode()
     {
         Span<int> ints = stackalloc int[]
@@ -78,13 +79,13 @@ public partial class JsonMe : IEquatable<JsonMe>
 #if NETSTANDARD2_0
             text.GetHashCode(),
 #else
-            text.GetHashCode(StringComparison.Ordinal),
+            text!.GetHashCode(StringComparison.Ordinal),
 #endif
             number.GetHashCode(),
-            numbers.GetHashCode(),
-            stringDict.GetHashCode(),
-            numberDict.GetHashCode(),
-            arbitraryDict.Select(kv => (kv.Key, kv.Value is not null)).GetHashCode()
+            numbers!.GetHashCode(),
+            stringDict!.GetHashCode(),
+            numberDict!.GetHashCode(),
+            arbitraryDict!.Select(kv => (kv.Key, kv.Value is not null)).GetHashCode()
         };
         var bytes = MemoryMarshal.AsBytes(ints);
         return unchecked((int)Crc32C.Calculate(bytes));

@@ -75,6 +75,11 @@ namespace StirlingLabs.Utilities
         {
             if (data.IsEmpty) return new(null);
 
+            ref var firstByteRef = ref MemoryMarshal.GetReference(data);
+            var firstBytePtr = (byte*)Unsafe.AsPointer(ref firstByteRef);
+            if (!PlatformAgnostic.IsMemoryWritable(firstBytePtr))
+                return new((sbyte*)firstBytePtr);
+
             // loose string
             var size = (nuint)data.Length;
             var start = NativeMemory.New<sbyte>(size + 1);

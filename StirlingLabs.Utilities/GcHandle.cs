@@ -27,7 +27,7 @@ public struct GcHandle<T> : IEquatable<GcHandle<T>>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => (T)_handle.Target!;
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        set => SetTarget(value);
+        set => SetTarget(value!);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

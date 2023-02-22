@@ -11,6 +11,7 @@ using ArmCrc32 = System.Runtime.Intrinsics.Arm.Crc32;
 // TODO: move to StirlingLabs.Utilities
 namespace StirlingLabs.Utilities
 {
+    [SuppressMessage("Design", "CA1810", Justification = "Implementation detail")]
     public static class Crc32C
     {
         public const uint Poly = 0x82F63B78u;
@@ -108,6 +109,7 @@ namespace StirlingLabs.Utilities
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [SuppressMessage("Design", "CA1045", Justification = "Implementation detail")]
         public static uint Calculate(uint checksum, ref byte source, nint length)
         {
 #if NET5_0_OR_GREATER

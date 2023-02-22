@@ -10,6 +10,7 @@ using JetBrains.Annotations;
 namespace StirlingLabs.Utilities;
 
 [PublicAPI]
+[SuppressMessage("Design", "CA1724", Justification = "Nope")]
 public static class Common
 {
     public static readonly unsafe bool Is64Bit = sizeof(nint) == 8;
@@ -47,6 +48,7 @@ public static class Common
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [SuppressMessage("Design", "CA1045", Justification = "Implementation detail")]
     public static T OnDemand<T>(ref WeakReference<T>? cache, Func<T> factory)
         where T : class
     {

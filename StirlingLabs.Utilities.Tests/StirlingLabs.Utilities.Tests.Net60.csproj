@@ -5,7 +5,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <Authors>Stirling Labs</Authors>
         <Nullable>enable</Nullable>
-        <LangVersion>10</LangVersion>
+        <LangVersion>11</LangVersion>
         <RuntimeIdentifier>$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
         <RuntimeIdentifier Condition="'$(RuntimeIdentifier)'==''">$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</RuntimeIdentifier>
         <CollectCoverage>true</CollectCoverage>
@@ -37,6 +37,9 @@
             <SetTargetFramework>TargetFramework=net6.0</SetTargetFramework>
         </ProjectReference>
         <ProjectReference Include="..\StirlingLabs.Utilities.Yaml\StirlingLabs.Utilities.Yaml.csproj">
+            <SetTargetFramework>TargetFramework=net6.0</SetTargetFramework>
+        </ProjectReference>
+        <ProjectReference Include="..\StirlingLabs.Utilities.Text\StirlingLabs.Utilities.Text.csproj">
             <SetTargetFramework>TargetFramework=net6.0</SetTargetFramework>
         </ProjectReference>
         <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj">
