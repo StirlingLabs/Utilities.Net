@@ -37,13 +37,15 @@ public static class ICU4X
             if (locale is "" or "und")
                 return (nint)CreateUndefinedLocale();
 
-            Span<byte> bytes = stackalloc byte[locale.Length];
+            var localeLength = locale.Length;
+            Span<byte> bytes = stackalloc byte[localeLength + 1];
             //Encoding.ASCII.GetBytes(locale, bytes);
-            for (var i = 0; i < locale.Length; i++)
+            for (var i = 0; i < localeLength; i++)
                 bytes[i] = (byte)locale[i];
+            bytes[localeLength] = 0;
             fixed (byte* pBytes = bytes)
             {
-                var result = CreateLocaleFromString(pBytes, (nuint)bytes.Length);
+                var result = CreateLocaleFromString(pBytes, (nuint)localeLength);
                 if (result.IsOk)
                     return (nint)result.Ok;
 
@@ -52,9 +54,9 @@ public static class ICU4X
         });
 
     internal static unsafe void* GetCollator(in CollatorOptionsV1 options, string? locale = null)
-        => (void*)Collators.GetOrAdd((locale ?? "", options), CollatorFactory);
-        //=> (void*)CollatorFactory((locale ?? "", options));
-    [MethodImpl(MethodImplOptions.NoInlining|MethodImplOptions.NoOptimization)]
+        => (void*)Collators.GetOrAdd((locale is null or "und" ? "" : locale, options), CollatorFactory);
+
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
     private static unsafe nint CollatorFactory((string, CollatorOptionsV1) compositeKey)
     {
         var (localeStr, options) = compositeKey;
@@ -68,26 +70,26 @@ public static class ICU4X
         if (result.IsOk)
         {
             var collLocale = CollationLocales.GetOrAdd(localeStr, locale);
-            if (collLocale != locale)
+            if (collLocale == locale)
+                return (nint)result.Ok;
+
+            //DestroyLocale((void*)locale);
+            DestroyCollator(result.Ok);
+            locale = collLocale;
+            var writeable = new Writeable(stackalloc byte[8]);
+            LocaleToString((void*)locale, &writeable);
+            var collLocaleStr = Encoding.UTF8.GetString(writeable.Buffer, (int)writeable.Length);
+            if (Collators.TryGetValue((collLocaleStr, options), out var coll))
             {
-                //DestroyLocale((void*)locale);
-                DestroyCollator(result.Ok);
-                locale = collLocale;
-                var writeable = new Writeable(stackalloc byte[8]);
-                LocaleToString((void*)locale, &writeable);
-                var collLocaleStr = Encoding.UTF8.GetString(writeable.Buffer, (int)writeable.Length);
-                if (Collators.TryGetValue((collLocaleStr, options), out var coll))
-                {
-                    result.Ok = (void*)coll;
-                    result.IsOk = true;
-                }
-                else
-                {
-                    result = CreateCollator(provider, (void*)locale, options);
-                }
-                Debug.Assert(result.IsOk);
+                result.Ok = (void*)coll;
+                result.IsOk = true;
             }
-            return (nint)result.Ok;
+            else
+                result = CreateCollator(provider, (void*)locale, options);
+            Debug.Assert(result.IsOk);
+            if (result.IsOk)
+                return (nint)result.Ok;
+            throw new NotImplementedException("Can't create collator!");
         }
         else
         {
@@ -150,52 +152,33 @@ public static class ICU4X
             using var ms = new MemoryStream();
             gzUcldr.CopyTo(ms);
             ms.Position = 0;
-#if NET5_0_OR_GREATER
-            var bytes = GC.AllocateUninitializedArray<byte>((int)ms.Length, pinned: true);
-            fixed (byte* pBytes = bytes)
-            {
-                if (ms.TryGetBuffer(out var buffer))
-                    buffer.AsSpan().CopyTo(bytes);
-                else
-                {
-                    // ReSharper disable once MustUseReturnValue
-                    ms.Read(bytes);
-                }
-
-                return ((nint)pBytes, bytes.Length);
-            }
-#else
             var bytesLength = (int)ms.Length;
-            var pBytes = (byte*)Marshal.AllocCoTaskMem(bytesLength); //NativeMemory.AllocUnsafe(unchecked((nuint)ms.Length));
+            var pBytes = (byte*)NativeMemory.NewUnsafe((nuint)bytesLength);
             var bytes = new Span<byte>(pBytes, bytesLength);
             if (ms.TryGetBuffer(out var buffer))
                 buffer.AsSpan().CopyTo(bytes);
+#if NET5_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
             else
-            {
-#if NETSTANDARD2_1_OR_GREATER
                 // ReSharper disable once MustUseReturnValue
                 ms.Read(bytes);
 #else
+            else
+            {
                 // ReSharper disable once MustUseReturnValue
                 using var umsBytes = new UnmanagedMemoryStream(pBytes, bytes.Length, bytes.Length, FileAccess.Write);
                 ms.WriteTo(umsBytes);
-#endif
             }
-            return ((nint)pBytes, bytes.Length);
 #endif
+            return ((nint)pBytes, bytes.Length);
         }
     }
 
     internal static unsafe CreateResult UcldrDataProvider;
 
     private static unsafe void* Fallbacker;
-
-    private static int _initialized;
-    private static unsafe void Initialize()
+    
+    static unsafe ICU4X()
     {
-        if (Interlocked.CompareExchange(ref _initialized, 1, 0) != 0)
-            return;
-
 #if ICU4X_LOGGING
         InitializeLogger();
 #endif
@@ -280,14 +263,24 @@ public static class ICU4X
     {
         public void* Ok;
         public Error Err => (Error)(int)(nint)Ok;
-        public bool IsOk;
+        private byte _IsOk;
+        public bool IsOk
+        {
+            get => _IsOk != 0;
+            set => _IsOk = (byte)(value ? 0 : 1);
+        }
     }
 
     [StructLayout(LayoutKind.Sequential)]
     internal unsafe struct ErrorResult
     {
         public Error Err;
-        public bool IsOk;
+        private byte _IsOk;
+        public bool IsOk
+        {
+            get => _IsOk != 0;
+            set => _IsOk = (byte)(value ? 0 : 1);
+        }
     }
 
     //[StructLayout(LayoutKind.Sequential)]
@@ -576,14 +569,14 @@ public static class ICU4X
     /// <summary>
     /// <c>ICU4XOrdering ICU4XCollator_compare(const ICU4XCollator* self, const char* left_data, size_t left_len, const char* right_data, size_t right_len);</c>
     /// </summary>
-    [DllImport("icu_capi_cdylib", EntryPoint = "icu_capi_cdylib")]
+    [DllImport("icu_capi_cdylib", EntryPoint = "ICU4XCollator_compare")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.ApplicationDirectory | DllImportSearchPath.AssemblyDirectory)]
     internal static extern unsafe Ordering CompareUtf8(void* self, byte* leftData, nuint leftLen, byte* rightData, nuint rightLen);
 
     /// <summary>
     /// <c>ICU4XOrdering ICU4XCollator_compare_valid_utf8(const ICU4XCollator* self, const char* left_data, size_t left_len, const char* right_data, size_t right_len);</c>
     /// </summary>
-    [DllImport("icu_capi_cdylib", EntryPoint = "icu_capi_cdylib")]
+    [DllImport("icu_capi_cdylib", EntryPoint = "ICU4XCollator_compare_valid_utf8")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.ApplicationDirectory | DllImportSearchPath.AssemblyDirectory)]
     internal static extern unsafe Ordering CompareValidUtf8(void* self, byte* leftData, nuint leftLen, byte* rightData, nuint rightLen);
 
@@ -661,7 +654,6 @@ public static class ICU4X
 
     public static unsafe int Compare(string a, string b, StringComparison mode = StringComparison.CurrentCulture)
     {
-        Initialize();
         void* collator = null;
         switch (mode)
         {
@@ -726,12 +718,113 @@ public static class ICU4X
         fixed (char* pB = b)
             return (int)CompareUtf16(collator, pA, (nuint)a.Length, pB, (nuint)b.Length);
     }
+
+
+    public static unsafe int Compare(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b, StringComparison mode = StringComparison.CurrentCulture)
+    {
+        void* collator = null;
+        switch (mode)
+        {
+            case StringComparison.CurrentCulture:
+                collator = GetCollator(new()
+                {
+                    Strength = CollatorStrength.Auto,
+                    Numeric = CollatorNumeric.Auto,
+                    AlternateHandling = CollatorAlternateHandling.Auto,
+                    BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
+                    CaseFirst = CollatorCaseFirst.LowerFirst,
+                    CaseLevel = CollatorCaseLevel.Auto,
+                    MaxVariable = CollatorMaxVariable.Space
+                }, CultureInfo.CurrentCulture.IetfLanguageTag);
+                break;
+            case StringComparison.CurrentCultureIgnoreCase:
+                collator = GetCollator(new()
+                {
+                    Strength = CollatorStrength.Secondary,
+                    Numeric = CollatorNumeric.Auto,
+                    AlternateHandling = CollatorAlternateHandling.Auto,
+                    BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
+                    CaseFirst = CollatorCaseFirst.LowerFirst,
+                    CaseLevel = CollatorCaseLevel.Off,
+                    MaxVariable = CollatorMaxVariable.Space
+                }, CultureInfo.CurrentCulture.IetfLanguageTag);
+                break;
+            case StringComparison.InvariantCulture:
+                collator = GetCollator(new()
+                {
+                    Strength = CollatorStrength.Auto,
+                    Numeric = CollatorNumeric.Auto,
+                    AlternateHandling = CollatorAlternateHandling.Auto,
+                    BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
+                    CaseFirst = CollatorCaseFirst.Auto,
+                    CaseLevel = CollatorCaseLevel.On,
+                    MaxVariable = CollatorMaxVariable.Space
+                }, CultureInfo.InvariantCulture.IetfLanguageTag);
+                break;
+            case StringComparison.InvariantCultureIgnoreCase:
+                collator = GetCollator(new()
+                {
+                    Strength = CollatorStrength.Secondary,
+                    Numeric = CollatorNumeric.Auto,
+                    AlternateHandling = CollatorAlternateHandling.Auto,
+                    BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
+                    CaseFirst = CollatorCaseFirst.Auto,
+                    CaseLevel = CollatorCaseLevel.Off,
+                    MaxVariable = CollatorMaxVariable.Space
+                }, CultureInfo.InvariantCulture.IetfLanguageTag);
+                break;
+            case StringComparison.Ordinal:
+                return a.SequenceCompareTo(b);
+            case StringComparison.OrdinalIgnoreCase: {
+                return CompareOrdinalIgnoreCase(a, b);
+            }
+
+        }
+        if (collator is null)
+            throw new InvalidOperationException("Can't get collator for current culture!");
+
+        fixed (byte* pA = a)
+        fixed (byte* pB = b)
+            return (int)CompareUtf8(collator, pA, (nuint)a.Length, pB, (nuint)b.Length);
+    }
+    private static int CompareOrdinalIgnoreCase(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b)
+    {
+        var l = Math.Min(a.Length, b.Length);
+        ref var aStart = ref Unsafe.AsRef(in a[0]);
+        ref var bStart = ref Unsafe.AsRef(in b[0]);
+        const int capDiff = 'A' - 'a';
+        for (var i = 0; i < l; ++i)
+        {
+            ref var rA = ref Unsafe.Add(ref aStart, i);
+            ref var rB = ref Unsafe.Add(ref bStart, i);
+
+            var chA = rA;
+            var chB = rB;
+
+            if (chA == chB)
+                continue;
+
+            if (chA is >= (byte)'a' and <= (byte)'z')
+                chA = (byte)(chA - capDiff);
+            if (chB is >= (byte)'a' and <= (byte)'z')
+                chB = (byte)(chB - capDiff);
+            if (chA == chB)
+                continue;
+
+            return chA > chB ? 1 : -1;
+        }
+
+        return 0;
+    }
+
     public static unsafe int Compare(string a, string b, bool caseSensitive, CultureInfo? culture = null)
+        => Compare(a, b, caseSensitive, culture?.IetfLanguageTag);
+
+    public static unsafe int Compare(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b, bool caseSensitive, CultureInfo? culture = null)
         => Compare(a, b, caseSensitive, culture?.IetfLanguageTag);
 
     public static unsafe int Compare(string a, string b, bool caseSensitive, string? locale)
     {
-        Initialize();
         var collator = caseSensitive switch
         {
             true => GetCollator(new()
@@ -761,5 +854,38 @@ public static class ICU4X
         fixed (char* pA = a)
         fixed (char* pB = b)
             return (int)CompareUtf16(collator, pA, (nuint)a.Length, pB, (nuint)b.Length);
+    }
+
+    public static unsafe int Compare(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b, bool caseSensitive, string? locale)
+    {
+        var collator = caseSensitive switch
+        {
+            true => GetCollator(new()
+            {
+                Strength = CollatorStrength.Auto,
+                Numeric = CollatorNumeric.Auto,
+                AlternateHandling = CollatorAlternateHandling.Auto,
+                BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
+                CaseFirst = CollatorCaseFirst.Auto,
+                CaseLevel = CollatorCaseLevel.On,
+                MaxVariable = CollatorMaxVariable.Space
+            }, locale),
+            false => GetCollator(new()
+            {
+                Strength = CollatorStrength.Auto,
+                Numeric = CollatorNumeric.Auto,
+                AlternateHandling = CollatorAlternateHandling.Auto,
+                BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
+                CaseFirst = CollatorCaseFirst.Auto,
+                CaseLevel = CollatorCaseLevel.Off,
+                MaxVariable = CollatorMaxVariable.Space
+            }, locale)
+        };
+        if (collator is null)
+            throw new InvalidOperationException("Can't get collator for current culture!");
+
+        fixed (byte* pA = a)
+        fixed (byte* pB = b)
+            return (int)CompareUtf8(collator, pA, (nuint)a.Length, pB, (nuint)b.Length);
     }
 }
