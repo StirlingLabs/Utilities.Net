@@ -263,61 +263,44 @@ public static partial class ICU4X
     }
 
     private static readonly (nint Pointer, int Length) Ucldr = LoadUcldr();
-
-    private static MemoryMappedFile _mmfPlainUcldr;
-    private static MemoryMappedViewAccessor _mmvaPlainUcldr;
     private static unsafe (nint Pointer, int Length) LoadUcldr()
     {
 
-        /*var plainFileInfo = new FileInfo("ucldr");
-        if (plainFileInfo.Exists)
-        {
+        var gzFileInfo = new FileInfo(UcldrGzFileName);
 
-            _mmfPlainUcldr = MemoryMappedFile.CreateFromFile(plainFileInfo.FullName, FileMode.Open, "ucldr.gz", 0, MemoryMappedFileAccess.Read);
-            _mmvaPlainUcldr = _mmfPlainUcldr.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read);
-            var ucldrLength = plainFileInfo.Length;
-            byte* pUcldr = null;
-            _mmvaPlainUcldr.SafeMemoryMappedViewHandle.AcquirePointer(ref pUcldr);
-            return ((nint)pUcldr, (int)ucldrLength);
-        }
-        else*/
-        {
-            var gzFileInfo = new FileInfo(UcldrGzFileName);
+        if (!gzFileInfo.Exists)
+            throw new FileNotFoundException(UcldrGzFileName + " missing!");
 
-            if (!gzFileInfo.Exists)
-                throw new FileNotFoundException(UcldrGzFileName + " missing!");
-
-            using var mmf =
-                MemoryMappedFile.CreateFromFile(gzFileInfo.FullName, FileMode.Open, UcldrGzFileName, 0, MemoryMappedFileAccess.Read);
-            using var accessor = mmf.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read);
-            var gzUcldrLength = gzFileInfo.Length;
-            byte* pGzUcldr = null;
-            accessor.SafeMemoryMappedViewHandle.AcquirePointer(ref pGzUcldr);
-            //var gzUcldr = new ReadOnlySpan<byte>(pGzUcldr, (int)length);
-            using var ums = new UnmanagedMemoryStream(pGzUcldr, gzUcldrLength, gzUcldrLength, FileAccess.Read);
-            using var gzUcldr = new GZipStream(ums, CompressionMode.Decompress);
-            using var ms = new MemoryStream();
-            gzUcldr.CopyTo(ms);
-            ms.Position = 0;
-            var bytesLength = (int)ms.Length;
-            var pBytes = (byte*)NativeMemory.NewUnsafe((nuint)bytesLength);
-            var bytes = new Span<byte>(pBytes, bytesLength);
-            if (ms.TryGetBuffer(out var buffer))
-                buffer.AsSpan().CopyTo(bytes);
+        using var mmf =
+            MemoryMappedFile.CreateFromFile(gzFileInfo.FullName, FileMode.Open, UcldrGzFileName, 0, MemoryMappedFileAccess.Read);
+        using var accessor = mmf.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read);
+        var gzUcldrLength = gzFileInfo.Length;
+        byte* pGzUcldr = null;
+        accessor.SafeMemoryMappedViewHandle.AcquirePointer(ref pGzUcldr);
+        //var gzUcldr = new ReadOnlySpan<byte>(pGzUcldr, (int)length);
+        using var ums = new UnmanagedMemoryStream(pGzUcldr, gzUcldrLength, gzUcldrLength, FileAccess.Read);
+        using var gzUcldr = new GZipStream(ums, CompressionMode.Decompress);
+        using var ms = new MemoryStream();
+        gzUcldr.CopyTo(ms);
+        ms.Position = 0;
+        var bytesLength = (int)ms.Length;
+        var pBytes = (byte*)NativeMemory.NewUnsafe((nuint)bytesLength);
+        var bytes = new Span<byte>(pBytes, bytesLength);
+        if (ms.TryGetBuffer(out var buffer))
+            buffer.AsSpan().CopyTo(bytes);
 #if NET5_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
-            else
-                // ReSharper disable once MustUseReturnValue
-                ms.Read(bytes);
+        else
+            // ReSharper disable once MustUseReturnValue
+            ms.Read(bytes);
 #else
-            else
-            {
-                // ReSharper disable once MustUseReturnValue
-                using var umsBytes = new UnmanagedMemoryStream(pBytes, bytes.Length, bytes.Length, FileAccess.Write);
-                ms.WriteTo(umsBytes);
-            }
-#endif
-            return ((nint)pBytes, bytes.Length);
+        else
+        {
+            // ReSharper disable once MustUseReturnValue
+            using var umsBytes = new UnmanagedMemoryStream(pBytes, bytes.Length, bytes.Length, FileAccess.Write);
+            ms.WriteTo(umsBytes);
         }
+#endif
+        return ((nint)pBytes, bytes.Length);
     }
 
     internal static unsafe CreateResult UcldrDataProvider;
