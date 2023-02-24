@@ -7,13 +7,46 @@ using System.IO.MemoryMappedFiles;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using NativeMemory = StirlingLabs.Native.NativeMemory;
 
 namespace StirlingLabs.Utilities.Text;
 
 [SuppressMessage("Performance", "CA1810:Initialize reference type static fields inline")]
-public static class ICU4X
+public static partial class ICU4X
 {
+    [RegexPattern]
+    private const string LocaleRegexStr = /*language=regex*/
+        """
+        ^(?<grandfathered>
+            (?:en-GB-oed
+            |i-(?:ami|bnn|default|enochian|hak|klingon|lux|mingo|navajo|pwn|t(?:a[oy]|su))
+            |sgn-(?:BE-(?:FR|NL)|CH-DE))
+            |(?:art-lojban|cel-gaulish|no-(?:bok|nyn)|zh-(?:guoyu|hakka|min(?:-nan)?|xiang)))
+        |(?:
+            (?<language>
+                (?:[A-Za-z]{2,3}(?:-(?<extlang>[A-Za-z]{3}(?:-[A-Za-z]{3}){0,2}))?)
+                |[A-Za-z]{4,8})
+            (?:-(?<script>[A-Za-z]{4}))?
+            (?:-(?<region>[A-Za-z]{2}|[0-9]{3}))?
+            (?:-(?<variant>[A-Za-z0-9]{5,8}|[0-9][A-Za-z0-9]{3}))*
+            (?:-(?<extension>[0-9A-WY-Za-wy-z](?:-[A-Za-z0-9]{2,8})+))*
+        )
+        (?:-(?<privateUse>x(?:-[A-Za-z0-9]{1,8})+))?$
+        """;
+
+    private const string UcldrGzFileName = "ucldr.postcard.gz";
+
+#if NET7_0_OR_GREATER
+    [GeneratedRegex(LocaleRegexStr, RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace)]
+    private static partial Regex GetLocaleRegex();
+    private static Regex LocaleRegex => GetLocaleRegex();
+#else
+    private static readonly Regex LocaleRegex = new Regex(LocaleRegexStr,
+        RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnorePatternWhitespace);
+#endif
+
     internal unsafe struct Ptr<T> where T : unmanaged
     {
         public readonly T* Value;
@@ -60,6 +93,119 @@ public static class ICU4X
     private static unsafe nint CollatorFactory((string, CollatorOptionsV1) compositeKey)
     {
         var (localeStr, options) = compositeKey;
+
+        var optionsBackup = options;
+
+        var localeMatch = LocaleRegex.Match(localeStr);
+        if (localeMatch.Success)
+        {
+
+#if !NETSTANDARD2_0
+            var localeChars = (ReadOnlySpan<char>)localeStr;
+#else
+            var localeChars = localeStr;
+#endif
+            foreach (Capture extCap in localeMatch.Groups["extension"].Captures)
+            {
+#if !NETSTANDARD2_0
+                var extCapChars = localeChars.Slice(extCap.Index, extCap.Length);
+#else
+                var extCapChars = localeChars.Substring(extCap.Index, extCap.Length);
+#endif
+
+                if (extCapChars.StartsWith("u-", StringComparison.Ordinal))
+                {
+                    var unicodeExt = extCapChars[2..];
+
+                    if (unicodeExt.StartsWith("ks-", StringComparison.Ordinal))
+                    {
+                        var ksExt = unicodeExt[3..];
+                        if (ksExt.StartsWith("level", StringComparison.Ordinal))
+                        {
+                            var ksLevel = ksExt[5..];
+                            if (ksLevel.Length != 1)
+                                continue;
+
+                            var ksLevelChar = ksLevel[0];
+                            if (ksLevelChar is < '1' or > '4') continue;
+                            var ksLevelInt = ksLevelChar - '0';
+                            options = options with { Strength = (CollatorStrength)ksLevelInt };
+                        }
+                        else if (ksExt.Equals("identic", StringComparison.Ordinal))
+                            options = options with { Strength = CollatorStrength.Identical };
+                        else if (ksExt.Equals("primary", StringComparison.Ordinal))
+                            options = options with { Strength = CollatorStrength.Primary };
+                        else if (ksExt.Equals("secondary", StringComparison.Ordinal))
+                            options = options with { Strength = CollatorStrength.Secondary };
+                        else if (ksExt.Equals("tertiary", StringComparison.Ordinal))
+                            options = options with { Strength = CollatorStrength.Tertiary };
+                        else if (ksExt.Equals("quaternary", StringComparison.Ordinal))
+                            options = options with { Strength = CollatorStrength.Quaternary };
+                    }
+                    else if (unicodeExt.StartsWith("ka-", StringComparison.Ordinal))
+                    {
+                        var kaExt = unicodeExt[3..];
+                        if (kaExt.Equals("noignore", StringComparison.Ordinal))
+                            options = options with { AlternateHandling = CollatorAlternateHandling.NonIgnorable };
+                        else if (kaExt.Equals("shifted", StringComparison.Ordinal))
+                            options = options with { AlternateHandling = CollatorAlternateHandling.Shifted };
+                    }
+                    else if (unicodeExt.StartsWith("kc-", StringComparison.Ordinal))
+                    {
+                        var kcExt = unicodeExt[3..];
+                        if (kcExt.Equals("true", StringComparison.Ordinal))
+                            options = options with { CaseLevel = CollatorCaseLevel.On };
+                        else if (kcExt.Equals("false", StringComparison.Ordinal))
+                            options = options with { CaseLevel = CollatorCaseLevel.Off };
+                    }
+                    else if (unicodeExt.StartsWith("kf-", StringComparison.Ordinal))
+                    {
+                        var kfExt = unicodeExt[3..];
+                        if (kfExt.Equals("upper", StringComparison.Ordinal))
+                            options = options with { CaseFirst = CollatorCaseFirst.UpperFirst };
+                        else if (kfExt.Equals("lower", StringComparison.Ordinal))
+                            options = options with { CaseFirst = CollatorCaseFirst.LowerFirst };
+                        else if (kfExt.Equals("false", StringComparison.Ordinal))
+                            options = options with { CaseFirst = CollatorCaseFirst.Off };
+                    }
+                    else if (unicodeExt.StartsWith("kb-", StringComparison.Ordinal))
+                    {
+                        var kbExt = unicodeExt[3..];
+                        if (kbExt.Equals("true", StringComparison.Ordinal))
+                            options = options with { BackwardSecondLevel = CollatorBackwardSecondLevel.On };
+                        else if (kbExt.Equals("false", StringComparison.Ordinal))
+                            options = options with { BackwardSecondLevel = CollatorBackwardSecondLevel.Off };
+                    }
+                    else if (unicodeExt.StartsWith("kn-", StringComparison.Ordinal))
+                    {
+                        var knExt = unicodeExt[3..];
+                        if (knExt.Equals("true", StringComparison.Ordinal))
+                            options = options with { Numeric = CollatorNumeric.On };
+                        else if (knExt.Equals("false", StringComparison.Ordinal))
+                            options = options with { Numeric = CollatorNumeric.Off };
+                    }
+                    else if (unicodeExt.StartsWith("kv-", StringComparison.Ordinal))
+                    {
+                        var kvExt = unicodeExt[3..];
+                        if (kvExt.Equals("space", StringComparison.Ordinal))
+                            options = options with { MaxVariable = CollatorMaxVariable.Space };
+                        else if (kvExt.Equals("punct", StringComparison.Ordinal))
+                            options = options with { MaxVariable = CollatorMaxVariable.Punctuation };
+                        else if (kvExt.Equals("symbol", StringComparison.Ordinal))
+                            options = options with { MaxVariable = CollatorMaxVariable.Symbol };
+                        else if (kvExt.Equals("currency", StringComparison.Ordinal))
+                            options = options with { MaxVariable = CollatorMaxVariable.Currency };
+                    }
+                }
+            }
+
+            var optionsSize = Unsafe.SizeOf<CollatorOptionsV1>();
+            var optionsSpan = new ReadOnlySpan<byte>(Unsafe.AsPointer(ref options), optionsSize);
+            var optionsBackupSpan = new ReadOnlySpan<byte>(Unsafe.AsPointer(ref optionsBackup), optionsSize);
+            if (!optionsSpan.SequenceEqual(optionsBackupSpan))
+                return (nint)GetCollator(options, localeStr);
+        }
+
         if (!CollationLocales.TryGetValue(localeStr, out var locale))
             locale = (nint)GetLocale(localeStr);
 
@@ -123,7 +269,7 @@ public static class ICU4X
     private static unsafe (nint Pointer, int Length) LoadUcldr()
     {
 
-        var plainFileInfo = new FileInfo("ucldr");
+        /*var plainFileInfo = new FileInfo("ucldr");
         if (plainFileInfo.Exists)
         {
 
@@ -134,14 +280,15 @@ public static class ICU4X
             _mmvaPlainUcldr.SafeMemoryMappedViewHandle.AcquirePointer(ref pUcldr);
             return ((nint)pUcldr, (int)ucldrLength);
         }
-        else
+        else*/
         {
-            var gzFileInfo = new FileInfo("ucldr.gz");
+            var gzFileInfo = new FileInfo(UcldrGzFileName);
 
             if (!gzFileInfo.Exists)
-                throw new FileNotFoundException("ucldr.gz missing!");
+                throw new FileNotFoundException(UcldrGzFileName + " missing!");
 
-            using var mmf = MemoryMappedFile.CreateFromFile(gzFileInfo.FullName, FileMode.Open, "ucldr.gz", 0, MemoryMappedFileAccess.Read);
+            using var mmf =
+                MemoryMappedFile.CreateFromFile(gzFileInfo.FullName, FileMode.Open, UcldrGzFileName, 0, MemoryMappedFileAccess.Read);
             using var accessor = mmf.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read);
             var gzUcldrLength = gzFileInfo.Length;
             byte* pGzUcldr = null;
@@ -176,11 +323,11 @@ public static class ICU4X
     internal static unsafe CreateResult UcldrDataProvider;
 
     private static unsafe void* Fallbacker;
-    
+
     static unsafe ICU4X()
     {
 #if ICU4X_LOGGING
-        InitializeLogger();
+InitializeLogger();
 #endif
 
         var blobLen = (nuint)Ucldr.Length;
@@ -264,6 +411,7 @@ public static class ICU4X
         public void* Ok;
         public Error Err => (Error)(int)(nint)Ok;
         private byte _IsOk;
+
         public bool IsOk
         {
             get => _IsOk != 0;
@@ -276,6 +424,7 @@ public static class ICU4X
     {
         public Error Err;
         private byte _IsOk;
+
         public bool IsOk
         {
             get => _IsOk != 0;
@@ -283,7 +432,7 @@ public static class ICU4X
         }
     }
 
-    //[StructLayout(LayoutKind.Sequential)]
+//[StructLayout(LayoutKind.Sequential)]
     internal struct CollatorOptionsV1
     {
         public CollatorStrength Strength;
@@ -601,12 +750,12 @@ public static class ICU4X
     internal static extern unsafe void DestroyLocale(void* self);
 
 #if ICU4X_LOGGING
-    /// <summary>
-    /// <c>bool ICU4XLogger_init_simple_logger()</c>
-    /// </summary>
-    [DllImport("icu_capi_cdylib", EntryPoint = "ICU4XLogger_init_simple_logger")]
-    [DefaultDllImportSearchPaths(DllImportSearchPath.ApplicationDirectory | DllImportSearchPath.AssemblyDirectory)]
-    internal static extern unsafe bool InitializeLogger();
+/// <summary>
+/// <c>bool ICU4XLogger_init_simple_logger()</c>
+/// </summary>
+[DllImport("icu_capi_cdylib", EntryPoint = "ICU4XLogger_init_simple_logger")]
+[DefaultDllImportSearchPaths(DllImportSearchPath.ApplicationDirectory | DllImportSearchPath.AssemblyDirectory)]
+internal static extern unsafe bool InitializeLogger();
 #endif
 
     /// <summary>
@@ -660,12 +809,12 @@ public static class ICU4X
             case StringComparison.CurrentCulture:
                 collator = GetCollator(new()
                 {
-                    Strength = CollatorStrength.Auto,
+                    Strength = CollatorStrength.Secondary,
                     Numeric = CollatorNumeric.Auto,
                     AlternateHandling = CollatorAlternateHandling.Auto,
                     BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
-                    CaseFirst = CollatorCaseFirst.LowerFirst,
-                    CaseLevel = CollatorCaseLevel.Auto,
+                    CaseFirst = CollatorCaseFirst.Auto,
+                    CaseLevel = CollatorCaseLevel.On,
                     MaxVariable = CollatorMaxVariable.Space
                 }, CultureInfo.CurrentCulture.IetfLanguageTag);
                 break;
@@ -676,7 +825,7 @@ public static class ICU4X
                     Numeric = CollatorNumeric.Auto,
                     AlternateHandling = CollatorAlternateHandling.Auto,
                     BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
-                    CaseFirst = CollatorCaseFirst.LowerFirst,
+                    CaseFirst = CollatorCaseFirst.Auto,
                     CaseLevel = CollatorCaseLevel.Off,
                     MaxVariable = CollatorMaxVariable.Space
                 }, CultureInfo.CurrentCulture.IetfLanguageTag);
@@ -684,7 +833,7 @@ public static class ICU4X
             case StringComparison.InvariantCulture:
                 collator = GetCollator(new()
                 {
-                    Strength = CollatorStrength.Auto,
+                    Strength = CollatorStrength.Secondary,
                     Numeric = CollatorNumeric.Auto,
                     AlternateHandling = CollatorAlternateHandling.Auto,
                     BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
@@ -728,12 +877,12 @@ public static class ICU4X
             case StringComparison.CurrentCulture:
                 collator = GetCollator(new()
                 {
-                    Strength = CollatorStrength.Auto,
+                    Strength = CollatorStrength.Secondary,
                     Numeric = CollatorNumeric.Auto,
                     AlternateHandling = CollatorAlternateHandling.Auto,
                     BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
-                    CaseFirst = CollatorCaseFirst.LowerFirst,
-                    CaseLevel = CollatorCaseLevel.Auto,
+                    CaseFirst = CollatorCaseFirst.Auto,
+                    CaseLevel = CollatorCaseLevel.On,
                     MaxVariable = CollatorMaxVariable.Space
                 }, CultureInfo.CurrentCulture.IetfLanguageTag);
                 break;
@@ -744,7 +893,7 @@ public static class ICU4X
                     Numeric = CollatorNumeric.Auto,
                     AlternateHandling = CollatorAlternateHandling.Auto,
                     BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
-                    CaseFirst = CollatorCaseFirst.LowerFirst,
+                    CaseFirst = CollatorCaseFirst.Auto,
                     CaseLevel = CollatorCaseLevel.Off,
                     MaxVariable = CollatorMaxVariable.Space
                 }, CultureInfo.CurrentCulture.IetfLanguageTag);
@@ -752,7 +901,7 @@ public static class ICU4X
             case StringComparison.InvariantCulture:
                 collator = GetCollator(new()
                 {
-                    Strength = CollatorStrength.Auto,
+                    Strength = CollatorStrength.Secondary,
                     Numeric = CollatorNumeric.Auto,
                     AlternateHandling = CollatorAlternateHandling.Auto,
                     BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
@@ -818,36 +967,24 @@ public static class ICU4X
     }
 
     public static unsafe int Compare(string a, string b, bool caseSensitive, CultureInfo? culture = null)
-        => Compare(a, b, caseSensitive, culture?.IetfLanguageTag);
+        => Compare(a, b, culture?.IetfLanguageTag, caseSensitive);
 
     public static unsafe int Compare(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b, bool caseSensitive, CultureInfo? culture = null)
-        => Compare(a, b, caseSensitive, culture?.IetfLanguageTag);
+        => Compare(a, b, culture?.IetfLanguageTag, caseSensitive);
 
-    public static unsafe int Compare(string a, string b, bool caseSensitive, string? locale)
+    public static unsafe int Compare(string a, string b, string? locale, bool caseInsensitive = false)
     {
-        var collator = caseSensitive switch
+        var collator = GetCollator(new()
         {
-            true => GetCollator(new()
-            {
-                Strength = CollatorStrength.Auto,
-                Numeric = CollatorNumeric.Auto,
-                AlternateHandling = CollatorAlternateHandling.Auto,
-                BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
-                CaseFirst = CollatorCaseFirst.Auto,
-                CaseLevel = CollatorCaseLevel.On,
-                MaxVariable = CollatorMaxVariable.Space
-            }, locale),
-            false => GetCollator(new()
-            {
-                Strength = CollatorStrength.Auto,
-                Numeric = CollatorNumeric.Auto,
-                AlternateHandling = CollatorAlternateHandling.Auto,
-                BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
-                CaseFirst = CollatorCaseFirst.Auto,
-                CaseLevel = CollatorCaseLevel.Off,
-                MaxVariable = CollatorMaxVariable.Space
-            }, locale)
-        };
+            Strength = CollatorStrength.Auto,
+            Numeric = CollatorNumeric.Auto,
+            AlternateHandling = CollatorAlternateHandling.Auto,
+            BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
+            CaseFirst = CollatorCaseFirst.Auto,
+            CaseLevel = caseInsensitive ? CollatorCaseLevel.Off : CollatorCaseLevel.On,
+            MaxVariable = CollatorMaxVariable.Space
+        }, locale);
+
         if (collator is null)
             throw new InvalidOperationException("Can't get collator for current culture!");
 
@@ -856,31 +993,19 @@ public static class ICU4X
             return (int)CompareUtf16(collator, pA, (nuint)a.Length, pB, (nuint)b.Length);
     }
 
-    public static unsafe int Compare(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b, bool caseSensitive, string? locale)
+    public static unsafe int Compare(ReadOnlySpan<byte> a, ReadOnlySpan<byte> b, string? locale, bool caseInsensitive = false)
     {
-        var collator = caseSensitive switch
+        var collator = GetCollator(new()
         {
-            true => GetCollator(new()
-            {
-                Strength = CollatorStrength.Auto,
-                Numeric = CollatorNumeric.Auto,
-                AlternateHandling = CollatorAlternateHandling.Auto,
-                BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
-                CaseFirst = CollatorCaseFirst.Auto,
-                CaseLevel = CollatorCaseLevel.On,
-                MaxVariable = CollatorMaxVariable.Space
-            }, locale),
-            false => GetCollator(new()
-            {
-                Strength = CollatorStrength.Auto,
-                Numeric = CollatorNumeric.Auto,
-                AlternateHandling = CollatorAlternateHandling.Auto,
-                BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
-                CaseFirst = CollatorCaseFirst.Auto,
-                CaseLevel = CollatorCaseLevel.Off,
-                MaxVariable = CollatorMaxVariable.Space
-            }, locale)
-        };
+            Strength = CollatorStrength.Auto,
+            Numeric = CollatorNumeric.Auto,
+            AlternateHandling = CollatorAlternateHandling.Auto,
+            BackwardSecondLevel = CollatorBackwardSecondLevel.Auto,
+            CaseFirst = CollatorCaseFirst.Auto,
+            CaseLevel = caseInsensitive ? CollatorCaseLevel.Off : CollatorCaseLevel.On,
+            MaxVariable = CollatorMaxVariable.Space
+        }, locale);
+
         if (collator is null)
             throw new InvalidOperationException("Can't get collator for current culture!");
 
