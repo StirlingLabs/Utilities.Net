@@ -130,8 +130,7 @@ public static class TextTests
         var elapsed = new TimeSpan(Stopwatch.GetTimestamp() - started);
         Console.WriteLine($"Elapsed: {elapsed.TotalMilliseconds}ms ({(elapsed / c).Ticks / 10d}us each)");
     }
-
-
+    
     [Test]
     public static void CompareUtf8StringsBasicInvariantCulture()
     {
