@@ -11,6 +11,9 @@ public static class SystemFingerprintTests
     [Test]
     public static void SelfConsistentSystemFingerprintTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+        
         var a = SystemFingerprint.GetSystemFingerprint();
         
         a.Should().Be(SystemFingerprint.GetSystemFingerprint());
@@ -27,6 +30,9 @@ public static class SystemFingerprintTests
     [Test]
     public static void SelfConsistentNetworkFingerprintTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         var a = SystemFingerprint.GetNetworkFingerprint();
         
         a.Should().Be(SystemFingerprint.GetNetworkFingerprint());

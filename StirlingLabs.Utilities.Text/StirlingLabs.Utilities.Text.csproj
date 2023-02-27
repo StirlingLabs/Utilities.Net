@@ -10,16 +10,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" PrivateAssets="all" />
-      <PackageReference Include="StirlingLabs.icu4x.runtime.linux-x64" Version="1.1.0.1" />
-      <PackageReference Include="StirlingLabs.icu4x.runtime.osx" Version="1.1.0.1" />
-      <PackageReference Include="StirlingLabs.icu4x.runtime.win-x64" Version="1.1.0.1" />
-      <PackageReference Include="StirlingLabs.icu4x.ucldr" Version="23.3.4" />
+        <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" PrivateAssets="all" />
+        <PackageReference Include="StirlingLabs.icu4x.runtime.linux-x64" Version="1.1.0.1" />
+        <PackageReference Include="StirlingLabs.icu4x.runtime.osx" Version="1.1.0.1" />
+        <PackageReference Include="StirlingLabs.icu4x.runtime.win-x64" Version="1.1.0.1" />
+        <PackageReference Include="StirlingLabs.icu4x.ucldr" Version="23.3.4" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.csproj" />
-      <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj" />
+        <ProjectReference Include="..\StirlingLabs.Utilities.Magic\StirlingLabs.Utilities.Magic.csproj" />
+        <ProjectReference Include="..\StirlingLabs.Utilities\StirlingLabs.Utilities.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -310,7 +310,14 @@ public static partial class ICU4X
     static unsafe ICU4X()
     {
 #if ICU4X_LOGGING
-InitializeLogger();
+        try
+        {
+            InitializeLogger();
+        }
+        catch
+        {
+            // ignored; debug build with release packages has no logger
+        }
 #endif
 
         var blobLen = (nuint)Ucldr.Length;

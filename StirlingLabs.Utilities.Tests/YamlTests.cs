@@ -79,7 +79,10 @@ public class YamlTests
 
         dynamic actual = JsonNetSerializer.Deserialize(new StringReader(actualJson!), k.GetType())!;
 
-        ((object)((IList<JsonMe>)actual.a)).Should().Be((IList<JsonMe>)expected.a);
+        var actualList = (IList<JsonMe>)actual.a;
+        var expectedList = (IList<JsonMe>)expected.a;
+        
+        actualList.Should().Equal(expectedList);
 
         Console.WriteLine($"ToJson w/ Serializer: {json1}, ToJson w/ YamlToJsonVisitor: {json2}");
     }
