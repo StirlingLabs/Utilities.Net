@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using FluentAssertions;
+using NuGet.Versioning;
 using NUnit.Framework;
 using StirlingLabs.Utilities.Assertions;
 
@@ -63,39 +65,39 @@ public static class SecurityTests
                 }
             };
 #if !DEBUG
-                var lottaA = new byte[1000000];
-                Unsafe.InitBlock(ref lottaA[0], (byte)'a', 1000000);
-                yield return new object[]
-                {
-                    // ReSharper disable once StringLiteralTypo
-                    lottaA,
-                    new byte[]
-                    {
-                        0x5c, 0x88, 0x75, 0xae, 0x47, 0x4a, 0x36, 0x34,
-                        0xba, 0x4f, 0xd5, 0x5e, 0xc8, 0x5b, 0xff, 0xd6,
-                        0x61, 0xf3, 0x2a, 0xca, 0x75, 0xc6, 0xd6, 0x99,
-                        0xd0, 0xcd, 0xcb, 0x6c, 0x11, 0x58, 0x91, 0xc1
-                    }
-                };
+            var lottaA = new byte[1000000];
+            Unsafe.InitBlock(ref lottaA[0], (byte)'a', 1000000);
+            yield return new object[]
+            {
                 // ReSharper disable once StringLiteralTypo
-                var derp = Encoding.UTF8.GetBytes("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmno");
-                var derpLen = derp.Length;
-                var arghLen = derpLen * 16777216;
-                var argh = new byte[arghLen];
-                for (var i = 0; i < arghLen; ++i)
-                    argh[i] = derp[i % derpLen];
-                yield return new object[]
+                lottaA,
+                new byte[]
                 {
-                    // ReSharper disable once StringLiteralTypo
-                    argh,
-                    new byte[]
-                    {
-                        0xec, 0xbb, 0xc4, 0x2c, 0xbf, 0x29, 0x66, 0x03,
-                        0xac, 0xb2, 0xc6, 0xbc, 0x04, 0x10, 0xef, 0x43,
-                        0x78, 0xba, 0xfb, 0x24, 0xb7, 0x10, 0x35, 0x7f,
-                        0x12, 0xdf, 0x60, 0x77, 0x58, 0xb3, 0x3e, 0x2b
-                    }
-                };
+                    0x5c, 0x88, 0x75, 0xae, 0x47, 0x4a, 0x36, 0x34,
+                    0xba, 0x4f, 0xd5, 0x5e, 0xc8, 0x5b, 0xff, 0xd6,
+                    0x61, 0xf3, 0x2a, 0xca, 0x75, 0xc6, 0xd6, 0x99,
+                    0xd0, 0xcd, 0xcb, 0x6c, 0x11, 0x58, 0x91, 0xc1
+                }
+            };
+            // ReSharper disable once StringLiteralTypo
+            var derp = Encoding.UTF8.GetBytes("abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmno");
+            var derpLen = derp.Length;
+            var arghLen = derpLen * 16777216;
+            var argh = new byte[arghLen];
+            for (var i = 0; i < arghLen; ++i)
+                argh[i] = derp[i % derpLen];
+            yield return new object[]
+            {
+                // ReSharper disable once StringLiteralTypo
+                argh,
+                new byte[]
+                {
+                    0xec, 0xbb, 0xc4, 0x2c, 0xbf, 0x29, 0x66, 0x03,
+                    0xac, 0xb2, 0xc6, 0xbc, 0x04, 0x10, 0xef, 0x43,
+                    0x78, 0xba, 0xfb, 0x24, 0xb7, 0x10, 0x35, 0x7f,
+                    0x12, 0xdf, 0x60, 0x77, 0x58, 0xb3, 0x3e, 0x2b
+                }
+            };
 #endif
         }
     }
@@ -104,6 +106,8 @@ public static class SecurityTests
     [TestCaseSource(nameof(GetHashSource))]
     public static void GetHash(byte[] message, byte[] digest)
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
 
         var actual = Security.GetHash(message);
 
@@ -118,6 +122,9 @@ public static class SecurityTests
     [Test]
     public static void RngDataTest1()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<byte> span = stackalloc byte[32];
 
         Security.FillWithNonZeroRandomData(span);
@@ -132,6 +139,9 @@ public static class SecurityTests
     [Test]
     public static void RngDataTest2()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<byte> span1 = stackalloc byte[10240];
         Span<byte> span2 = stackalloc byte[10240];
         Span<byte> span3 = stackalloc byte[10240];

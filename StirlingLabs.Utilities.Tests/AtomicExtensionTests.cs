@@ -15,6 +15,9 @@ public class AtomicExtensionTests
     [Test]
     public void Atomic32IncSignedTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<int> span = stackalloc int[1];
 
         Security.FillWithNonZeroRandomData(MemoryMarshal.AsBytes(span));
@@ -41,6 +44,9 @@ public class AtomicExtensionTests
     [Test]
     public void Atomic32IncUnsignedTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<uint> span = stackalloc uint[1];
 
         Security.FillWithNonZeroRandomData(MemoryMarshal.AsBytes(span));
@@ -67,6 +73,9 @@ public class AtomicExtensionTests
     [Test]
     public void Atomic32DecSignedTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<int> span = stackalloc int[1];
 
         Security.FillWithNonZeroRandomData(MemoryMarshal.AsBytes(span));
@@ -93,6 +102,9 @@ public class AtomicExtensionTests
     [Test]
     public void Atomic32DecUnsignedTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<uint> span = stackalloc uint[1];
 
         Security.FillWithNonZeroRandomData(MemoryMarshal.AsBytes(span));
@@ -119,6 +131,9 @@ public class AtomicExtensionTests
     [Test]
     public void Atomic64IncSignedTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<long> span = stackalloc long[1];
 
         Security.FillWithNonZeroRandomData(MemoryMarshal.AsBytes(span));
@@ -145,6 +160,9 @@ public class AtomicExtensionTests
     [Test]
     public void Atomic64IncUnsignedTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<ulong> span = stackalloc ulong[1];
 
         Security.FillWithNonZeroRandomData(MemoryMarshal.AsBytes(span));
@@ -171,6 +189,9 @@ public class AtomicExtensionTests
     [Test]
     public void Atomic64DecSignedTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<long> span = stackalloc long[1];
 
         Security.FillWithNonZeroRandomData(MemoryMarshal.AsBytes(span));
@@ -197,6 +218,9 @@ public class AtomicExtensionTests
     [Test]
     public void Atomic64DecUnsignedTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<ulong> span = stackalloc ulong[1];
 
         Security.FillWithNonZeroRandomData(MemoryMarshal.AsBytes(span));
@@ -223,6 +247,9 @@ public class AtomicExtensionTests
     [Test]
     public void Atomic32AddSignedTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+        
         Span<int> span = stackalloc int[1];
 
         Security.FillWithNonZeroRandomData(MemoryMarshal.AsBytes(span));
@@ -249,6 +276,9 @@ public class AtomicExtensionTests
     [Test]
     public void Atomic32AddUnsignedTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<uint> span = stackalloc uint[1];
 
         Security.FillWithNonZeroRandomData(MemoryMarshal.AsBytes(span));
@@ -275,6 +305,9 @@ public class AtomicExtensionTests
     [Test]
     public void Atomic64AddSignedTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<long> span = stackalloc long[1];
 
         Security.FillWithNonZeroRandomData(MemoryMarshal.AsBytes(span));
@@ -301,6 +334,9 @@ public class AtomicExtensionTests
     [Test]
     public void Atomic64AddUnsignedTest()
     {
+        if (!Helpers.IsAssemblyNewerThan(typeof(BigSpan).Assembly, "23.2.0"))
+            throw new InconclusiveException("BigSpan needs to be at least v23.2.0 for this test.");
+
         Span<ulong> span = stackalloc ulong[1];
 
         Security.FillWithNonZeroRandomData(MemoryMarshal.AsBytes(span));

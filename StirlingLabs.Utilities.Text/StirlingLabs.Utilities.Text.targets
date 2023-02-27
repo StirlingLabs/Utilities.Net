@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <Project>
     <Target Name="StirlingLabsUtilitiesTextSelectRuntimeForPacking" BeforeTargets="Pack">
         <PropertyGroup>
@@ -7,42 +8,57 @@
         </PropertyGroup>
     </Target>
 
-    <Target Name="StirlingLabsUtilitiesTextSelectRuntime" BeforeTargets="GetRestoreProjectStyleTask;_GetAllRestoreProjectPathItems;_LoadRestoreGraphEntryPoints;_GenerateRestoreProjectSpec;Restore;CoreBuild">
+    <Target Name="StirlingLabsUtilitiesTextSelectRuntime"
+            BeforeTargets="GetRestoreProjectStyleTask;_GetAllRestoreProjectPathItems;_LoadRestoreGraphEntryPoints;_GenerateRestoreProjectSpec;Restore;CoreBuild">
         <PropertyGroup>
             <StirlingLabsUtilitiesTextVersion Condition="'$(StirlingLabsUtilitiesTextVersion)'==''">*</StirlingLabsUtilitiesTextVersion>
             <StirlingLabsUtilitiesTextSelectRuntimeId Condition="'$(StirlingLabsUtilitiesTextSelectRuntimeId)'==''">$(RuntimeIdentifier)</StirlingLabsUtilitiesTextSelectRuntimeId>
             <StirlingLabsUtilitiesTextSelectRuntimeId Condition="'$(StirlingLabsUtilitiesTextSelectRuntimeId)'==''">$(DefaultAppHostRuntimeIdentifier)</StirlingLabsUtilitiesTextSelectRuntimeId>
             <StirlingLabsUtilitiesTextSelectRuntimeId Condition="'$(StirlingLabsUtilitiesTextSelectRuntimeId)'==''">$(NETCoreSdkPortableRuntimeIdentifier)</StirlingLabsUtilitiesTextSelectRuntimeId>
             <StirlingLabsUtilitiesTextSelectRuntimeId Condition="'$(StirlingLabsUtilitiesTextSelectRuntimeId)'==''">$(NETCoreSdkRuntimeIdentifier)</StirlingLabsUtilitiesTextSelectRuntimeId>
-            <StirlingLabsUtilitiesTextSelectAllRuntimes Condition="'$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!='False' AND '$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!=''">True</StirlingLabsUtilitiesTextSelectAllRuntimes>
-            <StirlingLabsUtilitiesTextSelectAllRuntimes Condition="'$(StirlingLabsUtilitiesTextSelectAllRuntimes)'=='False' OR '$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!='True'">False</StirlingLabsUtilitiesTextSelectAllRuntimes>
+            <StirlingLabsUtilitiesTextSelectAllRuntimes
+                Condition="'$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!='False' AND '$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!=''">
+                True
+            </StirlingLabsUtilitiesTextSelectAllRuntimes>
+            <StirlingLabsUtilitiesTextSelectAllRuntimes
+                Condition="'$(StirlingLabsUtilitiesTextSelectAllRuntimes)'=='False' OR '$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!='True'">
+                False
+            </StirlingLabsUtilitiesTextSelectAllRuntimes>
         </PropertyGroup>
 
         <!-- Linux -->
-        <ItemGroup Condition="!$(StirlingLabsUtilitiesTextSelectAllRuntimes) AND !$(StirlingLabsUtilitiesTextSelectRuntimeId.StartsWith('linux'))">
-            <PackageReference Remove="StirlingLabs.icu4x.runtime.linux-x64"/>
+        <ItemGroup
+            Condition="!$(StirlingLabsUtilitiesTextSelectAllRuntimes) AND !$(StirlingLabsUtilitiesTextSelectRuntimeId.StartsWith('linux'))">
+            <PackageReference Remove="StirlingLabs.icu4x.runtime.linux-x64" />
         </ItemGroup>
-        <CreateItem Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextSelectRuntimeId.StartsWith('linux'))"
-                    Include="StirlingLabs.icu4x.runtime.linux-x64" AdditionalMetadata="Version=$(StirlingLabsUtilitiesTextVersion)">
-            <Output TaskParameter="Include" ItemName="PackageReference"/>
+        <CreateItem
+            Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextSelectRuntimeId.StartsWith('linux'))"
+            Include="StirlingLabs.icu4x.runtime.linux-x64"
+            AdditionalMetadata="Version=$(StirlingLabsUtilitiesTextVersion)">
+            <Output TaskParameter="Include" ItemName="PackageReference" />
         </CreateItem>
 
         <!-- OS X -->
-        <ItemGroup Condition="!$(StirlingLabsUtilitiesTextSelectAllRuntimes) AND !$(StirlingLabsUtilitiesTextSelectRuntimeId.StartsWith('osx'))">
-            <PackageReference Remove="StirlingLabs.icu4x.runtime.osx"/>
+        <ItemGroup
+            Condition="!$(StirlingLabsUtilitiesTextSelectAllRuntimes) AND !$(StirlingLabsUtilitiesTextSelectRuntimeId.StartsWith('osx'))">
+            <PackageReference Remove="StirlingLabs.icu4x.runtime.osx" />
         </ItemGroup>
-        <CreateItem Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextSelectRuntimeId.StartsWith('osx'))"
-                    Include="StirlingLabs.icu4x.runtime.osx" AdditionalMetadata="Version=$(StirlingLabsUtilitiesTextVersion)">
-            <Output TaskParameter="Include" ItemName="PackageReference"/>
+        <CreateItem
+            Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextSelectRuntimeId.StartsWith('osx'))"
+            Include="StirlingLabs.icu4x.runtime.osx" AdditionalMetadata="Version=$(StirlingLabsUtilitiesTextVersion)">
+            <Output TaskParameter="Include" ItemName="PackageReference" />
         </CreateItem>
 
         <!-- Windows -->
-        <ItemGroup Condition="!$(StirlingLabsUtilitiesTextSelectAllRuntimes) AND !$(StirlingLabsUtilitiesTextSelectRuntimeId.StartsWith('win'))">
-            <PackageReference Remove="StirlingLabs.icu4x.runtime.win-x64"/>
+        <ItemGroup
+            Condition="!$(StirlingLabsUtilitiesTextSelectAllRuntimes) AND !$(StirlingLabsUtilitiesTextSelectRuntimeId.StartsWith('win'))">
+            <PackageReference Remove="StirlingLabs.icu4x.runtime.win-x64" />
         </ItemGroup>
-        <CreateItem Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextSelectRuntimeId.StartsWith('win'))"
-                    Include="StirlingLabs.icu4x.runtime.win-x64" AdditionalMetadata="Version=$(StirlingLabsUtilitiesTextVersion)">
-            <Output TaskParameter="Include" ItemName="PackageReference"/>
+        <CreateItem
+            Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextSelectRuntimeId.StartsWith('win'))"
+            Include="StirlingLabs.icu4x.runtime.win-x64"
+            AdditionalMetadata="Version=$(StirlingLabsUtilitiesTextVersion)">
+            <Output TaskParameter="Include" ItemName="PackageReference" />
         </CreateItem>
 
     </Target>

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <Project>
     <PropertyGroup>
         <StirlingLabsUtilitiesTextVersion Condition="'$(StirlingLabsUtilitiesTextVersion)'==''">*</StirlingLabsUtilitiesTextVersion>
@@ -6,8 +7,14 @@
         <StirlingLabsUtilitiesTextRuntimeId Condition="'$(StirlingLabsUtilitiesTextRuntimeId)'==''">$(DefaultAppHostRuntimeIdentifier)</StirlingLabsUtilitiesTextRuntimeId>
         <StirlingLabsUtilitiesTextRuntimeId Condition="'$(StirlingLabsUtilitiesTextRuntimeId)'==''">$(NETCoreSdkPortableRuntimeIdentifier)</StirlingLabsUtilitiesTextRuntimeId>
         <StirlingLabsUtilitiesTextRuntimeId Condition="'$(StirlingLabsUtilitiesTextRuntimeId)'==''">$(NETCoreSdkRuntimeIdentifier)</StirlingLabsUtilitiesTextRuntimeId>
-        <StirlingLabsUtilitiesTextSelectAllRuntimes Condition="'$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!='False' AND '$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!=''">True</StirlingLabsUtilitiesTextSelectAllRuntimes>
-        <StirlingLabsUtilitiesTextSelectAllRuntimes Condition="'$(StirlingLabsUtilitiesTextSelectAllRuntimes)'=='False' OR '$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!='True'">False</StirlingLabsUtilitiesTextSelectAllRuntimes>
+        <StirlingLabsUtilitiesTextSelectAllRuntimes
+            Condition="'$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!='False' AND '$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!=''">
+            True
+        </StirlingLabsUtilitiesTextSelectAllRuntimes>
+        <StirlingLabsUtilitiesTextSelectAllRuntimes
+            Condition="'$(StirlingLabsUtilitiesTextSelectAllRuntimes)'=='False' OR '$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!='True'">
+            False
+        </StirlingLabsUtilitiesTextSelectAllRuntimes>
         <BuildDependsOn>StirlingLabsUtilitiesTextSelectRuntime;$(BuildDependsOn)</BuildDependsOn>
         <CompileDependsOn>StirlingLabsUtilitiesTextSelectRuntime;$(BuildDependsOn)</CompileDependsOn>
         <ResolveReferencesDependsOn>StirlingLabsUtilitiesTextSelectRuntime;$(ResolveReferencesDependsOn)</ResolveReferencesDependsOn>
@@ -20,24 +27,30 @@
         <StirlingLabsUtilitiesTextRuntimeId Condition="$([MSBuild]::IsOSPlatform('Linux'))">linux-x64</StirlingLabsUtilitiesTextRuntimeId>
     </PropertyGroup>
 
-    <ItemGroup Condition="!$(StirlingLabsUtilitiesTextSelectAllRuntimes) AND !$(StirlingLabsUtilitiesTextRuntimeId.StartsWith('linux'))">
-        <PackageReference Remove="StirlingLabs.icu4x.runtime.linux-x64"/>
+    <ItemGroup
+        Condition="!$(StirlingLabsUtilitiesTextSelectAllRuntimes) AND !$(StirlingLabsUtilitiesTextRuntimeId.StartsWith('linux'))">
+        <PackageReference Remove="StirlingLabs.icu4x.runtime.linux-x64" />
     </ItemGroup>
-    <ItemGroup Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextRuntimeId.StartsWith('linux'))">
-        <PackageReference Include="StirlingLabs.icu4x.runtime.linux-x64" Version="$(StirlingLabsUtilitiesTextVersion)"/>
-    </ItemGroup>
-
-    <ItemGroup Condition="!$(StirlingLabsUtilitiesTextSelectAllRuntimes) AND !$(StirlingLabsUtilitiesTextRuntimeId.StartsWith('osx'))">
-        <ProjectReference Remove="StirlingLabs.icu4x.runtime.osx"/>
-    </ItemGroup>
-    <ItemGroup Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextRuntimeId.StartsWith('osx'))">
-        <PackageReference Include="StirlingLabs.icu4x.runtime.osx" Version="$(StirlingLabsUtilitiesTextVersion)"/>
+    <ItemGroup
+        Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextRuntimeId.StartsWith('linux'))">
+        <PackageReference Include="StirlingLabs.icu4x.runtime.linux-x64" Version="$(StirlingLabsUtilitiesTextVersion)" />
     </ItemGroup>
 
-    <ItemGroup Condition="!$(StirlingLabsUtilitiesTextSelectAllRuntimes) AND !$(StirlingLabsUtilitiesTextRuntimeId.StartsWith('win'))">
-        <PackageReference Remove="StirlingLabs.icu4x.runtime.win-x64"/>
+    <ItemGroup
+        Condition="!$(StirlingLabsUtilitiesTextSelectAllRuntimes) AND !$(StirlingLabsUtilitiesTextRuntimeId.StartsWith('osx'))">
+        <ProjectReference Remove="StirlingLabs.icu4x.runtime.osx" />
     </ItemGroup>
-    <ItemGroup Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextRuntimeId.StartsWith('win'))">
-        <PackageReference Include="StirlingLabs.icu4x.runtime.win-x64" Version="$(StirlingLabsUtilitiesTextVersion)"/>
+    <ItemGroup
+        Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextRuntimeId.StartsWith('osx'))">
+        <PackageReference Include="StirlingLabs.icu4x.runtime.osx" Version="$(StirlingLabsUtilitiesTextVersion)" />
+    </ItemGroup>
+
+    <ItemGroup
+        Condition="!$(StirlingLabsUtilitiesTextSelectAllRuntimes) AND !$(StirlingLabsUtilitiesTextRuntimeId.StartsWith('win'))">
+        <PackageReference Remove="StirlingLabs.icu4x.runtime.win-x64" />
+    </ItemGroup>
+    <ItemGroup
+        Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextRuntimeId.StartsWith('win'))">
+        <PackageReference Include="StirlingLabs.icu4x.runtime.win-x64" Version="$(StirlingLabsUtilitiesTextVersion)" />
     </ItemGroup>
 </Project>
