@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>11</LangVersion>
-        <DefineConstants Condition="'$(Configuration)'=='Debug'">$(DefineConstants);ICU4X_LOGGING</DefineConstants>
+<!--        <DefineConstants Condition="'$(Configuration)'=='Debug'">$(DefineConstants);ICU4X_LOGGING</DefineConstants>-->
     </PropertyGroup>
 
     <ItemGroup>
