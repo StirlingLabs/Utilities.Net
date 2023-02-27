@@ -14,7 +14,7 @@
       <PackageReference Include="StirlingLabs.icu4x.runtime.linux-x64" Version="1.1.0.1" />
       <PackageReference Include="StirlingLabs.icu4x.runtime.osx" Version="1.1.0.1" />
       <PackageReference Include="StirlingLabs.icu4x.runtime.win-x64" Version="1.1.0.1" />
-      <PackageReference Include="StirlingLabs.icu4x.ucldr" Version="23.3.1" />
+      <PackageReference Include="StirlingLabs.icu4x.ucldr" Version="23.3.4" />
     </ItemGroup>
 
     <ItemGroup>
