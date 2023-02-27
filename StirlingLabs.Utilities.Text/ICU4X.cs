@@ -272,7 +272,7 @@ public static partial class ICU4X
             throw new FileNotFoundException(UcldrGzFileName + " missing!");
 
         using var mmf =
-            MemoryMappedFile.CreateFromFile(gzFileInfo.FullName, FileMode.Open, UcldrGzFileName, 0, MemoryMappedFileAccess.Read);
+            MemoryMappedFile.CreateFromFile(gzFileInfo.FullName, FileMode.Open, null, 0, MemoryMappedFileAccess.Read);
         using var accessor = mmf.CreateViewAccessor(0, 0, MemoryMappedFileAccess.Read);
         var gzUcldrLength = gzFileInfo.Length;
         byte* pGzUcldr = null;
