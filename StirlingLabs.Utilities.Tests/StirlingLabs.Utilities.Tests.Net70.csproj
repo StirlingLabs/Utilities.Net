@@ -74,7 +74,11 @@
     
     <Target Name="GenerateHtmlCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
         <!-- generate markdown coverage report and badges -->
-        <ReportGenerator ReportFiles="@(CoverletReport)" ReportTypes="MarkdownSummary;Badges" SourceDirectories="../StirlingLabs.Utilities" TargetDirectory="../coverage/" />
+        <ReportGenerator
+            ReportFiles="@(CoverletReport)"
+            ReportTypes="MarkdownSummary;Badges"
+            SourceDirectories="../StirlingLabs.Utilities"
+            TargetDirectory="../coverage/net7.0" />
     </Target>
 
 </Project>
