@@ -78,7 +78,9 @@
             ReportFiles="@(CoverletReport)"
             ReportTypes="MarkdownSummary;Badges"
             SourceDirectories="../StirlingLabs.Utilities"
-            TargetDirectory="../coverage/netstandard2.0" />
+            TargetDirectory="../coverage/netstandard2.0"
+            FileFilters="+:**/*;-:obj/**/*"
+        />
     </Target>
 
 </Project>

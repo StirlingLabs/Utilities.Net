@@ -1,7 +1,9 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.IO;
 using System.IO.Compression;
 using System.IO.MemoryMappedFiles;
 using System.Runtime.CompilerServices;
@@ -222,9 +224,9 @@ public static partial class ICU4X
             //DestroyLocale((void*)locale);
             DestroyCollator(result.Ok);
             locale = collLocale;
-            var writeable = new Writeable(stackalloc byte[8]);
-            LocaleToString((void*)locale, &writeable);
-            var collLocaleStr = Encoding.UTF8.GetString(writeable.Buffer, (int)writeable.Length);
+            var writable = new Writable(stackalloc byte[8]);
+            LocaleToString((void*)locale, &writable);
+            var collLocaleStr = Encoding.UTF8.GetString(writable.Buffer, (int)writable.Length);
             if (Collators.TryGetValue((collLocaleStr, options), out var coll))
             {
                 result.Ok = (void*)coll;
@@ -247,12 +249,12 @@ public static partial class ICU4X
                 throw new NotImplementedException("Can't find a valid collator!");
             StepLocaleFallbackIterator(iterator);
             var fallbackLocale = GetLocaleFallback(iterator);
-            var writeable = new Writeable(8);
-            LocaleToString(fallbackLocale, &writeable);
-            var fallbackLocaleStr = Encoding.UTF8.GetString(writeable.Buffer, (int)writeable.Length);
+            var writable = new Writable(8);
+            LocaleToString(fallbackLocale, &writable);
+            var fallbackLocaleStr = Encoding.UTF8.GetString(writable.Buffer, (int)writable.Length);
             if (fallbackLocaleStr is "und")
                 fallbackLocaleStr = "";
-            writeable.Free();
+            writable.Free();
             DestroyLocale(fallbackLocale);
             DestroyLocaleFallbackIterator(iterator);
             var coll = (nint)GetCollator(options, fallbackLocaleStr);
@@ -340,7 +342,7 @@ public static partial class ICU4X
     public enum Error
     {
         UnknownError = 0,
-        WriteableError = 1,
+        WritableError = 1,
         OutOfBoundsError = 2,
         DataMissingDataKeyError = 256,
         DataMissingVariantError = 257,
@@ -496,7 +498,7 @@ public static partial class ICU4X
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    internal struct Writeable
+    internal struct Writable
     {
         public nint Context;
         public unsafe byte* Buffer;
@@ -504,17 +506,17 @@ public static partial class ICU4X
         public nuint Capacity;
 
 #if NET6_0_OR_GREATER
-        public readonly unsafe delegate * unmanaged[Cdecl, SuppressGCTransition]<Writeable*, void> Flush;
-        public readonly unsafe delegate * unmanaged[Cdecl, SuppressGCTransition]<Writeable*, nuint, void> Grow;
+        public readonly unsafe delegate * unmanaged[Cdecl, SuppressGCTransition]<Writable*, void> Flush;
+        public readonly unsafe delegate * unmanaged[Cdecl, SuppressGCTransition]<Writable*, nuint, void> Grow;
 #elif NET5_0_OR_GREATER
-        public readonly unsafe delegate * unmanaged[Cdecl]<Writeable*, void> Flush;
-        public readonly unsafe delegate * unmanaged[Cdecl]<Writeable*, nuint, void> Grow;
+        public readonly unsafe delegate * unmanaged[Cdecl]<Writable*, void> Flush;
+        public readonly unsafe delegate * unmanaged[Cdecl]<Writable*, nuint, void> Grow;
 #else
         public readonly nint Flush;
         public readonly nint Grow;
 #endif
 
-        public unsafe Writeable(byte* ptr, nuint size)
+        public unsafe Writable(byte* ptr, nuint size)
         {
             Context = 0;
             Buffer = ptr;
@@ -522,7 +524,7 @@ public static partial class ICU4X
             Capacity = size;
         }
 
-        public unsafe Writeable(Span<byte> pinnedData)
+        public unsafe Writable(Span<byte> pinnedData)
         {
             Context = 0;
             Buffer = (byte*)Unsafe.AsPointer(ref MemoryMarshal.GetReference(pinnedData));
@@ -530,7 +532,7 @@ public static partial class ICU4X
             Capacity = (nuint)pinnedData.Length;
         }
 
-        public unsafe Writeable(byte[] pinnableData)
+        public unsafe Writable(byte[] pinnableData)
         {
             var h = GCHandle.Alloc(pinnableData, GCHandleType.Pinned);
             Context = GCHandle.ToIntPtr(h);
@@ -543,9 +545,9 @@ public static partial class ICU4X
             Capacity = (nuint)pinnableData.Length;
         }
 
-        public unsafe Writeable() : this(12) { }
+        public unsafe Writable() : this(12) { }
 
-        public unsafe Writeable(nuint size)
+        public unsafe Writable(nuint size)
         {
             if (size < 12) size = 12;
             var a = new byte[size];
@@ -572,34 +574,37 @@ public static partial class ICU4X
 #elif NET5_0_OR_GREATER
         [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
 #endif
-        private static unsafe void FlushImpl(Writeable* writeable) { }
+        private static unsafe void FlushImpl(Writable* writable) { }
 
 #if NET6_0_OR_GREATER
         [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl), typeof(CallConvSuppressGCTransition) })]
 #elif NET5_0_OR_GREATER
         [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
 #endif
-        private static unsafe void GrowImpl(Writeable* writeable, nuint size)
+        private static unsafe void GrowImpl(Writable* writable, nuint size)
         {
+            if (size <= writable->Capacity)
+                return;
+
             var a = new byte[size];
             var h = GCHandle.Alloc(a, GCHandleType.Pinned);
             var newCtx = GCHandle.ToIntPtr(h);
-            var oldCtx = writeable->Context;
+            var oldCtx = writable->Context;
             if (oldCtx != 0)
             {
                 var oldH = GCHandle.FromIntPtr(oldCtx);
                 oldH.Free();
             }
-            writeable->Context = newCtx;
+            writable->Context = newCtx;
 #if NETSTANDARD
             var newData = (byte*)Unsafe.AsPointer(ref a[0]);
 #else
             var newData = (byte*)Unsafe.AsPointer(ref MemoryMarshal.GetArrayDataReference(a));
 #endif
-            Unsafe.CopyBlockUnaligned(newData, writeable->Buffer, (uint)writeable->Length);
-            NativeMemory.Free(writeable->Buffer);
-            writeable->Buffer = newData;
-            writeable->Capacity = size;
+            Unsafe.CopyBlockUnaligned(newData, writable->Buffer, (uint)writable->Length);
+            NativeMemory.Free(writable->Buffer);
+            writable->Buffer = newData;
+            writable->Capacity = size;
         }
 
 #if NETSTANDARD
@@ -639,9 +644,9 @@ public static partial class ICU4X
         public Utf8StringView ExtensionKey;
     }
 
-    internal static unsafe void Free(ref this Writeable writeable)
+    internal static unsafe void Free(ref this Writable writable)
     {
-        var oldCtx = writeable.Context;
+        var oldCtx = writable.Context;
         if (oldCtx == 0)
             return;
         var oldH = GCHandle.FromIntPtr(oldCtx);
@@ -649,11 +654,11 @@ public static partial class ICU4X
     }
 
     /// <summary>
-    /// <c>DiplomatWriteable diplomat_simple_writeable(char* buf, size_t buf_size);</c>
+    /// <c>DiplomatWriteable diplomat_simple_writable(char* buf, size_t buf_size);</c>
     /// </summary>
-    [DllImport("icu_capi_cdylib", EntryPoint = "diplomat_simple_writeable")]
+    [DllImport("icu_capi_cdylib", EntryPoint = "diplomat_simple_writable")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.ApplicationDirectory | DllImportSearchPath.AssemblyDirectory)]
-    internal static extern unsafe Writeable CreateDiplomatWriteable(byte* buf, nuint bufSize);
+    internal static extern unsafe Writable CreateDiplomatWritable(byte* buf, nuint bufSize);
 
     /// <summary>
     /// <c>diplomat_result_box_ICU4XDataProvider_ICU4XError ICU4XDataProvider_create_fs(const char* path_data, size_t path_len);</c>
@@ -689,7 +694,7 @@ public static partial class ICU4X
     /// </summary>
     [DllImport("icu_capi_cdylib", EntryPoint = "ICU4XLocale_to_string")]
     [DefaultDllImportSearchPaths(DllImportSearchPath.ApplicationDirectory | DllImportSearchPath.AssemblyDirectory)]
-    internal static extern unsafe ErrorResult LocaleToString(void* self, Writeable* write);
+    internal static extern unsafe ErrorResult LocaleToString(void* self, Writable* write);
 
     /// <summary>
     /// <c>ICU4XLocale* ICU4XLocale_create_und();</c>
