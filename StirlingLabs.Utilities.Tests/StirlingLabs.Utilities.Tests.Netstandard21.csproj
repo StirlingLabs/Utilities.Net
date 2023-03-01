@@ -61,7 +61,6 @@
         <PackageReference Include="StirlingLabs.BigSpans.NUnit" Version="22.9.4" />
         <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" PrivateAssets="all" />
         <PackageReference Include="coverlet.collector" Version="3.2.0" PrivateAssets="all" />
-        <PackageReference Include="coverlet.msbuild" Version="3.2.0" PrivateAssets="all" />
         <PackageReference Include="ReportGenerator" Version="5.1.18" PrivateAssets="all" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
@@ -74,13 +73,7 @@
 
     <Target Name="GenerateHtmlCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
         <!-- generate markdown coverage report and badges -->
-        <ReportGenerator
-            ReportFiles="@(CoverletReport)"
-            ReportTypes="MarkdownSummary;Badges"
-            SourceDirectories="../StirlingLabs.Utilities"
-            TargetDirectory="../coverage/netstandard2.1"
-            FileFilters="+:**/*;-:obj/**/*"
-        />
+        <ReportGenerator ReportFiles="@(CoverletReport)" ReportTypes="MarkdownSummary;Badges" SourceDirectories="../StirlingLabs.Utilities" TargetDirectory="../coverage/netstandard2.1" FileFilters="+:**/*;-:obj/**/*" />
     </Target>
 
 </Project>
