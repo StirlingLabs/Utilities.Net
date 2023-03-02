@@ -8,9 +8,6 @@
         <LangVersion>11</LangVersion>
         <RuntimeIdentifier>$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
         <RuntimeIdentifier Condition="'$(RuntimeIdentifier)'==''">$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</RuntimeIdentifier>
-        <CollectCoverage>true</CollectCoverage>
-        <CoverletOutputFormat>cobertura</CoverletOutputFormat>
-        <CoverletOutput>../coverage/StirlingLabs.Utilities.Tests.cobertura.net7.0.xml</CoverletOutput>
         <OutputType>Library</OutputType>
         <TargetFramework>net7.0</TargetFramework>
         <RootNamespace>StirlingLabs.Utilities.Tests</RootNamespace>
@@ -61,7 +58,6 @@
         <PackageReference Include="StirlingLabs.BigSpans.NUnit" Version="22.9.4" />
         <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" PrivateAssets="all" />
         <PackageReference Include="coverlet.collector" Version="3.2.0" PrivateAssets="all" />
-        <PackageReference Include="coverlet.msbuild" Version="3.2.0" PrivateAssets="all" />
         <PackageReference Include="NuGet.Versioning" Version="6.5.0" />
     </ItemGroup>
 

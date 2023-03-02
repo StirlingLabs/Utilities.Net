@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RunSettings>
+    <RunConfiguration>
+        <ResultsDirectory>../TestResults</ResultsDirectory>
+    </RunConfiguration>
+    <DataCollectionRunSettings>
+        <DataCollectors>    
+            <DataCollector friendlyName="XPlat code coverage">
+                <Configuration>
+                    <Format>cobertura</Format>
+                    <CollectCoverage>true</CollectCoverage>
+                    <IncludeTestAssembly>false</IncludeTestAssembly>
+                    <UseSourceLink>true</UseSourceLink>
+                    <ExcludeByAttribute>ExcludeFromCodeCoverage,Obsolete,GeneratedCode,CompilerGenerated</ExcludeByAttribute>
+                    <ExcludeByFile>**/obj/**/*.cs</ExcludeByFile>
+                </Configuration>
+            </DataCollector>
+        </DataCollectors>
+    </DataCollectionRunSettings>
+</RunSettings>
