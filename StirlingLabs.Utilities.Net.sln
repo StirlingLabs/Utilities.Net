@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Text", "StirlingLabs.Utilities.Text\StirlingLabs.Utilities.Text.csproj", "{52856A77-CD7F-4383-B9CC-3DC887F7A903}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StirlingLabs.Utilities.Simple.Tests", "StirlingLabs.Utilities.Simple.Tests\StirlingLabs.Utilities.Simple.Tests.csproj", "{A74D6974-564F-4B73-8DCE-CD0BA622356E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,5 +81,9 @@ Global
 		{52856A77-CD7F-4383-B9CC-3DC887F7A903}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52856A77-CD7F-4383-B9CC-3DC887F7A903}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52856A77-CD7F-4383-B9CC-3DC887F7A903}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A74D6974-564F-4B73-8DCE-CD0BA622356E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A74D6974-564F-4B73-8DCE-CD0BA622356E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A74D6974-564F-4B73-8DCE-CD0BA622356E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A74D6974-564F-4B73-8DCE-CD0BA622356E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
