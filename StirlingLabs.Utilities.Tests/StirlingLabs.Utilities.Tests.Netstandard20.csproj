@@ -11,8 +11,6 @@
         <CollectCoverage>true</CollectCoverage>
         <CoverletOutputFormat>cobertura</CoverletOutputFormat>
         <CoverletOutput>../coverage/StirlingLabs.Utilities.Tests-netstandard2.0.cobertura.xml</CoverletOutput>
-        <DeterministicReport>true</DeterministicReport>
-        <DeterministicSourcePaths>true</DeterministicSourcePaths>
         <OutputType>Library</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>StirlingLabs.Utilities.Tests</RootNamespace>
