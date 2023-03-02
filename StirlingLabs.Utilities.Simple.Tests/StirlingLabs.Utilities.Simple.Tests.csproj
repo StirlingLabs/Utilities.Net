@@ -5,16 +5,37 @@
         <Nullable>enable</Nullable>
         <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
         <LangVersion>11</LangVersion>
+        <CoverletOutputFormat>cobertura</CoverletOutputFormat>
+        <CoverletOutput>../coverage/$(TargetFramework)</CoverletOutput>
+        <CollectCoverage>true</CollectCoverage>
     </PropertyGroup>
+
+    <ItemGroup Condition="'$(CI)'!='' And '$(RID)'==''">
+        <PackageReference Include="GitHubActionsTestLogger" Version="2.0.1" PrivateAssets="All" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="6.10.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
         <PackageReference Include="StirlingLabs.Tests" Version="23.3.4" />
         <PackageReference Include="coverlet.collector" Version="3.2.0" PrivateAssets="All" />
+        <PackageReference Include="coverlet.msbuild" Version="3.2.0" PrivateAssets="all" />
+        <PackageReference Include="ReportGenerator" Version="5.1.18" PrivateAssets="all" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\StirlingLabs.Utilities.Text\StirlingLabs.Utilities.Text.csproj" />
+        <ProjectReference Include="..\StirlingLabs.Utilities.Text\StirlingLabs.Utilities.Text.csproj">
+            <SetTargetFramework>TargetFramework=$(TargetFramework)</SetTargetFramework>
+        </ProjectReference>
     </ItemGroup>
+
+    <Target Name="GenerateHtmlCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
+        <!-- generate markdown coverage report and badges -->
+        <ReportGenerator
+            ReportFiles="@(CoverletReport)"
+            ReportTypes="MarkdownSummary;Badges"
+            SourceDirectories="../"
+            TargetDirectory="../coverage/$(TargetFramework)"
+            FileFilters="+:**/*;-:obj/**/*" />
+    </Target>
 </Project>
