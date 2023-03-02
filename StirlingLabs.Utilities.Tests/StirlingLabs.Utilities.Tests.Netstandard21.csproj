@@ -10,7 +10,7 @@
         <RuntimeIdentifier Condition="'$(RuntimeIdentifier)'==''">$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</RuntimeIdentifier>
         <CollectCoverage>true</CollectCoverage>
         <CoverletOutputFormat>cobertura</CoverletOutputFormat>
-        <CoverletOutput>../coverage/StirlingLabs.Utilities.Tests.cobertura.$(TargetFramework).xml</CoverletOutput>
+        <CoverletOutput>../coverage/StirlingLabs.Utilities.Tests.cobertura.netstandard2.1.xml</CoverletOutput>
         <OutputType>Library</OutputType>
         <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>StirlingLabs.Utilities.Tests</RootNamespace>
