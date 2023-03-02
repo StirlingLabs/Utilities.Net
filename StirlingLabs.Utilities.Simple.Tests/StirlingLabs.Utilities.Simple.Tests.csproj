@@ -6,7 +6,7 @@
         <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
         <LangVersion>11</LangVersion>
         <CoverletOutputFormat>cobertura</CoverletOutputFormat>
-        <CoverletOutput>../coverage/$(ProjectName)-$(TargetFramework).cobertura.xml</CoverletOutput>
+        <CoverletOutput>../coverage/StirlingLabs.Utilities.Simple.Tests-$(TargetFramework).cobertura.xml</CoverletOutput>
         <CollectCoverage>true</CollectCoverage>
     </PropertyGroup>
 
