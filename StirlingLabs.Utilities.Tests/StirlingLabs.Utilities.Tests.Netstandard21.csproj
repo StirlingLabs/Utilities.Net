@@ -10,7 +10,7 @@
         <RuntimeIdentifier Condition="'$(RuntimeIdentifier)'==''">$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</RuntimeIdentifier>
         <CollectCoverage>true</CollectCoverage>
         <CoverletOutputFormat>cobertura</CoverletOutputFormat>
-        <CoverletOutput>../coverage/netstandard2.1</CoverletOutput>
+        <CoverletOutput>../coverage/StirlingLabs.Utilities.Tests-netstandard2.1.cobertura.xml</CoverletOutput>
         <DeterministicReport>true</DeterministicReport>
         <DeterministicSourcePaths>true</DeterministicSourcePaths>
         <OutputType>Library</OutputType>
@@ -62,7 +62,6 @@
         <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" PrivateAssets="all" />
         <PackageReference Include="coverlet.collector" Version="3.2.0" PrivateAssets="all" />
         <PackageReference Include="coverlet.msbuild" Version="3.2.0" PrivateAssets="all" />
-        <PackageReference Include="ReportGenerator" Version="5.1.18" PrivateAssets="all" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
         <PackageReference Include="NuGet.Versioning" Version="6.5.0" />
@@ -71,16 +70,4 @@
     <Target Name="RIDCheck" BeforeTargets="Build">
         <Error Condition="'$(RuntimeIdentifier)'==''" Message="RuntimeIdentifier is not specified!" />
     </Target>
-
-    <Target Name="GenerateHtmlCoverageReport" AfterTargets="GenerateCoverageResultAfterTest">
-        <!-- generate markdown coverage report and badges -->
-        <ReportGenerator
-            ReportFiles="@(CoverletReport)"
-            ReportTypes="MarkdownSummary;Badges"
-            SourceDirectories="../StirlingLabs.Utilities"
-            TargetDirectory="../coverage/netstandard2.1"
-            FileFilters="+:**/*;-:obj/**/*"
-        />
-    </Target>
-
 </Project>
