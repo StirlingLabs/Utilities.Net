@@ -1,16 +1,13 @@
 using System;
 using System.Diagnostics;
 using FluentAssertions;
-using NUnit.Framework;
 using StirlingLabs.Utilities.Text;
 
 namespace StirlingLabs.Utilities.Tests;
 
-[Parallelizable(ParallelScope.All)]
-public static class TextTests
+public sealed class TextTests
 {
-    [Test]
-    public static void CompareStringsBasicInvariantCulture()
+    public void CompareStringsBasicInvariantCulture(TextWriter logger)
     {
         ICU4X.Compare("a", "a", StringComparison.InvariantCulture)
             .Should().Be(0);
@@ -67,11 +64,10 @@ public static class TextTests
                 .Should().Be(0);
         }
         var elapsed = new TimeSpan(Stopwatch.GetTimestamp() - started);
-        Console.WriteLine($"Elapsed: {elapsed.TotalMilliseconds}ms ({(elapsed / c).Ticks / 10d}us each)");
+        logger.WriteLine($"Elapsed: {elapsed.TotalMilliseconds}ms ({(elapsed / c).Ticks / 10d}us each)");
     }
 
-    [Test]
-    public static void CompareStringsBasicCurrentCulture()
+    public void CompareStringsBasicCurrentCulture(TextWriter logger)
     {
         ICU4X.Compare("a", "a", StringComparison.CurrentCulture)
             .Should().Be(0);
@@ -128,11 +124,10 @@ public static class TextTests
                 .Should().Be(0);
         }
         var elapsed = new TimeSpan(Stopwatch.GetTimestamp() - started);
-        Console.WriteLine($"Elapsed: {elapsed.TotalMilliseconds}ms ({(elapsed / c).Ticks / 10d}us each)");
+        logger.WriteLine($"Elapsed: {elapsed.TotalMilliseconds}ms ({(elapsed / c).Ticks / 10d}us each)");
     }
     
-    [Test]
-    public static void CompareUtf8StringsBasicInvariantCulture()
+    public void CompareUtf8StringsBasicInvariantCulture(TextWriter logger)
     {
         ICU4X.Compare("a"u8, "a"u8, StringComparison.InvariantCulture)
             .Should().Be(0);
@@ -189,11 +184,10 @@ public static class TextTests
                 .Should().Be(0);
         }
         var elapsed = new TimeSpan(Stopwatch.GetTimestamp() - started);
-        Console.WriteLine($"Elapsed: {elapsed.TotalMilliseconds}ms ({(elapsed / c).Ticks / 10d}us each)");
+        logger.WriteLine($"Elapsed: {elapsed.TotalMilliseconds}ms ({(elapsed / c).Ticks / 10d}us each)");
     }
 
-    [Test]
-    public static void CompareUtf8StringsBasicCurrentCulture()
+    public void CompareUtf8StringsBasicCurrentCulture(TextWriter logger)
     {
         ICU4X.Compare("a"u8, "a"u8, StringComparison.CurrentCulture)
             .Should().Be(0);
@@ -250,11 +244,10 @@ public static class TextTests
                 .Should().Be(0);
         }
         var elapsed = new TimeSpan(Stopwatch.GetTimestamp() - started);
-        Console.WriteLine($"Elapsed: {elapsed.TotalMilliseconds}ms ({(elapsed / c).Ticks / 10d}us each)");
+        logger.WriteLine($"Elapsed: {elapsed.TotalMilliseconds}ms ({(elapsed / c).Ticks / 10d}us each)");
     }
 
-    [Test]
-    public static void CompareUtf8StringsEszettCurrentCulture()
+    public void CompareUtf8StringsEszettCurrentCulture(TextWriter logger)
     {
         var capitalEszett = "ẞ"u8;
         var lowercaseEszett = "ß"u8;
