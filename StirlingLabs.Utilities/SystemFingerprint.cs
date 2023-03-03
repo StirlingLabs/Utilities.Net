@@ -59,7 +59,7 @@ public static class SystemFingerprint
                 return lpa.Equals(rpa)
                     ? 0
                     : new ReadOnlyBigSpan<byte>(lpa.GetAddressBytes())
-                        .SequenceCompare(rpa.GetAddressBytes());
+                        .SequenceCompareTo(rpa.GetAddressBytes());
             });
 
         Span<byte> buffer = stackalloc byte[8];
