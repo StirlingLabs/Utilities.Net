@@ -23,7 +23,7 @@ csharp_new_line_before_catch = true
 csharp_new_line_before_else = true
 csharp_new_line_before_finally = true
 csharp_new_line_before_members_in_object_initializers = false
-csharp_new_line_before_open_brace = anonymous_types, control_blocks, events, indexers, local_functions, methods, object_collection_array_initalizers, properties, types
+csharp_new_line_before_open_brace = anonymous_types, control_blocks, events, indexers, local_functions, methods, properties, types
 csharp_new_line_between_query_expression_clauses = true
 csharp_preferred_modifier_order = public, private, protected, internal, new, abstract, virtual, sealed, override, static, readonly, extern, unsafe, volatile, async:suggestion
 csharp_preserve_single_line_blocks = true
@@ -651,8 +651,6 @@ dotnet_style_qualification_for_field = false:suggestion
 dotnet_style_qualification_for_method = false:suggestion
 dotnet_style_qualification_for_property = false:suggestion
 dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
-file_header_template = # ReSharper properties
-
 resharper_alignment_tab_fill_style = use_spaces
 resharper_align_first_arg_by_paren = false
 resharper_align_linq_query = false
