@@ -16,14 +16,8 @@
             <StirlingLabsUtilitiesTextSelectRuntimeId Condition="'$(StirlingLabsUtilitiesTextSelectRuntimeId)'==''">$(DefaultAppHostRuntimeIdentifier)</StirlingLabsUtilitiesTextSelectRuntimeId>
             <StirlingLabsUtilitiesTextSelectRuntimeId Condition="'$(StirlingLabsUtilitiesTextSelectRuntimeId)'==''">$(NETCoreSdkPortableRuntimeIdentifier)</StirlingLabsUtilitiesTextSelectRuntimeId>
             <StirlingLabsUtilitiesTextSelectRuntimeId Condition="'$(StirlingLabsUtilitiesTextSelectRuntimeId)'==''">$(NETCoreSdkRuntimeIdentifier)</StirlingLabsUtilitiesTextSelectRuntimeId>
-            <StirlingLabsUtilitiesTextSelectAllRuntimes
-                Condition="'$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!='False' AND '$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!=''">
-                True
-            </StirlingLabsUtilitiesTextSelectAllRuntimes>
-            <StirlingLabsUtilitiesTextSelectAllRuntimes
-                Condition="'$(StirlingLabsUtilitiesTextSelectAllRuntimes)'=='False' OR '$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!='True'">
-                False
-            </StirlingLabsUtilitiesTextSelectAllRuntimes>
+            <StirlingLabsUtilitiesTextSelectAllRuntimes Condition="'$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!='False' AND '$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!=''">True</StirlingLabsUtilitiesTextSelectAllRuntimes>
+            <StirlingLabsUtilitiesTextSelectAllRuntimes Condition="'$(StirlingLabsUtilitiesTextSelectAllRuntimes)'=='False' OR '$(StirlingLabsUtilitiesTextSelectAllRuntimes)'!='True'">False</StirlingLabsUtilitiesTextSelectAllRuntimes>
         </PropertyGroup>
 
         <!-- Linux -->
