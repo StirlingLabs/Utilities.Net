@@ -2,7 +2,7 @@
 
 <Project>
     <PropertyGroup>
-        <StirlingLabsUtilitiesTextVersion Condition="'$(StirlingLabsUtilitiesTextVersion)'==''">*</StirlingLabsUtilitiesTextVersion>
+        <StirlingLabsIcu4xVersion Condition="'$(StirlingLabsIcu4xVersion)'==''">*</StirlingLabsIcu4xVersion>
         <StirlingLabsUtilitiesTextRuntimeId Condition="'$(StirlingLabsUtilitiesTextRuntimeId)'==''">$(RuntimeIdentifier)</StirlingLabsUtilitiesTextRuntimeId>
         <StirlingLabsUtilitiesTextRuntimeId Condition="'$(StirlingLabsUtilitiesTextRuntimeId)'==''">$(DefaultAppHostRuntimeIdentifier)</StirlingLabsUtilitiesTextRuntimeId>
         <StirlingLabsUtilitiesTextRuntimeId Condition="'$(StirlingLabsUtilitiesTextRuntimeId)'==''">$(NETCoreSdkPortableRuntimeIdentifier)</StirlingLabsUtilitiesTextRuntimeId>
@@ -27,7 +27,7 @@
     </ItemGroup>
     <ItemGroup
         Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextRuntimeId.StartsWith('linux'))">
-        <PackageReference Include="StirlingLabs.icu4x.runtime.linux-x64" Version="$(StirlingLabsUtilitiesTextVersion)"/>
+        <PackageReference Include="StirlingLabs.icu4x.runtime.linux-x64" Version="$(StirlingLabsIcu4xVersion)"/>
     </ItemGroup>
 
     <ItemGroup
@@ -36,7 +36,7 @@
     </ItemGroup>
     <ItemGroup
         Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextRuntimeId.StartsWith('osx'))">
-        <PackageReference Include="StirlingLabs.icu4x.runtime.osx" Version="$(StirlingLabsUtilitiesTextVersion)"/>
+        <PackageReference Include="StirlingLabs.icu4x.runtime.osx" Version="$(StirlingLabsIcu4xVersion)"/>
     </ItemGroup>
 
     <ItemGroup
@@ -45,6 +45,13 @@
     </ItemGroup>
     <ItemGroup
         Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextRuntimeId.StartsWith('win'))">
-        <PackageReference Include="StirlingLabs.icu4x.runtime.win-x64" Version="$(StirlingLabsUtilitiesTextVersion)"/>
+        <PackageReference Include="StirlingLabs.icu4x.runtime.win-x64" Version="$(StirlingLabsIcu4xVersion)"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Remove="StirlingLabs.icu4x.ucldr"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="StirlingLabs.icu4x.ucldr" Version="$(StirlingLabsIcu4xVersion)"/>
     </ItemGroup>
 </Project>
