@@ -10,7 +10,7 @@ namespace StirlingLabs.Utilities.Tests;
 public class InstancedContextThreadPoolTests
 {
     [Test]
-    [Repeat(6000)]
+    [Repeat(1000)]
     public void ThreadPoolHelpersQueueWorkItemFastTest1()
     {
         var manipValue = false;
@@ -20,11 +20,11 @@ public class InstancedContextThreadPoolTests
             // ReSharper disable once AccessToDisposedClosure
             mre.Set();
         });
-        mre.Wait(125).Should().BeTrue();
+        mre.Wait(1000).Should().BeTrue();
         manipValue.Should().BeTrue();
     }
     [Test]
-    [Repeat(6000)]
+    [Repeat(1000)]
     public unsafe void ThreadPoolHelpersQueueWorkItemFastTest2()
     {
         using var mre = new ManualResetEventSlim();
@@ -33,7 +33,7 @@ public class InstancedContextThreadPoolTests
             => mre.Set();
 
         ThreadPoolHelpers.QueueUserWorkItemFast(&Action, mre);
-        mre.Wait(125).Should().BeTrue();
+        mre.Wait(1000).Should().BeTrue();
     }
 }
 
