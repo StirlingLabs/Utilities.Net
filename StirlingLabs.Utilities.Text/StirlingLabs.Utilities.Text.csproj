@@ -6,8 +6,16 @@
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>11</LangVersion>
-<!--        <DefineConstants Condition="'$(Configuration)'=='Debug'">$(DefineConstants);ICU4X_LOGGING</DefineConstants>-->
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageOutputPath>../artifacts</PackageOutputPath>
+        <Authors>Stirling Labs</Authors>
+        <RootNamespace>StirlingLabs.Utilities</RootNamespace>
+    <!--<DefineConstants Condition="'$(Configuration)'=='Debug'">$(DefineConstants);ICU4X_LOGGING</DefineConstants>-->
     </PropertyGroup>
+
+    <ImportGroup>
+        <Import Project="../Version.proj" />
+    </ImportGroup>
 
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations" Version="2022.3.1" PrivateAssets="all" />
