@@ -22,7 +22,7 @@
         <PackageReference Include="StirlingLabs.icu4x.runtime.linux-x64" Version="1.1.0.1" />
         <PackageReference Include="StirlingLabs.icu4x.runtime.osx" Version="1.1.0.1" />
         <PackageReference Include="StirlingLabs.icu4x.runtime.win-x64" Version="1.1.0.1" />
-        <PackageReference Include="StirlingLabs.icu4x.ucldr" Version="23.3.4" />
+        <PackageReference Include="StirlingLabs.icu4x.ucldr" Version="23.3.4" PrivateAssets="none" />
     </ItemGroup>
 
     <ItemGroup>
@@ -33,11 +33,11 @@
     <ItemGroup>
         <None Include="StirlingLabs.Utilities.Text.props">
             <Pack>true</Pack>
-            <PackagePath>build;buildCrossTargeting</PackagePath>
+            <PackagePath>build;buildMultiTargeting;buildTransitive</PackagePath>
         </None>
         <None Include="StirlingLabs.Utilities.Text.targets">
             <Pack>true</Pack>
-            <PackagePath>build;buildCrossTargeting</PackagePath>
+            <PackagePath>build;buildMultiTargeting;buildTransitive</PackagePath>
         </None>
     </ItemGroup>
 

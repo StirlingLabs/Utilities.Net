@@ -47,11 +47,4 @@
         Condition="$(StirlingLabsUtilitiesTextSelectAllRuntimes) OR $(StirlingLabsUtilitiesTextRuntimeId.StartsWith('win'))">
         <PackageReference Include="StirlingLabs.icu4x.runtime.win-x64" Version="$(StirlingLabsIcu4xVersion)"/>
     </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Remove="StirlingLabs.icu4x.ucldr"/>
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="StirlingLabs.icu4x.ucldr" Version="$(StirlingLabsIcu4xVersion)"/>
-    </ItemGroup>
 </Project>
