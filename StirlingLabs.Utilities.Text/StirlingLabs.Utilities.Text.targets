@@ -55,15 +55,5 @@
             AdditionalMetadata="Version=$(StirlingLabsIcu4xVersion)">
             <Output TaskParameter="Include" ItemName="PackageReference" />
         </CreateItem>
-        
-        <!-- UCLDR -->
-        <ItemGroup>
-            <PackageReference Remove="StirlingLabs.icu4x.ucldr" />
-        </ItemGroup>
-        <CreateItem
-            Include="StirlingLabs.icu4x.ucldr"
-            AdditionalMetadata="Version=$(StirlingLabsIcu4xVersion)">
-            <Output TaskParameter="Include" ItemName="PackageReference" />
-        </CreateItem>
     </Target>
 </Project>
