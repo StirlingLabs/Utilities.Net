@@ -11,7 +11,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
-using NativeMemory = StirlingLabs.Native.NativeMemory;
 
 namespace StirlingLabs.Utilities.Text;
 

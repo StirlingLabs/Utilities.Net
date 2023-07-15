@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using StirlingLabs.Utilities;
 
-namespace StirlingLabs.Native;
+namespace StirlingLabs.Utilities;
 
 [PublicAPI]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
