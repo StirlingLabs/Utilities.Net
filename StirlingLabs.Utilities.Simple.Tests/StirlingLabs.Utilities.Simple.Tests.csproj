@@ -12,10 +12,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="FluentAssertions" Version="6.10.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+        <PackageReference Include="FluentAssertions" Version="6.11.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
         <PackageReference Include="StirlingLabs.Tests" Version="23.3.4" />
-        <PackageReference Include="coverlet.collector" Version="3.2.0" PrivateAssets="All" />
+        <PackageReference Include="coverlet.collector" Version="6.0.0" PrivateAssets="All" />
     </ItemGroup>
 
     <ItemGroup>

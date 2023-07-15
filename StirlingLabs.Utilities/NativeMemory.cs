@@ -5,8 +5,13 @@ using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using StirlingLabs.Utilities;
 
-namespace StirlingLabs.Native;
+namespace StirlingLabs.Utilities;
 
+/// <summary>
+/// A static utility class for interacting with unmanaged memory. Provides methods for allocating, deallocating, and manipulating memory.
+/// It is recommended to use <see cref="System.Runtime.InteropServices.NativeMemory"/> instead of this class if you don't require compatibility
+/// all the way back to .Net Standard.
+/// </summary>
 [PublicAPI]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 [SuppressMessage("ReSharper", "IdentifierTypo")]
@@ -39,9 +44,20 @@ public static class NativeMemory
         }
     }
 
+    /// <summary>
+    /// Allocates unmanaged memory without initializing it.
+    /// </summary>
+    /// <param name="size">The size of the memory to allocate.</param>
+    /// <returns>A span of bytes representing the allocated memory.</returns>
     public static unsafe Span<byte> AllocUnsafe(nuint size)
         => new(New(size), (int)size);
 
+    /// <summary>
+    /// Allocates unmanaged memory and initializes it to zero.
+    /// </summary>
+    /// <param name="count">The number of elements to allocate.</param>
+    /// <param name="size">The size of each element.</param>
+    /// <returns>A span of bytes representing the allocated memory.</returns>
     public static unsafe Span<byte> Alloc(nuint count, nuint size)
         => new(New(count, size), (int)(count * size));
 
@@ -83,6 +99,11 @@ public static class NativeMemory
         initializer(p);
         return p;
     }
+
+    /// <summary>
+    /// Deallocates the specified memory.
+    /// </summary>
+    /// <param name="ptr">A pointer to the memory to deallocate.</param>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe void Free(void* ptr)
         => free(ptr);
@@ -99,13 +120,31 @@ public static class NativeMemory
     public static unsafe nuint SizeOf<T>() where T : unmanaged
         => (nuint)sizeof(T);
 
+    /// <summary>
+    /// Copies memory from one location to another.
+    /// </summary>
+    /// <param name="from">A pointer to the source memory.</param>
+    /// <param name="to">A pointer to the destination memory.</param>
+    /// <param name="size">The size of the memory to copy.</param>
+    /// <returns>A pointer to the destination memory.</returns>
     public static unsafe void* Copy(void* from, void* to, nuint size)
         => memmove(to, from, size);
 }
 
+/// <summary>
+/// A static utility class for interacting with unmanaged memory for a specific type. Provides methods for allocating, reallocating, and manipulating memory.
+/// It is recommended to use <see cref="System.Runtime.InteropServices.NativeMemory"/> instead of this class if you don't require compatibility
+/// all the way back to .Net Standard.
+/// </summary>
+/// <typeparam name="T">The type of the elements in the memory.</typeparam>
 [PublicAPI]
 public static class NativeMemory<T> where T : unmanaged
 {
+    /// <summary>
+    /// Allocates memory for a specific number of items of type T.
+    /// </summary>
+    /// <param name="count">The number of items to allocate (default is 1).</param>
+    /// <returns>A span representing the allocated memory.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static unsafe Span<T> New(nuint count = 1)
         => new(NativeMemory.New(count, SizeOf()), (int)count);
@@ -126,6 +165,12 @@ public static class NativeMemory<T> where T : unmanaged
     private static unsafe nuint MinSizeOf<TNew>() where TNew : unmanaged
         => (nuint)(sizeof(T) > sizeof(TNew) ? sizeof(TNew) : sizeof(T));
 
+    /// <summary>
+    /// Reallocates memory for a different type and/or size.
+    /// </summary>
+    /// <typeparam name="TNew">The type of the new elements in the memory.</typeparam>
+    /// <param name="ptr">A pointer to the memory to reallocate.</param>
+    /// <returns>A pointer to the reallocated memory.</returns>
     public static unsafe TNew* ReAlloc<TNew>(T* ptr) where TNew : unmanaged
         => (TNew*)NativeMemory.realloc(ptr, (nuint)sizeof(TNew));
 
@@ -135,12 +180,25 @@ public static class NativeMemory<T> where T : unmanaged
         return new(NativeMemory.realloc(p, count * (nuint)sizeof(TNew)), (int)count);
     }
 
+    /// <summary>
+    /// Resizes the allocated memory for a span.
+    /// </summary>
+    /// <param name="span">The span to resize.</param>
+    /// <param name="count">The new size for the span.</param>
+    /// <returns>A span representing the resized memory.</returns>
     public static unsafe Span<T> Resize(Span<T> span, nuint count)
     {
         var p = Unsafe.AsPointer(ref span.GetPinnableReference());
         return new(NativeMemory.realloc(p, count * (nuint)sizeof(T)), (int)count);
     }
 
+    /// <summary>
+    /// Copies memory from one location to another, potentially changing the type of the data.
+    /// </summary>
+    /// <typeparam name="TNew">The type of the new elements in the memory.</typeparam>
+    /// <param name="from">A pointer to the source memory.</param>
+    /// <param name="to">A pointer to the destination memory.</param>
+    /// <returns>A pointer to the destination memory.</returns>
     public static unsafe TNew* Copy<TNew>(T* from, TNew* to) where TNew : unmanaged
         => (TNew*)NativeMemory.memmove(to, from, MinSizeOf<TNew>());
 }

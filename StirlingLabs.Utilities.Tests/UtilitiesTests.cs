@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using FluentAssertions;
 using NUnit.Framework;
-using StirlingLabs.Native;
 using StirlingLabs.Utilities;
 
 namespace StirlingLabs.Utilities.Tests;
