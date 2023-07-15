@@ -9,6 +9,8 @@ namespace StirlingLabs.Utilities;
 
 /// <summary>
 /// A static utility class for interacting with unmanaged memory. Provides methods for allocating, deallocating, and manipulating memory.
+/// It is recommended to use <see cref="System.Runtime.InteropServices.NativeMemory"/> instead of this class if you don't require compatibility
+/// all the way back to .Net Standard.
 /// </summary>
 [PublicAPI]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
@@ -131,6 +133,8 @@ public static class NativeMemory
 
 /// <summary>
 /// A static utility class for interacting with unmanaged memory for a specific type. Provides methods for allocating, reallocating, and manipulating memory.
+/// It is recommended to use <see cref="System.Runtime.InteropServices.NativeMemory"/> instead of this class if you don't require compatibility
+/// all the way back to .Net Standard.
 /// </summary>
 /// <typeparam name="T">The type of the elements in the memory.</typeparam>
 [PublicAPI]
